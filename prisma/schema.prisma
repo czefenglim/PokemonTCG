@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Pokemon {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  rarity      String
+  imageUri    String
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username String
+  createdAt DateTime @default(now())
+}
