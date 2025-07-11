@@ -1,11 +1,12 @@
 // app/dashboard/page.tsx
-'use client';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { useSession } from 'next-auth/react';
+"use client";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
+
   const router = useRouter();
 
   const cardVariants = {
@@ -16,16 +17,16 @@ export default function DashboardPage() {
       transition: {
         delay: i * 0.15,
         duration: 0.4,
-        ease: 'easeOut' as const,
+        ease: "easeOut" as const,
       },
     }),
   };
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <p className="text-yellow-200">Loading...</p>;
   }
 
-  if (status === 'unauthenticated') {
+  if (status === "unauthenticated") {
     return <p className="text-red-400">You must be logged in.</p>;
   }
 
@@ -48,7 +49,7 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-bold text-yellow-300">
               {session?.user?.name
                 ? `Welcome, ${session.user.name}`
-                : 'Welcome, Trainer'}
+                : "Welcome, Trainer"}
             </h1>
             <p className="text-yellow-200 text-sm">
               Your Pokémon adventure begins here.
@@ -69,34 +70,34 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
         {[
           {
-            title: 'Open Card Pack',
-            desc: 'Reveal new cards and expand your collection.',
-            img: '4.png',
-            href: '/packs',
+            title: "Open Card Pack",
+            desc: "Reveal new cards and expand your collection.",
+            img: "4.png",
+            href: "/packs",
           },
           {
-            title: 'Marketplace',
-            desc: 'Buy and sell cards with other trainers.',
-            img: '2.png',
-            href: '/marketplace',
+            title: "Marketplace",
+            desc: "Buy and sell cards with other trainers.",
+            img: "2.png",
+            href: "/marketplace",
           },
           {
-            title: 'My Inventory',
-            desc: 'View all cards you own.',
-            img: '5.png',
-            href: '/inventory',
+            title: "My Inventory",
+            desc: "View all cards you own.",
+            img: "5.png",
+            href: "/inventory",
           },
           {
-            title: 'PvE Battle',
-            desc: 'Challenge AI opponents for rewards.',
-            img: '15.png',
-            href: '/game/pve',
+            title: "PvE Battle",
+            desc: "Challenge AI opponents for rewards.",
+            img: "15.png",
+            href: "/game/pve",
           },
           {
-            title: 'PvP Battle',
-            desc: 'Compete against other trainers in real time.',
-            img: '7.png',
-            href: '/game/pvp',
+            title: "PvP Battle",
+            desc: "Compete against other trainers in real time.",
+            img: "7.png",
+            href: "/game/pvp",
           },
         ].map((card, i) => (
           <motion.button
@@ -115,7 +116,7 @@ export default function DashboardPage() {
               alt={card.title}
               className="w-24 mb-4"
               whileHover={{ rotate: 5 }}
-              transition={{ type: 'spring', stiffness: 200 }}
+              transition={{ type: "spring", stiffness: 200 }}
             />
             <h2 className="text-lg font-semibold text-yellow-200">
               {card.title}

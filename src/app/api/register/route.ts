@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   // Validate
   if (!email || !password || !username) {
     return new Response(
-      JSON.stringify({ error: 'Email, password, and username are required.' }),
+      JSON.stringify({ error: "Email, password, and username are required." }),
       { status: 400 }
     );
   }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   if (existing) {
     return new Response(
-      JSON.stringify({ error: 'Email is already registered.' }),
+      JSON.stringify({ error: "Email is already registered." }),
       { status: 400 }
     );
   }
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   });
 
   return new Response(
-    JSON.stringify({ message: 'User created successfully.' }),
+    JSON.stringify({ message: "User created successfully." }),
     { status: 201 }
   );
 }
