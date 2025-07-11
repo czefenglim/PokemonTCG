@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:cz5f5l12@localhost:3306/pokemon"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  username  String
+
+  userCards UserCard[] // ✅ reverse relation
+}
+
+model Pokemon {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  rarity      String
+  imageUri    String
+  description String
+  createdAt   DateTime @default(now())
+
+  userCards UserCard[] // ✅ reverse relation
+}
+
+model UserCard {
+  id           Int      @id @default(autoincrement())
+  userId       String   @map("user_id")
+  pokemonId    Int      @map("pokemon_id")
+  quantity     Int      @default(1)
+  minted       Boolean  @default(false)
+  tokenId      String?  @map("token_id")
+  nftContract  String?  @map("nft_contract")
+  metadataUri  String?  @map("metadata_uri")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pokemon      Pokemon  @relation(fields: [pokemonId], references: [id], onDelete: Cascade)
+
+  @@map("user_cards")
+}
+
