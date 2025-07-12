@@ -12,9 +12,19 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
-  username  String
+  username  String   @unique
 
   userCards UserCard[] // ✅ reverse relation
+
+  // Friend Request Relations
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+
+  // Friends Relations
+  friends   Friend[] @relation("UserFriends")
+  friendOf  Friend[] @relation("FriendOfUser")
+
+  @@map("user")
 }
 
 model Pokemon {
@@ -46,3 +56,32 @@ model UserCard {
   @@map("user_cards")
 }
 
+model FriendRequest {
+  id         Int                  @id @default(autoincrement())
+  sender     User                 @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId   String               @map("sender_id")
+  receiver   User                 @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String               @map("receiver_id")
+  status     FriendRequestStatus @default(pending)
+  createdAt  DateTime            @default(now()) @map("created_at")
+
+  @@unique([senderId, receiverId])
+  @@map("friend_requests") // map to your actual table name
+}
+
+model Friend {
+  user     User    @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  userId   String  @map("user_id")
+  friend   User    @relation("FriendOfUser", fields: [friendId], references: [id], onDelete: Cascade)
+  friendId String  @map("friend_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([userId, friendId])
+  @@map("friends")
+}
+
+enum FriendRequestStatus {
+  pending
+  accepted
+  rejected
+}
