@@ -1,0 +1,15 @@
+{
+  "name": "Pinsir",
+  "description": "If it fails to crush the victim in its pincers, it will swing it around and toss it hard.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/127.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

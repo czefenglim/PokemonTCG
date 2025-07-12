@@ -1,0 +1,15 @@
+{
+  "name": "Horsea",
+  "description": "Known to shoot down flying bugs with precision blasts of ink from the surface of the water.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

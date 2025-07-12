@@ -1,0 +1,15 @@
+{
+  "name": "Jynx",
+  "description": "It seductively wiggles its hips as it walks. It can cause people to dance in unison with it.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/124.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ice"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

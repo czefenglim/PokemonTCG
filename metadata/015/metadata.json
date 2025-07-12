@@ -1,0 +1,15 @@
+{
+  "name": "Beedrill",
+  "description": "It has three poisonous stingers on its forelegs and its tail. They are used to jab its enemy repeatedly.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

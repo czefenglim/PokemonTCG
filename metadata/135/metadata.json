@@ -1,0 +1,15 @@
+{
+  "name": "Jolteon",
+  "description": "It accumulates negative ions in the atmosphere to blast out 10000- volt lightning bolts.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Gastly",
+  "description": "Almost invisible, this gaseous POKéMON cloaks the target and puts it to sleep without notice.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ghost"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

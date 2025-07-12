@@ -1,0 +1,15 @@
+{
+  "name": "Kabuto",
+  "description": "A POKéMON that was resurrected from a fossil found in what was once the ocean floor eons ago.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/140.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "rock"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

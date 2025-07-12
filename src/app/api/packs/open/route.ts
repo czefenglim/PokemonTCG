@@ -1,28 +1,46 @@
-// app/api/packs/open/route.ts
-
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import pokemonList from '@/app/lib/pokemon-list.json';
 
 export async function POST(request: Request) {
-  // In real life, you'd:
-  // 1. Check user session
-  // 2. Verify cooldown
-  // 3. Update inventory
+  try {
+    if (!pokemonList || pokemonList.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'No Pokémon found.', cards: [] }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-  // Randomly pick 5 Pokémon from your DB
-  const cards = await prisma.pokemon.findMany({
-    orderBy: { id: 'asc' },
-    take: 5,
-    skip: Math.floor(Math.random() * (151 - 5)), // If you have 151 Pokémon
-  });
+    const maxId = pokemonList.length;
+    console.log('Max ID:', maxId);
 
-  // Map to your desired output format
-  const result = cards.map((card) => ({
-    id: String(card.id),
-    name: card.name,
-    images: { small: card.imageUri },
-  }));
+    // Generate 5 unique random indexes
+    const idSet = new Set<number>();
+    while (idSet.size < 5) {
+      const randomIndex = Math.floor(Math.random() * maxId);
+      idSet.add(randomIndex);
+    }
+    const randomIndexes = Array.from(idSet);
 
-  return Response.json({ cards: result });
+    console.log('Selected indexes:', randomIndexes);
+
+    // Get the cards
+    const cards = randomIndexes.map((index) => {
+      const p = pokemonList[index];
+      return {
+        id: String(p.id),
+        name: p.name,
+        images: { small: p.image }, // adapt to your field names
+      };
+    });
+
+    return new Response(JSON.stringify({ cards }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error('Error fetching random cards:', error);
+    return new Response(
+      JSON.stringify({ error: 'Internal Server Error', cards: [] }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 }

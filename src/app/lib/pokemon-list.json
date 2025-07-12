@@ -1,0 +1,1210 @@
+[
+  {
+    "id": 1,
+    "name": "Bulbasaur",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+    "description": "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 2,
+    "name": "Ivysaur",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+    "description": "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 3,
+    "name": "Venusaur",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+    "description": "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 4,
+    "name": "Charmander",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+    "description": "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 5,
+    "name": "Charmeleon",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+    "description": "When it swings its burning tail, it elevates the temperature to unbearably high levels.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 6,
+    "name": "Charizard",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+    "description": "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 7,
+    "name": "Squirtle",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
+    "description": "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 8,
+    "name": "Wartortle",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
+    "description": "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 9,
+    "name": "Blastoise",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
+    "description": "A brutal POKéMON with pressurized water jets on its shell. They are used for high speed tackles.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 10,
+    "name": "Caterpie",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
+    "description": "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 11,
+    "name": "Metapod",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png",
+    "description": "This POKéMON is vulnerable to attack while its shell is soft, exposing its weak and tender body.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 12,
+    "name": "Butterfree",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png",
+    "description": "In battle, it flaps its wings at high speed to release highly toxic dust into the air.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 13,
+    "name": "Weedle",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/13.png",
+    "description": "Often found in forests, eating leaves. It has a sharp venomous stinger on its head.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 14,
+    "name": "Kakuna",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/14.png",
+    "description": "Almost incapable of moving, this POKéMON can only harden its shell to protect itself from predators.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 15,
+    "name": "Beedrill",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png",
+    "description": "It has three poisonous stingers on its forelegs and its tail. They are used to jab its enemy repeatedly.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 16,
+    "name": "Pidgey",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png",
+    "description": "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 17,
+    "name": "Pidgeotto",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png",
+    "description": "Very protective of its sprawling territorial area, this POKéMON will fiercely peck at any intruder.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 18,
+    "name": "Pidgeot",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png",
+    "description": "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 19,
+    "name": "Rattata",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png",
+    "description": "Bites anything when it attacks. Small and very quick, it is a common sight in many places.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 20,
+    "name": "Raticate",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png",
+    "description": "It uses its whis­ kers to maintain its balance. It apparently slows down if they are cut off.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 21,
+    "name": "Spearow",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/21.png",
+    "description": "It flaps its small wings busily to fly. Using its beak, it searches in grass for prey.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 22,
+    "name": "Fearow",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/22.png",
+    "description": "With its huge and magnificent wings, it can keep aloft without ever having to land for rest.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 23,
+    "name": "Ekans",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/23.png",
+    "description": "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 24,
+    "name": "Arbok",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/24.png",
+    "description": "It is rumored that the ferocious warning markings on its belly differ from area to area.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 25,
+    "name": "Pikachu",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "description": "When several of these POKéMON gather, their electricity could build and cause lightning storms.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 26,
+    "name": "Raichu",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png",
+    "description": "Its long tail serves as a ground to protect itself from its own high-voltage power.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 27,
+    "name": "Sandshrew",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png",
+    "description": "Burrows deep underground in arid locations far from water. It only emerges to hunt for food.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 28,
+    "name": "Sandslash",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/28.png",
+    "description": "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 29,
+    "name": "Nidoran-f",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/29.png",
+    "description": "Although small, its venomous barbs render this POKéMON dangerous. The female has smaller horns.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 30,
+    "name": "Nidorina",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/30.png",
+    "description": "The female's horn develops slowly. Prefers physical attacks such as clawing and biting.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 31,
+    "name": "Nidoqueen",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/31.png",
+    "description": "Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 32,
+    "name": "Nidoran-m",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/32.png",
+    "description": "Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 33,
+    "name": "Nidorino",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/33.png",
+    "description": "An aggressive POKéMON that is quick to attack. The horn on its head secretes a powerful venom.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 34,
+    "name": "Nidoking",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/34.png",
+    "description": "It uses its powerful tail in battle to smash, constrict, then break the prey's bones.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 35,
+    "name": "Clefairy",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png",
+    "description": "Its magical and cute appeal has many admirers. It is rare and found only in certain areas.",
+    "type": "fairy",
+    "rarity": "Common"
+  },
+  {
+    "id": 36,
+    "name": "Clefable",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png",
+    "description": "A timid fairy POKéMON that is rarely seen. It will run and hide the moment it senses people.",
+    "type": "fairy",
+    "rarity": "Common"
+  },
+  {
+    "id": 37,
+    "name": "Vulpix",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/37.png",
+    "description": "At the time of birth, it has just one tail. The tail splits from its tip as it grows older.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 38,
+    "name": "Ninetales",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png",
+    "description": "Very smart and very vengeful. Grabbing one of its many tails could result in a 1000-year curse.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 39,
+    "name": "Jigglypuff",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png",
+    "description": "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 40,
+    "name": "Wigglytuff",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/40.png",
+    "description": "The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 41,
+    "name": "Zubat",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png",
+    "description": "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 42,
+    "name": "Golbat",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/42.png",
+    "description": "Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 43,
+    "name": "Oddish",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/43.png",
+    "description": "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 44,
+    "name": "Gloom",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/44.png",
+    "description": "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 45,
+    "name": "Vileplume",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/45.png",
+    "description": "It has the world’s largest petals. With every step, the petals shake out heavy clouds of toxic pollen.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 46,
+    "name": "Paras",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/46.png",
+    "description": "Burrows to suck tree roots. The mushrooms on its back grow by draw­ ing nutrients from the bug host.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 47,
+    "name": "Parasect",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/47.png",
+    "description": "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 48,
+    "name": "Venonat",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/48.png",
+    "description": "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 49,
+    "name": "Venomoth",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/49.png",
+    "description": "The dustlike scales covering its wings are color-coded to indicate the kinds of poison it has.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 50,
+    "name": "Diglett",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/50.png",
+    "description": "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 51,
+    "name": "Dugtrio",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/51.png",
+    "description": "A team of DIGLETT triplets. It triggers huge earthquakes by burrowing 60 miles underground.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 52,
+    "name": "Meowth",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png",
+    "description": "It washes its face regularly to keep the coin on its forehead spotless. It doesn’t get along with Galarian Meowth.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 53,
+    "name": "Persian",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/53.png",
+    "description": "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 54,
+    "name": "Psyduck",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png",
+    "description": "While lulling its enemies with its vacant look, this wily POKéMON will use psychokinetic powers.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 55,
+    "name": "Golduck",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png",
+    "description": "Often seen swim­ ming elegantly by lake shores. It is often mistaken for the Japanese monster, Kappa.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 56,
+    "name": "Mankey",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/56.png",
+    "description": "Extremely quick to anger. It could be docile one moment then thrashing away the next instant.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 57,
+    "name": "Primeape",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/57.png",
+    "description": "Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 58,
+    "name": "Growlithe",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/58.png",
+    "description": "Very protective of its territory. It will bark and bite to repel intruders from its space.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 59,
+    "name": "Arcanine",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png",
+    "description": "A POKéMON that has been admired since the past for its beauty. It runs agilely as if on wings.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 60,
+    "name": "Poliwag",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/60.png",
+    "description": "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 61,
+    "name": "Poliwhirl",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/61.png",
+    "description": "Capable of living in or out of water. When out of water, it sweats to keep its body slimy.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 62,
+    "name": "Poliwrath",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/62.png",
+    "description": "An adept swimmer at both the front crawl and breast stroke. Easily overtakes the best human swimmers.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 63,
+    "name": "Abra",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/63.png",
+    "description": "Using its ability to read minds, it will identify impending danger and TELEPORT to safety.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 64,
+    "name": "Kadabra",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/64.png",
+    "description": "It emits special alpha waves from its body that induce headaches just by being close by.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 65,
+    "name": "Alakazam",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png",
+    "description": "Its brain can out­ perform a super­ computer. Its intelligence quotient is said to be 5,000.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 66,
+    "name": "Machop",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png",
+    "description": "Loves to build its muscles. It trains in all styles of martial arts to become even stronger.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 67,
+    "name": "Machoke",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/67.png",
+    "description": "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 68,
+    "name": "Machamp",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png",
+    "description": "Using its heavy muscles, it throws powerful punches that can send the victim clear over the horizon.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 69,
+    "name": "Bellsprout",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/69.png",
+    "description": "A carnivorous POKéMON that traps and eats bugs. It uses its root feet to soak up needed moisture.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 70,
+    "name": "Weepinbell",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/70.png",
+    "description": "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 71,
+    "name": "Victreebel",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/71.png",
+    "description": "Said to live in huge colonies deep in jungles, although no one has ever returned from there.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 72,
+    "name": "Tentacool",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/72.png",
+    "description": "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 73,
+    "name": "Tentacruel",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/73.png",
+    "description": "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 74,
+    "name": "Geodude",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png",
+    "description": "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 75,
+    "name": "Graveler",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png",
+    "description": "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 76,
+    "name": "Golem",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/76.png",
+    "description": "Its boulder-like body is extremely hard. It can easily withstand dynamite blasts without damage.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 77,
+    "name": "Ponyta",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
+    "description": "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 78,
+    "name": "Rapidash",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/78.png",
+    "description": "Very competitive, this POKéMON will chase anything that moves fast in the hopes of racing it.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 79,
+    "name": "Slowpoke",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/79.png",
+    "description": "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 80,
+    "name": "Slowbro",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/80.png",
+    "description": "The SHELLDER that is latched onto SLOWPOKE's tail is said to feed on the host's left over scraps.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 81,
+    "name": "Magnemite",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png",
+    "description": "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 82,
+    "name": "Magneton",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png",
+    "description": "Formed by several MAGNEMITEs linked together. They frequently appear when sunspots flare up.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 83,
+    "name": "Farfetchd",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/83.png",
+    "description": "The sprig of green onions it holds is its weapon. It is used much like a metal sword.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 84,
+    "name": "Doduo",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/84.png",
+    "description": "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 85,
+    "name": "Dodrio",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/85.png",
+    "description": "Uses its three brains to execute complex plans. While two heads sleep, one head stays awake.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 86,
+    "name": "Seel",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/86.png",
+    "description": "The protruding horn on its head is very hard. It is used for bashing through thick ice.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 87,
+    "name": "Dewgong",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/87.png",
+    "description": "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 88,
+    "name": "Grimer",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/88.png",
+    "description": "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 89,
+    "name": "Muk",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/89.png",
+    "description": "Thickly covered with a filthy, vile sludge. It is so toxic, even its footprints contain poison.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 90,
+    "name": "Shellder",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/90.png",
+    "description": "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 91,
+    "name": "Cloyster",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/91.png",
+    "description": "When attacked, it launches its horns in quick volleys. Its innards have never been seen.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 92,
+    "name": "Gastly",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png",
+    "description": "Almost invisible, this gaseous POKéMON cloaks the target and puts it to sleep without notice.",
+    "type": "ghost",
+    "rarity": "Common"
+  },
+  {
+    "id": 93,
+    "name": "Haunter",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/93.png",
+    "description": "Because of its ability to slip through block walls, it is said to be from an­ other dimension.",
+    "type": "ghost",
+    "rarity": "Common"
+  },
+  {
+    "id": 94,
+    "name": "Gengar",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png",
+    "description": "Under a full moon, this POKéMON likes to mimic the shadows of people and laugh at their fright.",
+    "type": "ghost",
+    "rarity": "Common"
+  },
+  {
+    "id": 95,
+    "name": "Onix",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/95.png",
+    "description": "As it grows, the stone portions of its body harden to become similar to a diamond, but colored black.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 96,
+    "name": "Drowzee",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/96.png",
+    "description": "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 97,
+    "name": "Hypno",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/97.png",
+    "description": "When it locks eyes with an enemy, it will use a mix of PSI moves such as HYPNOSIS and CONFUSION.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 98,
+    "name": "Krabby",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/98.png",
+    "description": "Its pincers are not only powerful weapons, they are used for balance when walking sideways.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 99,
+    "name": "Kingler",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/99.png",
+    "description": "The large pincer has 10000 hp of crushing power. However, its huge size makes it unwieldy to use.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 100,
+    "name": "Voltorb",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/100.png",
+    "description": "Usually found in power plants. Easily mistaken for a POKé BALL, they have zapped many people.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 101,
+    "name": "Electrode",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/101.png",
+    "description": "It stores electric energy under very high pressure. It often explodes with little or no provocation.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 102,
+    "name": "Exeggcute",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/102.png",
+    "description": "Often mistaken for eggs. When disturbed, they quickly gather and attack in swarms.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 103,
+    "name": "Exeggutor",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/103.png",
+    "description": "Legend has it that on rare occasions, one of its heads will drop off and continue on as an EXEGGCUTE.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 104,
+    "name": "Cubone",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/104.png",
+    "description": "Because it never removes its skull helmet, no one has ever seen this POKéMON's real face.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 105,
+    "name": "Marowak",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png",
+    "description": "The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 106,
+    "name": "Hitmonlee",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/106.png",
+    "description": "When in a hurry, its legs lengthen progressively. It runs smoothly with extra long, loping strides.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 107,
+    "name": "Hitmonchan",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/107.png",
+    "description": "While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see.",
+    "type": "fighting",
+    "rarity": "Common"
+  },
+  {
+    "id": 108,
+    "name": "Lickitung",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/108.png",
+    "description": "Its tongue can be extended like a chameleon's. It leaves a tingling sensation when it licks enemies.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 109,
+    "name": "Koffing",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/109.png",
+    "description": "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 110,
+    "name": "Weezing",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/110.png",
+    "description": "Where two kinds of poison gases meet, 2 KOFFINGs can fuse into a WEEZING over many years.",
+    "type": "poison",
+    "rarity": "Common"
+  },
+  {
+    "id": 111,
+    "name": "Rhyhorn",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/111.png",
+    "description": "A POKéMON with a one-track mind. Once it charges,  it won't stop running until it falls asleep.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 112,
+    "name": "Rhydon",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/112.png",
+    "description": "Protected by an armor-like hide, it is capable of living in molten lava of 3,600 degrees.",
+    "type": "ground",
+    "rarity": "Common"
+  },
+  {
+    "id": 113,
+    "name": "Chansey",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/113.png",
+    "description": "A rare and elusive POKéMON that is said to bring happiness to those who manage to get it.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 114,
+    "name": "Tangela",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/114.png",
+    "description": "The whole body is swathed with wide vines that are similar to sea­ weed. Its vines shake as it walks.",
+    "type": "grass",
+    "rarity": "Common"
+  },
+  {
+    "id": 115,
+    "name": "Kangaskhan",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/115.png",
+    "description": "The infant rarely ventures out of its mother's protective pouch until it is 3 years old.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 116,
+    "name": "Horsea",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/116.png",
+    "description": "Known to shoot down flying bugs with precision blasts of ink from the surface of the water.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 117,
+    "name": "Seadra",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/117.png",
+    "description": "Capable of swim­ ming backwards by rapidly flapping its wing-like pectoral fins and stout tail.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 118,
+    "name": "Goldeen",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/118.png",
+    "description": "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 119,
+    "name": "Seaking",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/119.png",
+    "description": "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 120,
+    "name": "Staryu",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png",
+    "description": "If its body is torn, it can grow back if the red core remains. The core flashes at midnight.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 121,
+    "name": "Starmie",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png",
+    "description": "Its central core glows with the seven colors of the rainbow. Some people value the core as a gem.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 122,
+    "name": "Mr-mime",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/122.png",
+    "description": "If interrupted while it is miming, it will slap around the offender with its broad hands.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 123,
+    "name": "Scyther",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png",
+    "description": "With ninja-like agility and speed, it can create the illusion that there is more than one.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 124,
+    "name": "Jynx",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/124.png",
+    "description": "It seductively wiggles its hips as it walks. It can cause people to dance in unison with it.",
+    "type": "ice",
+    "rarity": "Common"
+  },
+  {
+    "id": 125,
+    "name": "Electabuzz",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png",
+    "description": "Normally found near power plants, they can wander away and cause major blackouts in cities.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 126,
+    "name": "Magmar",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/126.png",
+    "description": "Its body always burns with an orange glow that enables it to hide perfectly among flames.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 127,
+    "name": "Pinsir",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/127.png",
+    "description": "If it fails to crush the victim in its pincers, it will swing it around and toss it hard.",
+    "type": "bug",
+    "rarity": "Common"
+  },
+  {
+    "id": 128,
+    "name": "Tauros",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/128.png",
+    "description": "When it targets an enemy, it charges furiously while whipping its body with its long tails.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 129,
+    "name": "Magikarp",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png",
+    "description": "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 130,
+    "name": "Gyarados",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png",
+    "description": "Once it begins to rampage, a GYARADOS will burn everything down, even in a harsh storm.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 131,
+    "name": "Lapras",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png",
+    "description": "A POKéMON that has been over­ hunted almost to extinction. It can ferry people across the water.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 132,
+    "name": "Ditto",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
+    "description": "Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 133,
+    "name": "Eevee",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+    "description": "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 134,
+    "name": "Vaporeon",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png",
+    "description": "Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's.",
+    "type": "water",
+    "rarity": "Common"
+  },
+  {
+    "id": 135,
+    "name": "Jolteon",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png",
+    "description": "It accumulates negative ions in the atmosphere to blast out 10000- volt lightning bolts.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 136,
+    "name": "Flareon",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/136.png",
+    "description": "When storing thermal energy in its body, its temperature could soar to over 1600 degrees.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 137,
+    "name": "Porygon",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png",
+    "description": "A POKéMON that consists entirely of programming code. Capable of moving freely in cyberspace.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 138,
+    "name": "Omanyte",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/138.png",
+    "description": "Although long extinct, in rare cases, it can be genetically resurrected from fossils.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 139,
+    "name": "Omastar",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/139.png",
+    "description": "A prehistoric POKéMON that died out when its heavy shell made it impossible to catch prey.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 140,
+    "name": "Kabuto",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/140.png",
+    "description": "A POKéMON that was resurrected from a fossil found in what was once the ocean floor eons ago.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 141,
+    "name": "Kabutops",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/141.png",
+    "description": "Its sleek shape is perfect for swim­ ming. It slashes prey with its claws and drains the body fluids.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 142,
+    "name": "Aerodactyl",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png",
+    "description": "A Pokémon that roamed the skies in the dinosaur era. Its teeth are like saw blades.",
+    "type": "rock",
+    "rarity": "Common"
+  },
+  {
+    "id": 143,
+    "name": "Snorlax",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png",
+    "description": "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful.",
+    "type": "normal",
+    "rarity": "Common"
+  },
+  {
+    "id": 144,
+    "name": "Articuno",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png",
+    "description": "A legendary bird POKéMON that is said to appear to doomed people who are lost in icy mountains.",
+    "type": "ice",
+    "rarity": "Common"
+  },
+  {
+    "id": 145,
+    "name": "Zapdos",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png",
+    "description": "A legendary bird POKéMON that is said to appear from clouds while dropping enormous lightning bolts.",
+    "type": "electric",
+    "rarity": "Common"
+  },
+  {
+    "id": 146,
+    "name": "Moltres",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png",
+    "description": "Known as the legendary bird of fire. Every flap of its wings creates a dazzling flash of flames.",
+    "type": "fire",
+    "rarity": "Common"
+  },
+  {
+    "id": 147,
+    "name": "Dratini",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/147.png",
+    "description": "Long considered a mythical POKéMON until recently when a small colony was found living underwater.",
+    "type": "dragon",
+    "rarity": "Common"
+  },
+  {
+    "id": 148,
+    "name": "Dragonair",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/148.png",
+    "description": "A mystical POKéMON that exudes a gentle aura. Has the ability to change climate conditions.",
+    "type": "dragon",
+    "rarity": "Common"
+  },
+  {
+    "id": 149,
+    "name": "Dragonite",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png",
+    "description": "An extremely rarely seen marine POKéMON. Its intelligence is said to match that of humans.",
+    "type": "dragon",
+    "rarity": "Common"
+  },
+  {
+    "id": 150,
+    "name": "Mewtwo",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
+    "description": "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.",
+    "type": "psychic",
+    "rarity": "Common"
+  },
+  {
+    "id": 151,
+    "name": "Mew",
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png",
+    "description": "So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide.",
+    "type": "psychic",
+    "rarity": "Common"
+  }
+]

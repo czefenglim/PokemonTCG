@@ -1,0 +1,15 @@
+{
+  "name": "Eevee",
+  "description": "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

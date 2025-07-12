@@ -1,0 +1,15 @@
+{
+  "name": "Cloyster",
+  "description": "When attacked, it launches its horns in quick volleys. Its innards have never been seen.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/91.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

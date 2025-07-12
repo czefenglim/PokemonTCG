@@ -1,0 +1,15 @@
+{
+  "name": "Clefairy",
+  "description": "Its magical and cute appeal has many admirers. It is rare and found only in certain areas.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fairy"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

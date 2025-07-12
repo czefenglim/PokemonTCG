@@ -1,0 +1,15 @@
+{
+  "name": "Rhyhorn",
+  "description": "A POKéMON with a one-track mind. Once it charges,  it won't stop running until it falls asleep.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/111.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ground"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

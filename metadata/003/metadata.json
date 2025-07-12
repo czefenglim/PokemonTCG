@@ -1,0 +1,15 @@
+{
+  "name": "Venusaur",
+  "description": "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

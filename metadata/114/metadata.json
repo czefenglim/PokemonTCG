@@ -1,0 +1,15 @@
+{
+  "name": "Tangela",
+  "description": "The whole body is swathed with wide vines that are similar to sea­ weed. Its vines shake as it walks.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/114.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

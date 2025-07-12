@@ -1,0 +1,15 @@
+{
+  "name": "Dragonite",
+  "description": "An extremely rarely seen marine POKéMON. Its intelligence is said to match that of humans.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "dragon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

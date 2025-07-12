@@ -1,0 +1,15 @@
+{
+  "name": "Farfetchd",
+  "description": "The sprig of green onions it holds is its weapon. It is used much like a metal sword.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/83.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

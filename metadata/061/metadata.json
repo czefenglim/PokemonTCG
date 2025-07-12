@@ -1,0 +1,15 @@
+{
+  "name": "Poliwhirl",
+  "description": "Capable of living in or out of water. When out of water, it sweats to keep its body slimy.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/61.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

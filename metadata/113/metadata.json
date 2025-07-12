@@ -1,0 +1,15 @@
+{
+  "name": "Chansey",
+  "description": "A rare and elusive POKéMON that is said to bring happiness to those who manage to get it.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/113.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

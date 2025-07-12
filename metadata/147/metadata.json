@@ -1,0 +1,15 @@
+{
+  "name": "Dratini",
+  "description": "Long considered a mythical POKéMON until recently when a small colony was found living underwater.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/147.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "dragon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

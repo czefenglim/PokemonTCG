@@ -1,0 +1,15 @@
+{
+  "name": "Weedle",
+  "description": "Often found in forests, eating leaves. It has a sharp venomous stinger on its head.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/13.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

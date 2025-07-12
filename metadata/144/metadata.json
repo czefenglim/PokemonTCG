@@ -1,0 +1,15 @@
+{
+  "name": "Articuno",
+  "description": "A legendary bird POKéMON that is said to appear to doomed people who are lost in icy mountains.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ice"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

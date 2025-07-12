@@ -1,0 +1,15 @@
+{
+  "name": "Doduo",
+  "description": "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/84.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

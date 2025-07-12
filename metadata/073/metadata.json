@@ -1,0 +1,15 @@
+{
+  "name": "Tentacruel",
+  "description": "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/73.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

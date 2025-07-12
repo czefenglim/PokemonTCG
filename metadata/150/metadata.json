@@ -1,0 +1,15 @@
+{
+  "name": "Mewtwo",
+  "description": "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}
