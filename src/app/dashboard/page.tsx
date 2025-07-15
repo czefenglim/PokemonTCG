@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { UserPlusIcon } from "@heroicons/react/24/solid";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -162,7 +162,7 @@ export default function DashboardPage() {
           <div className="bg-gradient-to-br from-black via-gray-900 to-gray-800 w-full max-w-md p-6 rounded-xl shadow-xl relative">
             <button
               onClick={() => setAddFriendModalOpen(false)}
-              className="absolute top-2 right-2 text-yellow-300 hover:text-yellow-200"
+              className="absolute text-3xl top-2 right-5 text-yellow-300 hover:text-yellow-200"
             >
               &times;
             </button>

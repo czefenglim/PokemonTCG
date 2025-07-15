@@ -65,7 +65,7 @@ model FriendRequest {
   status     FriendRequestStatus @default(pending)
   createdAt  DateTime            @default(now()) @map("created_at")
 
-  @@unique([senderId, receiverId])
+ 
   @@map("friend_requests") // map to your actual table name
 }
 

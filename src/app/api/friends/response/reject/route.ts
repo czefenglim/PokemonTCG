@@ -12,13 +12,13 @@ export async function POST(request: Request) {
 
   try {
     // Add mutual friendship
-    const friendResponse = await prisma.friend.createMany({
-      data: [
-        { userId: senderId, friendId: receiverId },
-        { userId: receiverId, friendId: senderId },
-      ],
-      skipDuplicates: true,
-    });
+    // const friendResponse = await prisma.friend.createMany({
+    //   data: [
+    //     { userId: senderId, friendId: receiverId },
+    //     { userId: receiverId, friendId: senderId },
+    //   ],
+    //   skipDuplicates: true,
+    // });
 
     // Find the original friend request
     const existingRequest = await prisma.friendRequest.findFirst({
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       data: { status: "rejected" },
     });
 
-    return new Response(JSON.stringify({ friendResponse, friendRequest }), {
+    return new Response(JSON.stringify({ friendRequest }), {
       status: 200,
     });
   } catch (error) {
