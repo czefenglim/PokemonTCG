@@ -1,0 +1,15 @@
+{
+  "name": "Lickitung",
+  "description": "Its tongue can be extended like a chameleon's. It leaves a tingling sensation when it licks enemies.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/108.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

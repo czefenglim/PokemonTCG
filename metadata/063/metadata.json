@@ -1,0 +1,15 @@
+{
+  "name": "Abra",
+  "description": "Using its ability to read minds, it will identify impending danger and TELEPORT to safety.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/63.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

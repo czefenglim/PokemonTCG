@@ -1,0 +1,15 @@
+{
+  "name": "Magmar",
+  "description": "Its body always burns with an orange glow that enables it to hide perfectly among flames.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/126.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

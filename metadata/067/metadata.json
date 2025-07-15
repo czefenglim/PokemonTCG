@@ -1,0 +1,15 @@
+{
+  "name": "Machoke",
+  "description": "Its muscular body is so powerful, it must wear a power save belt to be able to regulate its motions.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/67.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

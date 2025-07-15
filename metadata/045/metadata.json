@@ -1,0 +1,15 @@
+{
+  "name": "Vileplume",
+  "description": "It has the world’s largest petals. With every step, the petals shake out heavy clouds of toxic pollen.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/45.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

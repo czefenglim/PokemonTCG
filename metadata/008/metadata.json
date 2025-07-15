@@ -1,0 +1,15 @@
+{
+  "name": "Wartortle",
+  "description": "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

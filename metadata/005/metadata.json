@@ -1,0 +1,15 @@
+{
+  "name": "Charmeleon",
+  "description": "When it swings its burning tail, it elevates the temperature to unbearably high levels.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

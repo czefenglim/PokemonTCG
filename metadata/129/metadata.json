@@ -1,0 +1,15 @@
+{
+  "name": "Magikarp",
+  "description": "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

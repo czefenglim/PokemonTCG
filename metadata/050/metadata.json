@@ -1,0 +1,15 @@
+{
+  "name": "Diglett",
+  "description": "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/50.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ground"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

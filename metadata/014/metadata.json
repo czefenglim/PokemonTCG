@@ -1,0 +1,15 @@
+{
+  "name": "Kakuna",
+  "description": "Almost incapable of moving, this POKéMON can only harden its shell to protect itself from predators.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/14.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Jigglypuff",
+  "description": "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

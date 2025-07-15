@@ -1,0 +1,15 @@
+{
+  "name": "Hitmonchan",
+  "description": "While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/107.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

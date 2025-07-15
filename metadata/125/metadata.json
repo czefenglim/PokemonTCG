@@ -1,0 +1,15 @@
+{
+  "name": "Electabuzz",
+  "description": "Normally found near power plants, they can wander away and cause major blackouts in cities.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/125.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

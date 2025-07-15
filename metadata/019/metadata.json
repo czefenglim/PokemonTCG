@@ -1,0 +1,15 @@
+{
+  "name": "Rattata",
+  "description": "Bites anything when it attacks. Small and very quick, it is a common sight in many places.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

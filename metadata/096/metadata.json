@@ -1,0 +1,15 @@
+{
+  "name": "Drowzee",
+  "description": "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/96.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

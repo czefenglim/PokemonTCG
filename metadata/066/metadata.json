@@ -1,0 +1,15 @@
+{
+  "name": "Machop",
+  "description": "Loves to build its muscles. It trains in all styles of martial arts to become even stronger.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

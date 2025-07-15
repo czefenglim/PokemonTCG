@@ -1,0 +1,15 @@
+{
+  "name": "Staryu",
+  "description": "If its body is torn, it can grow back if the red core remains. The core flashes at midnight.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/120.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

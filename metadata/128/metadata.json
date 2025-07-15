@@ -1,0 +1,15 @@
+{
+  "name": "Tauros",
+  "description": "When it targets an enemy, it charges furiously while whipping its body with its long tails.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/128.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

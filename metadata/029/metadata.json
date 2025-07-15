@@ -1,0 +1,15 @@
+{
+  "name": "Nidoran-f",
+  "description": "Although small, its venomous barbs render this POKéMON dangerous. The female has smaller horns.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/29.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "poison"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

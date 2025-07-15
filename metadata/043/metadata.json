@@ -1,0 +1,15 @@
+{
+  "name": "Oddish",
+  "description": "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/43.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Raichu",
+  "description": "Its long tail serves as a ground to protect itself from its own high-voltage power.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

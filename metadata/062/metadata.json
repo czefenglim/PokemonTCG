@@ -1,0 +1,15 @@
+{
+  "name": "Poliwrath",
+  "description": "An adept swimmer at both the front crawl and breast stroke. Easily overtakes the best human swimmers.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/62.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

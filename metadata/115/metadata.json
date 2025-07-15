@@ -1,0 +1,15 @@
+{
+  "name": "Kangaskhan",
+  "description": "The infant rarely ventures out of its mother's protective pouch until it is 3 years old.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/115.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

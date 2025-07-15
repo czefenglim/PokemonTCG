@@ -1,0 +1,15 @@
+{
+  "name": "Scyther",
+  "description": "With ninja-like agility and speed, it can create the illusion that there is more than one.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}
