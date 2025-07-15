@@ -1,0 +1,15 @@
+{
+  "name": "Venomoth",
+  "description": "The dustlike scales covering its wings are color-coded to indicate the kinds of poison it has.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/49.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

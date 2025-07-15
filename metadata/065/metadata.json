@@ -1,0 +1,15 @@
+{
+  "name": "Alakazam",
+  "description": "Its brain can out­ perform a super­ computer. Its intelligence quotient is said to be 5,000.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

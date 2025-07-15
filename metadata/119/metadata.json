@@ -1,0 +1,15 @@
+{
+  "name": "Seaking",
+  "description": "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/119.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

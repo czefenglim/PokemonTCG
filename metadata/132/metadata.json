@@ -1,0 +1,15 @@
+{
+  "name": "Ditto",
+  "description": "Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Zapdos",
+  "description": "A legendary bird POKéMON that is said to appear from clouds while dropping enormous lightning bolts.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/145.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

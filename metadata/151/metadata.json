@@ -1,0 +1,15 @@
+{
+  "name": "Mew",
+  "description": "So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

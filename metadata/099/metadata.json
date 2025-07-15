@@ -1,0 +1,15 @@
+{
+  "name": "Kingler",
+  "description": "The large pincer has 10000 hp of crushing power. However, its huge size makes it unwieldy to use.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/99.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

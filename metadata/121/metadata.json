@@ -1,0 +1,15 @@
+{
+  "name": "Starmie",
+  "description": "Its central core glows with the seven colors of the rainbow. Some people value the core as a gem.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

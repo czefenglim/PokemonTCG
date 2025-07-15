@@ -1,0 +1,15 @@
+{
+  "name": "Weepinbell",
+  "description": "It spits out POISONPOWDER to immobilize the enemy and then finishes it with a spray of ACID.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/70.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Pidgey",
+  "description": "A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

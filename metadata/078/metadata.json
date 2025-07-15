@@ -1,0 +1,15 @@
+{
+  "name": "Rapidash",
+  "description": "Very competitive, this POKéMON will chase anything that moves fast in the hopes of racing it.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/78.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

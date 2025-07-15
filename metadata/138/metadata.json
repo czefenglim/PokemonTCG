@@ -1,0 +1,15 @@
+{
+  "name": "Omanyte",
+  "description": "Although long extinct, in rare cases, it can be genetically resurrected from fossils.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/138.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "rock"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

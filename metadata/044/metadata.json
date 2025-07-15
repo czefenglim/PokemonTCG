@@ -1,0 +1,15 @@
+{
+  "name": "Gloom",
+  "description": "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/44.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

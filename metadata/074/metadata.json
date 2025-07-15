@@ -1,0 +1,15 @@
+{
+  "name": "Geodude",
+  "description": "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "rock"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}
