@@ -19,7 +19,7 @@ export default function LoginPage() {
       redirect: false,
       email,
       password,
-      callbackUrl: '/dashboard',
+      callbackUrl: '/home',
     });
 
     setLoading(false); // Stop loading

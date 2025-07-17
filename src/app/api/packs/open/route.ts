@@ -9,26 +9,28 @@ export async function POST(request: Request) {
       );
     }
 
-    const maxId = pokemonList.length;
-    console.log('Max ID:', maxId);
+    const maxIndex = pokemonList.length;
+    console.log('Max Index:', maxIndex);
 
     // Generate 5 unique random indexes
     const idSet = new Set<number>();
     while (idSet.size < 5) {
-      const randomIndex = Math.floor(Math.random() * maxId);
+      const randomIndex = Math.floor(Math.random() * maxIndex);
       idSet.add(randomIndex);
     }
     const randomIndexes = Array.from(idSet);
 
     console.log('Selected indexes:', randomIndexes);
 
-    // Get the cards
+    // Build the cards array
     const cards = randomIndexes.map((index) => {
       const p = pokemonList[index];
       return {
-        id: String(p.id),
+        tokenId: p.tokenId, // numeric tokenId
+        tcgId: p.tcgId, // string TCG ID (like "det1-1")
         name: p.name,
-        images: { small: p.image }, // adapt to your field names
+        imageUrl: p.largeImage,
+        rarity: p.rarity,
       };
     });
 
