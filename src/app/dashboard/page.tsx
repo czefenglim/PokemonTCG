@@ -5,10 +5,9 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-("use client");
+
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { useSession } from "next-auth/react";
+
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 
@@ -469,6 +468,12 @@ export default function DashboardPage() {
             desc: "Compete against other trainers in real time.",
             img: "7.png",
             href: "/pvp",
+          },
+          {
+            title: "Trade Cards",
+            desc: "Exchange cards with other trainers.",
+            img: "7.png",
+            href: "/tradeCards",
           },
         ].map((card, i) => (
           <Link

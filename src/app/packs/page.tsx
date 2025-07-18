@@ -1,12 +1,12 @@
 // app/packs/page.tsx
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ethers } from 'ethers';
-import abi from '@/app/lib/pokemonCardABI.json';
-import { useAccount } from 'wagmi';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ethers } from "ethers";
+import abi from "@/app/lib/pokemonCardABI.json";
+import { useAccount } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 type Card = {
   id: string;
@@ -25,7 +25,7 @@ export default function PacksPage() {
 
   // Load pack status on mount
   useEffect(() => {
-    fetch('/api/packs/status')
+    fetch("/api/packs/status")
       .then((res) => res.json())
       .then((data) => {
         setNextPackAt(data.nextPackAt);
@@ -34,53 +34,53 @@ export default function PacksPage() {
   }, []);
 
   const openPack = async () => {
-    if (!isConnected || typeof window === 'undefined' || !window.ethereum) {
-      alert('Please connect your wallet first.');
+    if (!isConnected || typeof window === "undefined" || !window.ethereum) {
+      alert("Please connect your wallet first.");
       return;
     }
 
     setLoading(true);
-    setStatus('Preparing transaction...');
+    setStatus("Preparing transaction...");
 
     try {
       const ethersProvider = new ethers.BrowserProvider(window.ethereum);
       const signer = await ethersProvider.getSigner();
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3",
         abi,
         signer
       );
 
-      setStatus('Fetching pack...');
+      setStatus("Fetching pack...");
 
-      const res = await fetch('/api/packs/open', { method: 'POST' });
+      const res = await fetch("/api/packs/open", { method: "POST" });
       const data = await res.json();
       const cards = data.cards;
 
       const ids = cards.map((c) => c.id);
       const amounts = ids.map(() => 1);
 
-      setStatus('Requesting wallet confirmation...');
+      setStatus("Requesting wallet confirmation...");
 
       const tx = await contract.mintBatchCards(ids, amounts);
-      console.log('Transaction sent:', tx.hash);
+      console.log("Transaction sent:", tx.hash);
 
-      setStatus('Minting on blockchain...');
+      setStatus("Minting on blockchain...");
 
       await tx.wait();
-      console.log('Transaction confirmed!');
+      console.log("Transaction confirmed!");
 
       setCards(cards);
 
       setNextPackAt(Date.now() + 24 * 60 * 60 * 1000);
 
-      setStatus('✅ Minting successful!');
+      setStatus("✅ Minting successful!");
     } catch (err: any) {
-      if (err?.code === 'ACTION_REJECTED') {
-        setStatus('❌ Transaction was rejected.');
+      if (err?.code === "ACTION_REJECTED") {
+        setStatus("❌ Transaction was rejected.");
       } else {
-        alert(`Error minting: ${err?.message || 'Unknown error'}`);
+        alert(`Error minting: ${err?.message || "Unknown error"}`);
         setStatus(null);
       }
     } finally {
@@ -111,25 +111,25 @@ export default function PacksPage() {
               disabled={loading || !isConnected}
               className={`${
                 !isConnected
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-yellow-400 hover:bg-yellow-500'
+                  ? "bg-gray-600 cursor-not-allowed"
+                  : "bg-yellow-400 hover:bg-yellow-500"
               } text-black font-semibold py-2 px-4 rounded mb-4`}
             >
               {!isConnected
-                ? 'Connect your wallet to open packs'
+                ? "Connect your wallet to open packs"
                 : loading
-                ? 'Opening...'
-                : 'Open Pack'}
+                ? "Opening..."
+                : "Open Pack"}
             </button>
           ) : (
             <>
               <p className="text-yellow-200 mb-2">
-                Next free pack available at:{' '}
+                Next free pack available at:{" "}
                 {new Date(nextPackAt).toLocaleTimeString()}
               </p>
               <button
                 onClick={async () => {
-                  await fetch('/api/packs/skip', { method: 'POST' });
+                  await fetch("/api/packs/skip", { method: "POST" });
                   setNextPackAt(Date.now());
                 }}
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded"

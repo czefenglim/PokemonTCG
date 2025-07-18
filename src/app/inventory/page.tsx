@@ -1,11 +1,11 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import { motion } from 'framer-motion';
-import abi from '@/app/lib/pokemonCardABI.json';
+"use client";
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import { motion } from "framer-motion";
+import abi from "@/app/lib/pokemonCardABI.json";
 
 // Example: load metadata mapping
-import pokemonList from '@/app/lib/pokemon-list.json';
+import pokemonList from "@/app/lib/pokemon-list.json";
 // If you don't have this, I will help you create it
 
 type OwnedCard = {
@@ -20,24 +20,25 @@ export default function InventoryPage() {
   const [cards, setCards] = useState<OwnedCard[]>([]);
   const [address, setAddress] = useState<string | null>(null);
 
+  //console.log(cards);
   const loadInventory = async () => {
     setLoading(true);
     setCards([]);
     try {
       if (!window.ethereum) {
-        alert('Please install MetaMask.');
+        alert("Please install MetaMask.");
         setLoading(false);
         return;
       }
 
       const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send('eth_requestAccounts', []);
+      await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const userAddress = await signer.getAddress();
       setAddress(userAddress);
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, // your contract address
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3", // your contract address
         abi,
         signer
       );
@@ -52,7 +53,7 @@ export default function InventoryPage() {
           owned.push({
             id,
             name: info ? info.name : `Unknown #${id}`,
-            imageUrl: info ? info.image : '',
+            imageUrl: info ? info.image : "",
             amount: b.toString(),
           });
         }
