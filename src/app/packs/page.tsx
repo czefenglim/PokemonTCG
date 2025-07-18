@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { ethers } from 'ethers';
-import abi from '@/app/lib/pokemonCardABI.json';
-import { useAccount } from 'wagmi';
-import TiltCard from '@/components/TiltCard';
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { ethers } from "ethers";
+import abi from "@/app/lib/pokemonCardABI.json";
+import { useAccount } from "wagmi";
+import TiltCard from "@/components/TiltCard";
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 
 type Card = {
   tokenId: number;
@@ -26,7 +26,7 @@ function Pokeball({
   resetTrigger: number;
 }) {
   const group = useRef<any>();
-  const { scene } = useGLTF('/models/pokeball/scene.gltf');
+  const { scene } = useGLTF("/models/pokeball/scene.gltf");
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function PacksPage() {
   const { isConnected } = useAccount();
 
   useEffect(() => {
-    fetch('/api/packs/status')
+    fetch("/api/packs/status")
       .then((res) => res.json())
       .then((data) => {
         setNextPackAt(data.nextPackAt);
@@ -79,34 +79,34 @@ export default function PacksPage() {
   }, []);
 
   const openPack = async () => {
-    if (!isConnected || typeof window === 'undefined' || !window.ethereum) {
-      alert('Please connect your wallet first.');
+    if (!isConnected || typeof window === "undefined" || !window.ethereum) {
+      alert("Please connect your wallet first.");
       return;
     }
 
     setLoading(true);
-    setStatus('Opening pack...');
+    setStatus("Opening pack...");
 
     try {
       const ethersProvider = new ethers.BrowserProvider(window.ethereum);
       const signer = await ethersProvider.getSigner();
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3",
         abi,
         signer
       );
 
-      const res = await fetch('/api/packs/open', { method: 'POST' });
+      const res = await fetch("/api/packs/open", { method: "POST" });
       const data = await res.json();
       const fetchedCards: Card[] = data.cards;
 
-      console.log('Fetched cards:', fetchedCards);
+      console.log("Fetched cards:", fetchedCards);
 
       const ids = fetchedCards.map((c) => BigInt(c.tokenId));
       const amounts = ids.map(() => 1);
 
-      setStatus('Minting cards...');
+      setStatus("Minting cards...");
 
       const tx = await contract.mintBatchCards(ids, amounts);
       await tx.wait();
@@ -114,15 +114,15 @@ export default function PacksPage() {
       setCards(fetchedCards);
       setRevealed([]);
       setNextPackAt(Date.now() + 24 * 60 * 60 * 1000);
-      setStatus('✅ Mint successful! Click cards to reveal.');
+      setStatus("✅ Mint successful! Click cards to reveal.");
     } catch (err: any) {
-      if (err?.code === 'ACTION_REJECTED') {
-        setStatus('❌ Transaction rejected.');
+      if (err?.code === "ACTION_REJECTED") {
+        setStatus("❌ Transaction rejected.");
         setResetCount((prev) => prev + 1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         console.error(err);
-        alert(`Error: ${err?.message || 'Unknown error'}`);
+        alert(`Error: ${err?.message || "Unknown error"}`);
         setStatus(null);
       }
     } finally {
@@ -148,11 +148,11 @@ export default function PacksPage() {
               className={`
         max-w-md w-full rounded-lg border
         ${
-          status.startsWith('✅')
-            ? 'border-green-500 bg-green-600/20 text-green-200'
-            : status.startsWith('❌')
-            ? 'border-red-500 bg-red-600/20 text-red-200'
-            : 'border-blue-500 bg-blue-600/20 text-blue-200'
+          status.startsWith("✅")
+            ? "border-green-500 bg-green-600/20 text-green-200"
+            : status.startsWith("❌")
+            ? "border-red-500 bg-red-600/20 text-red-200"
+            : "border-blue-500 bg-blue-600/20 text-blue-200"
         }
         px-4 py-3 shadow
       `}
@@ -183,14 +183,14 @@ export default function PacksPage() {
           ) : (
             <div className="flex flex-col items-center space-y-4">
               <p>
-                Next free pack at:{' '}
+                Next free pack at:{" "}
                 <span className="font-mono">
                   {new Date(nextPackAt).toLocaleTimeString()}
                 </span>
               </p>
               <button
                 onClick={async () => {
-                  await fetch('/api/packs/skip', { method: 'POST' });
+                  await fetch("/api/packs/skip", { method: "POST" });
                   setNextPackAt(Date.now());
                 }}
                 className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded"
