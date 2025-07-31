@@ -1,26 +1,13 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import type { Metadata } from 'next';
 import SessionWrapper from '@/components/SessionWrapper';
 import Web3Provider from '@/components/Web3Provider';
-import '@rainbow-me/rainbowkit/styles.css';
-import ClientLayout from '@/components/ClientLayout';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'Pokémon TCG',
-  description: 'Your blockchain-powered Pokémon TCG',
+  description: 'Blockchain-powered Pokémon TCG',
   icons: {
-    icon: '/favicon.ico', // ✅ Sets the favicon
+    icon: '/favicon.ico',
   },
 };
 
@@ -31,13 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <SessionWrapper>
-          <Web3Provider>
-            <ClientLayout>{children}</ClientLayout>
-          </Web3Provider>
+          <Web3Provider>{children}</Web3Provider>
         </SessionWrapper>
       </body>
     </html>
