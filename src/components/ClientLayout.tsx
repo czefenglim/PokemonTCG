@@ -1,8 +1,10 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Sidebar from '@/components/Sidebar';
+import { lazy, Suspense } from 'react';
+
+// Lazy load Sidebar only when needed
+const Sidebar = lazy(() => import('@/components/Sidebar'));
 
 export default function ClientLayout({
   children,
@@ -17,11 +19,9 @@ export default function ClientLayout({
   }, []);
 
   if (!mounted) {
-    // During SSR, render nothing or a loading state
     return null;
   }
 
-  // Define routes where Sidebar should be hidden
   const hideSidebarRoutes = ['/', '/login', '/register'];
   const shouldHideSidebar = hideSidebarRoutes.includes(pathname);
 
@@ -30,11 +30,10 @@ export default function ClientLayout({
   }
 
   return (
-    <div
-      className="flex min-h-screen bg-gradient-to-br from-[#2c2c2c] via-[#7c3aed] to-black
- text-white"
-    >
-      <Sidebar />
+    <div className="flex min-h-screen text-white">
+      <Suspense fallback={<div className="w-64 bg-gray-800 animate-pulse" />}>
+        <Sidebar />
+      </Suspense>
       <main className="flex-1">{children}</main>
     </div>
   );

@@ -19,9 +19,26 @@ export default function HomePage() {
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
+    // Load selected avatar from localStorage
     const stored = localStorage.getItem('selectedAvatar');
     if (stored) {
       setAvatarUrl(stored);
+    }
+
+    // Auto-play music if flagged after login
+    const shouldAutoPlay = localStorage.getItem('shouldAutoPlayMusic');
+    if (shouldAutoPlay === 'true' && audioRef.current) {
+      audioRef.current
+        .play()
+        .then(() => {
+          setPlaying(true);
+          console.log('🎵 Music started');
+          localStorage.removeItem('shouldAutoPlayMusic'); // prevent repeat
+        })
+        .catch((err) => {
+          console.warn('🔇 Autoplay blocked by browser:', err);
+          // Optionally: show a UI prompt to let user manually start music
+        });
     }
   }, []);
 
