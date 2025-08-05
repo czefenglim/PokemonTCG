@@ -1,54 +1,63 @@
-'use client';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+"use client";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function FeatureSection() {
   const router = useRouter();
 
   const features = [
     {
-      title: 'Open Packs',
-      desc: 'Get new cards instantly.',
-      href: '/packs',
+      title: "Open Packs",
+      desc: "Get new cards instantly.",
+      href: "/packs",
       image:
-        'https://erp-image.sgliteasset.com/_next/image?url=https%3A%2F%2Fcdn1.sgliteasset.com%2Ftcglah%2Fimages%2Fproduct%2Fproduct-6196361%2Fa2Mujs1367c8634da923c_1741185869.jpg&w=3840&q=100',
-      emoji: '🎁',
-      stats: '2 packs available',
+        "https://erp-image.sgliteasset.com/_next/image?url=https%3A%2F%2Fcdn1.sgliteasset.com%2Ftcglah%2Fimages%2Fproduct%2Fproduct-6196361%2Fa2Mujs1367c8634da923c_1741185869.jpg&w=3840&q=100",
+      emoji: "🎁",
+      stats: "2 packs available",
     },
     {
-      title: 'Marketplace',
-      desc: 'Trade and buy rare cards.',
-      href: '/marketplace',
-      image: 'https://static.opensea.io/og-images/Metadata-Image.png',
-      emoji: '🛒',
-      stats: '14 active listings',
+      title: "Marketplace",
+      desc: "Trade and buy rare cards.",
+      href: "/marketplace",
+      image: "https://static.opensea.io/og-images/Metadata-Image.png",
+      emoji: "🛒",
+      stats: "14 active listings",
     },
     {
-      title: 'My Inventory',
-      desc: 'See your collection.',
-      href: '/collection',
+      title: "My Inventory",
+      desc: "See your collection.",
+      href: "/collection",
       image:
-        'https://static1.srcdn.com/wordpress/wp-content/uploads/2024/10/poke-mon-tcg-pocket-cards.jpg',
-      emoji: '📂',
-      stats: '23 cards owned',
+        "https://static1.srcdn.com/wordpress/wp-content/uploads/2024/10/poke-mon-tcg-pocket-cards.jpg",
+      emoji: "📂",
+      stats: "23 cards owned",
     },
     {
-      title: 'PvP Battles',
-      desc: 'Challenge trainers.',
-      href: '/pvp',
+      title: "PvP Battles",
+      desc: "Challenge trainers.",
+      href: "/pvp",
       image:
-        'https://orig00.deviantart.net/883e/f/2010/357/1/0/how_bw_should_have_been_by_kymotonian-d35ier8.gif',
-      emoji: '⚔️',
-      stats: '3 challenges waiting',
+        "https://orig00.deviantart.net/883e/f/2010/357/1/0/how_bw_should_have_been_by_kymotonian-d35ier8.gif",
+      emoji: "⚔️",
+      stats: "3 challenges waiting",
     },
     {
-      title: 'Gem Shop',
-      desc: 'Top up your balance.',
-      href: '/buy-gems',
+      title: "Gem Shop",
+      desc: "Top up your balance.",
+      href: "/buy-gems",
       image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR9IIRrUXclUrLZmVfjuBsOnF2iRrmrH4mSA&s',
-      emoji: '💎',
-      stats: 'Special offers available',
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR9IIRrUXclUrLZmVfjuBsOnF2iRrmrH4mSA&s",
+      emoji: "💎",
+      stats: "Special offers available",
+    },
+    {
+      title: "Card Exchange",
+      desc: "Exchange Card with friends.",
+      href: "/tradeCards",
+      image:
+        "https://www.dexerto.com/cdn-image/wp-content/uploads/2025/01/29/Pokemon-TCG-trading.jpg?width=1200&quality=75&format=auto",
+      emoji: "💎",
+      stats: "No Trade Request Yet",
     },
   ];
 

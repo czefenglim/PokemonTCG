@@ -15,16 +15,27 @@ contract PokemonCard1155 is ERC1155 {
      * ipfs://<CID>/<padded numeric ID>/metadata.json
      * e.g., tokenId 1 => 001/metadata.json
      */
+    // function uri(uint256 tokenId) public view override returns (string memory) {
+    //     return
+    //         string(
+    //             abi.encodePacked(
+    //                 "ipfs://bafybeidtehcwyiqom4kc2klbnfa2hau4s5iob2zf3ue5o6mtndaumu2hlq/",
+    //                 padId(tokenId),
+    //                 "/metadata.json"
+    //             )
+    //         );
+    // }
+
     function uri(uint256 tokenId) public view override returns (string memory) {
-        return
-            string(
-                abi.encodePacked(
-                    "ipfs://bafybeidtehcwyiqom4kc2klbnfa2hau4s5iob2zf3ue5o6mtndaumu2hlq/",
-                    padId(tokenId),
-                    "/metadata.json"
-                )
-            );
+        return string(
+            abi.encodePacked(
+                "https://gateway.pinata.cloud/ipfs/bafybeidtehcwyiqom4kc2klbnfa2hau4s5iob2zf3ue5o6mtndaumu2hlq/",
+                padId(tokenId),
+                "/metadata.json"
+            )
+        );
     }
+
 
     /**
      * Helper to pad numeric IDs to 3 digits.

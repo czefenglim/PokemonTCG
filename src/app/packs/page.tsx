@@ -91,8 +91,14 @@ export default function PacksPage() {
       const ethersProvider = new ethers.BrowserProvider(window.ethereum);
       const signer = await ethersProvider.getSigner();
 
+      // const contract = new ethers.Contract(
+      //   "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      //   abi,
+      //   signer
+      // );
+
       const contract = new ethers.Contract(
-        "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as string,
         abi,
         signer
       );

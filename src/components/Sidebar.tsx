@@ -1,29 +1,30 @@
-'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { signOut } from 'next-auth/react';
-import clsx from 'clsx';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // You can replace with any icons
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { signOut } from "next-auth/react";
+import clsx from "clsx";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // You can replace with any icons
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
-    { href: '/home', label: 'Home', icon: '🏠' },
-    { href: '/packs', label: 'Packs', icon: '📦' },
-    { href: '/marketplace', label: 'Marketplace', icon: '🛒' },
-    { href: '/collection', label: 'Collection', icon: '📂' },
-    { href: '/buy-gems', label: 'Buy Gems', icon: '💎' },
+    { href: "/home", label: "Home", icon: "🏠" },
+    { href: "/packs", label: "Packs", icon: "📦" },
+    { href: "/marketplace", label: "Marketplace", icon: "🛒" },
+    { href: "/collection", label: "Collection", icon: "📂" },
+    { href: "/buy-gems", label: "Buy Gems", icon: "💎" },
+    { href: "/tradeCards", label: "Trade Cards", icon: "🔄" },
   ];
 
   return (
     <aside
       className={clsx(
-        'min-h-screen flex flex-col border-r border-white/10 px-4 py-10 transition-all duration-300',
-        collapsed ? 'w-20' : 'w-64'
+        "min-h-screen flex flex-col border-r border-white/10 px-4 py-10 transition-all duration-300",
+        collapsed ? "w-20" : "w-64"
       )}
     >
       {/* Logo Toggle */}
@@ -48,10 +49,10 @@ export default function Sidebar() {
             key={item.href}
             href={item.href}
             className={clsx(
-              'group flex items-center gap-3 px-3 py-2 rounded-lg relative transition-all duration-200',
+              "group flex items-center gap-3 px-3 py-2 rounded-lg relative transition-all duration-200",
               pathname === item.href
-                ? 'bg-white/5 text-yellow-300 font-semibold'
-                : 'text-white/80 hover:bg-white/5'
+                ? "bg-white/5 text-yellow-300 font-semibold"
+                : "text-white/80 hover:bg-white/5"
             )}
           >
             <span className="text-lg">{item.icon}</span>
@@ -82,22 +83,22 @@ export default function Sidebar() {
             authenticationStatus,
             mounted,
           }) => {
-            const ready = mounted && authenticationStatus !== 'loading';
+            const ready = mounted && authenticationStatus !== "loading";
             const connected =
               ready &&
               account &&
               chain &&
               (!authenticationStatus ||
-                authenticationStatus === 'authenticated');
+                authenticationStatus === "authenticated");
 
             return (
               <div
                 {...(!ready && {
-                  'aria-hidden': true,
+                  "aria-hidden": true,
                   style: {
                     opacity: 0,
-                    pointerEvents: 'none',
-                    userSelect: 'none',
+                    pointerEvents: "none",
+                    userSelect: "none",
                   },
                 })}
                 className="w-full"
@@ -107,10 +108,10 @@ export default function Sidebar() {
                     onClick={openAccountModal}
                     type="button"
                     className={clsx(
-                      'flex items-center gap-2 px-3 py-2 w-full rounded-lg transition',
+                      "flex items-center gap-2 px-3 py-2 w-full rounded-lg transition",
                       collapsed
-                        ? 'justify-center bg-white/5 hover:bg-white/10'
-                        : 'justify-between bg-white/5 hover:bg-white/10'
+                        ? "justify-center bg-white/5 hover:bg-white/10"
+                        : "justify-between bg-white/5 hover:bg-white/10"
                     )}
                   >
                     {collapsed ? (
@@ -130,11 +131,11 @@ export default function Sidebar() {
                     onClick={openConnectModal}
                     type="button"
                     className={clsx(
-                      'flex items-center justify-center px-3 py-2 w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition',
-                      collapsed && 'justify-center'
+                      "flex items-center justify-center px-3 py-2 w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition",
+                      collapsed && "justify-center"
                     )}
                   >
-                    {collapsed ? '🔗' : 'Connect Wallet'}
+                    {collapsed ? "🔗" : "Connect Wallet"}
                   </button>
                 )}
               </div>
@@ -148,7 +149,7 @@ export default function Sidebar() {
       {!collapsed && (
         <div className="fixed bottom-6 left-4 w-60 z-50">
           <button
-            onClick={() => signOut({ callbackUrl: '/' })}
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-200"
           >
             Logout

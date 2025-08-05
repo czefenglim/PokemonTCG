@@ -1,36 +1,48 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState(''); // ✅ Added state
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [confirmWalletAddress, setConfirmWalletAddress] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!username.trim()) {
-      setError('Username is required.');
+      setError("Username is required.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match!');
+      setError("Passwords do not match!");
+      return;
+    }
+
+    if (!walletAddress.trim()) {
+      setError("Wallet address is required.");
+      return;
+    }
+
+    if (walletAddress !== confirmWalletAddress) {
+      setError("Wallet addresses do not match!");
       return;
     }
 
     setLoading(true);
 
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password }),
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password, walletAddress }),
     });
 
     setLoading(false);
@@ -38,12 +50,12 @@ export default function RegisterPage() {
     const data = await res.json();
 
     if (!res.ok) {
-      setError(data.error || 'Something went wrong.');
+      setError(data.error || "Something went wrong.");
       return;
     }
 
-    alert('Registration successful!');
-    router.push('/login');
+    alert("Registration successful!");
+    router.push("/login");
   }
 
   return (
@@ -120,18 +132,34 @@ export default function RegisterPage() {
           className="text-white placeholder-yellow-200 border border-yellow-300 p-3 rounded-lg bg-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-300"
         />
 
+        <input
+          type="text"
+          placeholder="MetaMask Wallet Address"
+          value={walletAddress}
+          onChange={(e) => setWalletAddress(e.target.value)}
+          className="text-white placeholder-yellow-200 border border-yellow-300 p-3 rounded-lg bg-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+        />
+
+        <input
+          type="text"
+          placeholder="Confirm Wallet Address"
+          value={confirmWalletAddress}
+          onChange={(e) => setConfirmWalletAddress(e.target.value)}
+          className="text-white placeholder-yellow-200 border border-yellow-300 p-3 rounded-lg bg-white/20 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+        />
+
         <button
           type="submit"
           disabled={loading}
           className={`bg-yellow-500 text-gray-900 font-semibold py-2 rounded-full ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
+            loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? "Registering..." : "Register"}
         </button>
 
         <p className="text-xs text-yellow-200 text-center">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <a href="/login" className="underline">
             Login here
           </a>

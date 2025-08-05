@@ -1,167 +1,352 @@
 "use client";
-import { useState, useEffect } from "react";
-
-// Example: load metadata mapping
-import pokemonList from "@/app/lib/pokemon-list.json";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-// If you don't have this, I will help you create it
+import { motion } from "framer-motion";
 import abi from "@/app/lib/pokemonCardABI.json";
-import { useRouter } from "next/navigation";
+import pokemonList from "@/app/lib/pokemon-list.json";
+import { useSearchParams } from "next/navigation";
 
 type OwnedCard = {
-  id: number;
+  tokenId: number;
+  tcgId: string;
   name: string;
   imageUrl: string;
   amount: string;
+  rarity?: string;
+  type?: string;
 };
 
-export default function SelectCardPage() {
+export default function CollectionPage() {
   const [loading, setLoading] = useState(false);
   const [cards, setCards] = useState<OwnedCard[]>([]);
   const [address, setAddress] = useState<string | null>(null);
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
-  const router = useRouter();
+  const [rarityFilter, setRarityFilter] = useState<string>("All");
+  const [typeFilter, setTypeFilter] = useState<string>("All");
+  const [selectedCard, setSelectedCard] = useState<OwnedCard | null>(null);
 
-  const loadInventory = async () => {
+  const searchParams = useSearchParams();
+  const friendWallet = searchParams.get("friendWallet");
+
+  useEffect(() => {
+    if (friendWallet) {
+      console.log("Trading with wallet:", friendWallet);
+      // Save to state or use directly for transaction
+    }
+  }, [friendWallet]);
+
+  const loadCollection = async (userAddress: string) => {
     setLoading(true);
     setCards([]);
     try {
-      if (!window.ethereum) {
-        alert("Please install MetaMask.");
-        setLoading(false);
-        return;
-      }
-
       const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
-
-      const userAddress = await signer.getAddress();
-      setAddress(userAddress);
-
-      const contract = new ethers.Contract(
-        "0x5FbDB2315678afecb367f032d93F642f64180aa3", // your contract address
-        abi,
-        signer
-      );
-
-      const owned: OwnedCard[] = [];
-
-      // Assuming Token IDs 1-151
-      for (let id = 1; id <= 151; id++) {
-        const b = await contract.balanceOf(userAddress, id);
-        if (b > 0) {
-          const info = pokemonList.find((p) => p.id === id);
-          owned.push({
-            id,
-            name: info ? info.name : `Unknown #${id}`,
-            imageUrl: info ? info.image : "",
-            amount: b.toString(),
-          });
-        }
+      const contractAddress = process.env
+        .NEXT_PUBLIC_CONTRACT_ADDRESS as string;
+      if (!contractAddress) {
+        throw new Error("Contract address not configured.");
       }
 
-      setCards(owned);
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+
+      const ids = pokemonList.map((p) => BigInt(p.tokenId));
+      const addresses = ids.map(() => userAddress);
+
+      const balances: bigint[] = await contract.balanceOfBatch(addresses, ids);
+
+      const owned: OwnedCard[] = balances.flatMap((b, i) => {
+        const info = pokemonList[i];
+
+        if (b > 0n && info?.largeImage && info?.name) {
+          return [
+            {
+              tokenId: info.tokenId,
+              tcgId: info.tcgId,
+              name: info.name,
+              imageUrl: info.largeImage,
+              amount: b.toString(),
+              rarity: info.rarity ?? "Common",
+              type: info.type ?? "Unknown",
+            },
+          ];
+        }
+
+        // Always return empty array for invalid entries
+        return [];
+      });
+
+      // Optional: double check you're only storing valid objects
+      const cleaned = owned.filter(
+        (c) => !!c.imageUrl && !!c.name && !!c.tokenId
+      );
+      setCards(cleaned);
     } catch (err) {
       console.error(err);
-      alert(`Error loading inventory: ${(err as any).message}`);
+      alert(`Error loading collection: ${(err as any).message}`);
     }
     setLoading(false);
   };
 
+  const checkConnection = async () => {
+    if (!window.ethereum) {
+      return;
+    }
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const accounts = await provider.send("eth_accounts", []);
+    if (accounts.length > 0) {
+      setAddress(accounts[0]);
+      await loadCollection(accounts[0]);
+    } else {
+      setAddress(null);
+    }
+  };
+
   useEffect(() => {
-    loadInventory();
+    checkConnection();
   }, []);
 
+  const rarityOptions = [
+    "All",
+    ...Array.from(new Set(cards.map((c) => c.rarity).filter(Boolean))),
+  ];
+
+  const typeOptions = [
+    "All",
+    ...Array.from(new Set(cards.map((c) => c.type).filter(Boolean))),
+  ];
+
+  const filteredCards = cards.filter((c) => {
+    const matchesRarity = rarityFilter === "All" || c.rarity === rarityFilter;
+    const matchesType = typeFilter === "All" || c.type === typeFilter;
+    return matchesRarity && matchesType;
+  });
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 p-6 flex flex-col items-center relative">
-      <button
-        className="absolute bottom-[50px] left-1/2 -translate-x-1/2 text-yellow-300 hover:text-yellow-400 transition-colors border border-yellow-300 px-16 py-4 rounded-lg"
-        onClick={() => {
-          const selectedCard = cards.find((c) => c.id === selectedCardId);
-          if (!selectedCard) {
-            alert("❌ Please select a card to trade.");
-            return;
-          }
-
-          const selectedFriend = localStorage.getItem("selectedFriend"); // assuming you stored this in a previous step
-          if (!selectedFriend) {
-            alert("❌ No friend selected.");
-            return;
-          }
-
-          const trade = {
-            card: selectedCard,
-            datetime: new Date().toISOString(),
-            friend: selectedFriend,
-          };
-
-          localStorage.setItem("latestTrade", JSON.stringify(trade));
-
-          alert("✅ Trade created!");
-          router.push("/tradeCards");
-        }}
-      >
-        OK
-      </button>
-
-      <h1 className="text-3xl font-bold text-yellow-300 mb-4">
-        Select Card To Trade
-      </h1>
-      {address && <p className="text-yellow-100 mb-4">Wallet: {address}</p>}
-      {loading && <p className="text-yellow-200">Loading...</p>}
-
-      {cards.length === 0 && !loading && (
-        <p className="text-yellow-200">You don’t own any cards yet.</p>
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 p-6 flex flex-col items-center">
+      {/* ❌ No Wallet Connected */}
+      {!address && (
+        <p className="text-yellow-200 mt-6">
+          Please connect your wallet using the sidebar to view your collection.
+        </p>
       )}
 
-      {cards.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 w-full max-w-4xl">
-          {cards.map((card, i) => {
-            const isSelected = selectedCardId === card.id;
+      <h1 className="text-4xl sm:text-5xl font-extrabold text-yellow-300 mb-8">
+        Select a Card to Trade
+      </h1>
 
-            return (
-              <motion.div
-                key={card.id}
-                initial={{ opacity: 0, rotateY: 90 }}
-                animate={{ opacity: 1, rotateY: 0 }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => setSelectedCardId(card.id)} // ← select on click
-                className={`relative cursor-pointer bg-white/10 border rounded-xl p-2 transition ${
-                  isSelected
-                    ? "border-4 border-yellow-400 ring ring-yellow-300"
-                    : "border-yellow-500"
-                }`}
+      {/* ✅ Wallet Connected */}
+      {address && (
+        <>
+          {/* 🎛️ Filter Controls + Refresh */}
+          <div className="w-full max-w-5xl bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-4">
+              {/* 🔘 Rarity Filter */}
+              <div className="flex items-center">
+                <label className="mr-2 text-yellow-200">Rarity:</label>
+                <select
+                  value={rarityFilter}
+                  onChange={(e) => setRarityFilter(e.target.value)}
+                  className="bg-gray-900 border border-gray-700 text-yellow-100 rounded px-2 py-1"
+                >
+                  {rarityOptions.map((rarity) => (
+                    <option key={rarity} value={rarity}>
+                      {rarity}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 🔘 Type Filter */}
+              <div className="flex items-center">
+                <label className="mr-2 text-yellow-200">Type:</label>
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className="bg-gray-900 border border-gray-700 text-yellow-100 rounded px-2 py-1"
+                >
+                  {typeOptions.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* 🔄 Refresh Button */}
+            <button
+              onClick={() => loadCollection(address)}
+              className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 py-1 rounded transition"
+            >
+              Refresh
+            </button>
+          </div>
+
+          {/* ⏳ Loading State */}
+          {loading ? (
+            <div className="flex items-center space-x-2 text-yellow-200">
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                />
+              </svg>
+              <span>Loading your collection...</span>
+            </div>
+          ) : cards.length === 0 ? (
+            // 📭 No Cards Owned
+            <div className="max-w-lg w-full bg-gradient-to-br from-gray-800 via-gray-900 to-black border border-gray-700 rounded-2xl shadow-xl p-8 flex flex-col items-center text-yellow-200 text-center">
+              {/* 📭 Icon */}
+              <svg
+                className="w-16 h-16 mb-4 text-yellow-300"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
               >
-                {/* Tick icon overlay if selected */}
-                {isSelected && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
-                    ✅
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+
+              {/* 📢 Main Message */}
+              <h2 className="text-xl font-bold mb-2">
+                Your Collection is Empty
+              </h2>
+              <p className="text-sm text-yellow-300 mb-6">
+                You haven't collected any Pokémon cards yet. Start building your
+                legendary collection today!
+              </p>
+
+              {/* 🚀 Call to Action */}
+              <button
+                onClick={() => (window.location.href = "/packs")} // or your routing handler
+                className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-lg transition"
+              >
+                Open Packs
+              </button>
+            </div>
+          ) : filteredCards.length === 0 ? (
+            // 🚫 No Matches After Filtering
+            <div className="text-yellow-200 text-center">
+              No cards match your current filters.
+            </div>
+          ) : (
+            // 🎴 Display Filtered Cards
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl">
+              {filteredCards.map((card) => (
+                <motion.div
+                  key={`${card.tokenId}-${card.tcgId}`}
+                  onClick={() => setSelectedCard(card)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.03 }}
+                  className={`
+                    relative cursor-pointer
+                    flex flex-col items-center
+                    bg-gray-900
+                    rounded-xl
+                    border-4
+                    overflow-hidden
+                    shadow-lg
+                    transition
+                    ${
+                      selectedCard?.tokenId === card.tokenId
+                        ? "border-yellow-400 ring-4 ring-yellow-300"
+                        : card.rarity === "Common"
+                        ? "border-gray-500"
+                        : card.rarity === "Uncommon"
+                        ? "border-green-500"
+                        : card.rarity === "Rare"
+                        ? "border-blue-500"
+                        : card.rarity === "Ultra Rare"
+                        ? "border-purple-500"
+                        : "border-yellow-500"
+                    }
+                  `}
+                >
+                  <img
+                    src={card.imageUrl}
+                    alt={card.name}
+                    className="w-full h-48 object-contain bg-black"
+                  />
+                  <div className="p-2 text-center text-yellow-100">
+                    <h3 className="text-md font-bold">{card.name}</h3>
+                    <p className="text-sm text-yellow-300">{card.rarity}</p>
+                    <p className="text-sm">Type: {card.type}</p>
+                    <p className="text-sm">Qty: {card.amount}</p>
                   </div>
-                )}
-                <div className={`${isSelected ? "blur-sm" : ""}`}>
-                  {card.imageUrl ? (
-                    <img
-                      src={card.imageUrl}
-                      alt={card.name}
-                      className="w-full"
-                    />
-                  ) : (
-                    <div className="w-full h-32 flex items-center justify-center text-yellow-200">
-                      No Image
-                    </div>
-                  )}
-                  <p className="text-yellow-200 text-center mt-1">
-                    {card.name}
-                  </p>
-                  <p className="text-yellow-400 text-center text-sm">
-                    Quantity: {card.amount}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      {selectedCard && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+          <button
+            onClick={async () => {
+              const confirmed = window.confirm(
+                `Are you sure you want to select "${selectedCard?.name}" to trade?`
+              );
+              if (!confirmed || !selectedCard || !address || !friendWallet)
+                return;
+
+              try {
+                // Fetch user IDs by wallet addresses
+                const [senderRes, receiverRes] = await Promise.all([
+                  fetch(`/api/user?wallet=${address}`),
+                  fetch(`/api/user?wallet=${friendWallet}`),
+                ]);
+
+                const sender = await senderRes.json();
+                const receiver = await receiverRes.json();
+
+                if (!sender?.id || !receiver?.id) {
+                  alert("Could not find sender or receiver user info.");
+                  return;
+                }
+
+                // Send trade request
+                const response = await fetch("/api/tradeRequest/sendRequest", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    senderId: sender.id,
+                    receiverId: receiver.id,
+                    offeredCardId: selectedCard.tokenId,
+                  }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                  alert("Trade request sent!");
+                  setSelectedCard(null);
+                } else {
+                  alert("Failed to send trade request: " + result.error);
+                }
+              } catch (err) {
+                console.error("Error during trade request:", err);
+                alert("An unexpected error occurred.");
+              }
+            }}
+            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6 py-2 rounded-full shadow-xl transition"
+          >
+            OK
+          </button>
         </div>
       )}
     </main>
