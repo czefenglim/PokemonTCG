@@ -1,126 +1,183 @@
-"use client";
-import { motion } from "framer-motion";
+// components/NFTGameFeatureSection.tsx
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getFeaturesForGrid } from "@/lib/features-config";
 
-export default function FeatureSection() {
+export default function NFTGameFeatureSection() {
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
-  const features = [
-    {
-      title: "Open Packs",
-      desc: "Get new cards instantly.",
-      href: "/packs",
-      image:
-        "https://erp-image.sgliteasset.com/_next/image?url=https%3A%2F%2Fcdn1.sgliteasset.com%2Ftcglah%2Fimages%2Fproduct%2Fproduct-6196361%2Fa2Mujs1367c8634da923c_1741185869.jpg&w=3840&q=100",
-      emoji: "🎁",
-      stats: "2 packs available",
-    },
-    {
-      title: "Marketplace",
-      desc: "Trade and buy rare cards.",
-      href: "/marketplace",
-      image: "https://static.opensea.io/og-images/Metadata-Image.png",
-      emoji: "🛒",
-      stats: "14 active listings",
-    },
-    {
-      title: "My Inventory",
-      desc: "See your collection.",
-      href: "/collection",
-      image:
-        "https://static1.srcdn.com/wordpress/wp-content/uploads/2024/10/poke-mon-tcg-pocket-cards.jpg",
-      emoji: "📂",
-      stats: "23 cards owned",
-    },
-    {
-      title: "PvP Battles",
-      desc: "Challenge trainers.",
-      href: "/pvp",
-      image:
-        "https://orig00.deviantart.net/883e/f/2010/357/1/0/how_bw_should_have_been_by_kymotonian-d35ier8.gif",
-      emoji: "⚔️",
-      stats: "3 challenges waiting",
-    },
-    {
-      title: "Gem Shop",
-      desc: "Top up your balance.",
-      href: "/buy-gems",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR9IIRrUXclUrLZmVfjuBsOnF2iRrmrH4mSA&s",
-      emoji: "💎",
-      stats: "Special offers available",
-    },
-    {
-      title: "Card Exchange",
-      desc: "Exchange Card with friends.",
-      href: "/tradeCards",
-      image:
-        "https://www.dexerto.com/cdn-image/wp-content/uploads/2025/01/29/Pokemon-TCG-trading.jpg?width=1200&quality=75&format=auto",
-      emoji: "💎",
-      stats: "No Trade Request Yet",
-    },
-  ];
+  // Get features from centralized config
+  const features = getFeaturesForGrid();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const playClick = () => console.log("Click sound played");
+
+  const handleCardClick = (feature) => {
+    playClick();
+    console.log(`Navigating to ${feature.href}`);
+
+    // Add navigation functionality
+    router.push(feature.href);
+  };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center">
-      {features.map((feature, index) => (
-        <motion.div
-          key={feature.title}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: index * 0.1 }}
-          onClick={() => router.push(feature.href)}
-          className="group relative w-64 md:w-72 flex flex-col justify-between bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition transform hover:scale-105 backdrop-blur-md cursor-pointer"
-        >
-          {/* Background Image */}
-          <img
-            src={feature.image}
-            alt={feature.title}
-            className="absolute inset-0 w-full h-full object-cover transition duration-300 ease-in-out blur-[2px] group-hover:blur-none"
+    <div className="relative">
+      {/* Subtle animated background particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-white/10 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 2}s`,
+            }}
           />
+        ))}
+      </div>
 
-          {/* Dark overlay (always visible) */}
-          <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
-
-          {/* Hover overlay (optional) */}
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col justify-center items-center text-center p-4">
-            <p className="text-white text-sm mb-3">{feature.stats}</p>
-            <span className="bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg text-xs transition">
-              Go to {feature.title}
-            </span>
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10 p-6 flex flex-col gap-4 min-h-64">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <span>{feature.emoji}</span>
-              <span>{feature.title}</span>
-            </div>
-            <p className="text-sm text-white/80">{feature.desc}</p>
-          </div>
-
-          {/* Footer */}
-          <div className="relative z-10 px-6 pb-6 flex items-center justify-between">
-            <span className="text-xs uppercase tracking-wide text-yellow-400">
-              Explore
-            </span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 text-yellow-400 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <div
+              key={feature.id}
+              className={`group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-500 hover:scale-105 hover:-translate-y-2 ${
+                mounted
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+              style={{
+                transitionDelay: `${index * 100}ms`,
+              }}
+              onMouseEnter={() => setHoveredCard(feature.id)}
+              onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => handleCardClick(feature)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </div>
-        </motion.div>
-      ))}
+              {/* Card Background */}
+              <div className="relative h-80 bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl overflow-hidden">
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                    style={{
+                      filter:
+                        hoveredCard === feature.id
+                          ? "blur(0px) brightness(1)"
+                          : "blur(1px) brightness(0.6)",
+                    }}
+                  />
+
+                  {/* Gradient Overlays */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient}`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                </div>
+
+                {/* Animated Border */}
+                <div
+                  className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
+                    hoveredCard === feature.id
+                      ? `bg-gradient-to-r ${feature.borderGradient} p-0.5 ${feature.glowColor} shadow-2xl`
+                      : "bg-slate-700/30 p-0.5"
+                  }`}
+                >
+                  <div className="w-full h-full bg-transparent rounded-2xl"></div>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                  {/* Header Section */}
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-3xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                        {feature.icon}
+                      </div>
+                      <div>
+                        <div className="text-slate-300 text-xs font-bold uppercase tracking-wider mb-1">
+                          {feature.subtitle}
+                        </div>
+                        <h3 className="text-xl font-black text-white">
+                          {feature.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <p className="text-slate-200 text-sm leading-relaxed mb-4">
+                      {feature.desc}
+                    </p>
+
+                    {/* Stats Badge */}
+                    <div className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-full px-3 py-2 border border-white/10">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-white text-xs font-semibold">
+                        {feature.stats.value}
+                      </span>
+                      <span className="text-slate-300 text-xs">
+                        {feature.stats.label}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Button - Appears on Hover */}
+                  <div
+                    className={`transform transition-all duration-300 ${
+                      hoveredCard === feature.id
+                        ? "translate-y-0 opacity-100"
+                        : "translate-y-4 opacity-0"
+                    }`}
+                  >
+                    <button className="w-full bg-white/10 backdrop-blur-sm border-2 border-white/40 hover:border-white/70 hover:bg-white/20 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-2xl hover:shadow-white/30 group relative overflow-hidden">
+                      {/* Subtle shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 transition-all duration-700 group-hover:translate-x-full opacity-0 group-hover:opacity-100"></div>
+
+                      <span className="relative z-10 flex items-center justify-center gap-3">
+                        <span className="text-lg font-bold">
+                          Explore {feature.title}
+                        </span>
+                        <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+                          <svg
+                            className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2.5}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Shine Effect */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 transition-all duration-700 ${
+                    hoveredCard === feature.id
+                      ? "translate-x-full"
+                      : "-translate-x-full"
+                  }`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

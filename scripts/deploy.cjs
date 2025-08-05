@@ -1,60 +1,36 @@
-// const hre = require("hardhat");
-
-// async function main() {
-//   const [, deployer] = await ethers.getSigners();
-
-//   const PokemonCard1155 = await hre.ethers.getContractFactory(
-//     "PokemonCard1155"
-//   );
-
-//   // Deploy the contract
-//   const contract = await PokemonCard1155.deploy();
-
-//   // Output the deployed address
-//   console.log(`PokemonCard1155 deployed to: ${contract.target}`);
-
-//   // TradeCards.sol
-
-//   const TradeContract = await hre.ethers.getContractFactory("TradeContract");
-//   const tradeContract = await TradeContract.deploy(
-//     contract.target,
-//     deployer.address
-//   );
-//   await tradeContract.waitForDeployment(); // ✅ not .deployed()
-//   console.log("TradeContract deployed to:", tradeContract.target);
-// }
-
-// main().catch((error) => {
-//   console.error(error);
-//   process.exitCode = 1;
-// });
-
 const hre = require("hardhat");
 const { ethers } = hre;
+const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 
 async function main() {
-  // Get network info
   const network = await ethers.provider.getNetwork();
   console.log(
     `Deploying to network: ${network.name} (Chain ID: ${network.chainId})`
   );
 
-  // Get the deployer account (using index 0 instead of 1)
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with account:", deployer.address);
+  console.log(
+    "Account balance:",
+    ethers.formatEther(await ethers.provider.getBalance(deployer.address)),
+    "ETH"
+  );
 
-  const balance = await ethers.provider.getBalance(deployer.address);
-  console.log("Account balance:", ethers.formatEther(balance), "ETH");
+  // 🔗 Base URI (switch depending on network)
+  const BASE_URI =
+    network.chainId === 31337n
+      ? "http://localhost:3000/api/pokemon/"
+      : "https://gateway.pinata.cloud/ipfs/<YOUR_CID>/";
 
-  // Deploy PokemonCard1155 contract
+  // Deploy PokemonCard1155
   const PokemonCard1155 = await hre.ethers.getContractFactory(
     "PokemonCard1155"
   );
-  const contract = await PokemonCard1155.deploy();
+  const contract = await PokemonCard1155.deploy(BASE_URI);
   await contract.waitForDeployment();
-
-  console.log(`PokemonCard1155 deployed to: ${contract.target}`);
+  console.log(`🃏 PokemonCard1155 deployed to: ${contract.target}`);
 
   // Deploy TradeContract
   const TradeContract = await hre.ethers.getContractFactory("TradeContract");
@@ -63,80 +39,79 @@ async function main() {
     deployer.address
   );
   await tradeContract.waitForDeployment();
+  console.log(`🔄 TradeContract deployed to: ${tradeContract.target}`);
 
-  console.log("TradeContract deployed to:", tradeContract.target);
+  // 📦 Load Pokémon JSON and set token IDs (only if localhost / dev)
+  try {
+    const pokemonPath = path.join(__dirname, "../src/lib/pokemon-list.json");
+    const pokemonData = JSON.parse(fs.readFileSync(pokemonPath, "utf8"));
+    const tokenIds = pokemonData.map((p) => p.tokenId);
 
-  // Verify contracts on testnet (skip for local hardhat network)
+    if (tokenIds.length > 0) {
+      console.log(`🎯 Found ${tokenIds.length} Pokémon in JSON file`);
+      const tx = await contract.setValidTokenIds(
+        tokenIds.slice(0, 1000) // keep safe batch
+      );
+      await tx.wait();
+      console.log(`✅ Pokémon IDs set successfully!`);
+    }
+  } catch (err) {
+    console.log("⚠️ Could not load Pokémon JSON:", err.message);
+  }
+
+  // ✅ Verify contracts if testnet
   if (network.chainId !== 31337n && network.chainId !== 1337n) {
-    // Not local hardhat network
     console.log("Waiting for block confirmations...");
+    await new Promise((r) => setTimeout(r, 30000));
 
-    // Wait for a few confirmations
-    await new Promise((resolve) => setTimeout(resolve, 30000)); // Wait 30 seconds
-
-    console.log("Verifying PokemonCard1155 contract...");
     try {
+      console.log("Verifying PokemonCard1155...");
       await hre.run("verify:verify", {
         address: contract.target,
-        constructorArguments: [],
+        constructorArguments: [BASE_URI],
       });
-      console.log("PokemonCard1155 verified successfully!");
-    } catch (error) {
-      console.log("PokemonCard1155 verification failed:", error.message);
+    } catch (e) {
+      console.log("Verification failed:", e.message);
     }
 
-    console.log("Verifying TradeContract...");
     try {
+      console.log("Verifying TradeContract...");
       await hre.run("verify:verify", {
         address: tradeContract.target,
         constructorArguments: [contract.target, deployer.address],
       });
-      console.log("TradeContract verified successfully!");
-    } catch (error) {
-      console.log("TradeContract verification failed:", error.message);
+    } catch (e) {
+      console.log("Verification failed:", e.message);
     }
   }
 
-  // Save deployment info
-  const fs = require("fs");
-
-  // Create deployments directory if it doesn't exist
-  if (!fs.existsSync("./deployments")) {
-    fs.mkdirSync("./deployments");
-  }
-
-  const deploymentInfo = {
-    network: network.name,
-    chainId: network.chainId.toString(),
-    contracts: {
-      PokemonCard1155: {
-        address: contract.target,
-        constructorArgs: [],
+  // 💾 Save deployment info
+  if (!fs.existsSync("./deployments")) fs.mkdirSync("./deployments");
+  const deploymentPath = `./deployments/${network.name}-deployment.json`;
+  fs.writeFileSync(
+    deploymentPath,
+    JSON.stringify(
+      {
+        network: network.name,
+        chainId: network.chainId.toString(),
+        deployer: deployer.address,
+        contracts: {
+          PokemonCard1155: { address: contract.target, args: [BASE_URI] },
+          TradeContract: {
+            address: tradeContract.target,
+            args: [contract.target, deployer.address],
+          },
+        },
+        deployedAt: new Date().toISOString(),
       },
-      TradeContract: {
-        address: tradeContract.target,
-        constructorArgs: [contract.target, deployer.address],
-      },
-    },
-    deployer: deployer.address,
-    deployedAt: new Date().toISOString(),
-    blockNumber: await ethers.provider.getBlockNumber(),
-  };
-
-  const filename = `./deployments/${network.name}-deployment.json`;
-  fs.writeFileSync(filename, JSON.stringify(deploymentInfo, null, 2));
-
-  console.log(`\n✅ Deployment Summary:`);
-  console.log(`📁 Deployment info saved to: ${filename}`);
-  console.log(`🃏 PokemonCard1155: ${contract.target}`);
-  console.log(`🔄 TradeContract: ${tradeContract.target}`);
-  console.log(`🌐 Network: ${network.name} (${network.chainId})`);
-  console.log(`👤 Deployer: ${deployer.address}`);
+      null,
+      2
+    )
+  );
+  console.log(`\n✅ Deployment info saved to: ${deploymentPath}`);
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+main().catch((err) => {
+  console.error("💥 Deployment failed:", err);
+  process.exit(1);
+});

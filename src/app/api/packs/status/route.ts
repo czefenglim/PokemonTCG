@@ -1,16 +1,42 @@
-// app/api/packs/status/route.ts
+import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-export async function GET(request: Request) {
-  // In real life, you'd:
-  // 1. Check the user session
-  // 2. Read cooldown and gems from the DB
+const prisma = new PrismaClient();
 
-  // For now, return static example data
-  const nextPackAt = Date.now() + 1000 * 60 * 60; // 1 hour from now
-  const gems = 100;
+export async function GET() {
+  const session = await getServerSession(authOptions);
 
-  return Response.json({
-    nextPackAt,
-    gems,
+  if (!session || !session.user?.email) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+    });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
   });
+
+  if (!user) {
+    return new Response(JSON.stringify({ error: 'User not found' }), {
+      status: 404,
+    });
+  }
+
+  console.log('📊 Pack Status Debug:');
+  console.log(
+    'DB nextPackAt (already Malaysia):',
+    user.nextPackAt.toLocaleString('en-US', {
+      timeZone: 'Asia/Kuala_Lumpur',
+    })
+  );
+
+  // user.nextPackAt is already Malaysia time, just return the timestamp
+  return new Response(
+    JSON.stringify({
+      nextPackAt: user.nextPackAt.getTime(), // Already Malaysia time
+      gems: user.gems,
+    }),
+    { status: 200 }
+  );
 }

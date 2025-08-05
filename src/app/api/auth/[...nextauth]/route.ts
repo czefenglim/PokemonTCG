@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -14,60 +14,70 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // 1. Make sure credentials are provided
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
-        // 2. Find user by email
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user) {
-          return null;
-        }
+        if (!user) return null;
 
-        // 3. Compare the hashed password
         const isValid = await bcrypt.compare(
           credentials.password,
           user.password
         );
-        if (!isValid) {
-          return null;
+        if (!isValid) return null;
+
+        // Dynamically assign ADMIN role
+        const adminEmails = process.env.ADMIN_EMAILS?.split(",") || [];
+        let finalUser = user;
+
+        if (adminEmails.includes(user.email) && user.role !== "ADMIN") {
+          finalUser = await prisma.user.update({
+            where: { email: user.email },
+            data: { role: "ADMIN" },
+          });
         }
 
-        // 4. Return user object for session
         return {
-          id: user.id,
-          email: user.email,
-          name: user.username,
+          id: finalUser.id,
+          email: finalUser.email,
+          name: finalUser.username,
+          role: finalUser.role,
         };
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
-  },
+
   session: {
     strategy: "jwt",
   },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
+      console.log("🔐 JWT token:", token); // ✅
       return token;
     },
     async session({ session, token }) {
-      if (token && session.user) {
+      if (session.user && token) {
         session.user.id = token.id;
+        session.user.role = token.role;
       }
+      console.log("📦 Session object:", session); // ✅
       return session;
     },
   },
+  pages: {
+    signIn: "/login",
+    error: "/unauthorized", // You can define this if needed
+  },
+
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };

@@ -4,15 +4,23 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:cz5f5l12@localhost:3306/pokemon"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model User {
-  id            String   @id @default(uuid())
-  email         String   @unique
-  password      String
-  createdAt     DateTime @default(now())
-  username      String   @unique
+  id              String   @id @default(uuid())
+  email           String   @unique
+  password        String
+  username        String?
+  createdAt       DateTime @default(now())
+  gems            Int      @default(100)
+  nextPackAt      DateTime @default(now())
+  role            Role     @default(USER)
   walletAddress String   @unique
 
   // Friend Request Relations
@@ -27,7 +35,60 @@ model User {
   sentTradeRequests     TradeRequest[] @relation("SentRequests")
   receivedTradeRequests TradeRequest[] @relation("ReceivedRequests")
 
+  // Relations
+  gemPurchases    GemPurchase[]
+
   @@map("user")
+}
+
+model GemPackage {
+  id                  String   @id @default(uuid())
+  amount              Int      // Number of gems in the package
+  priceCents          Int      // Price in cents (e.g., 700 for $7.00)
+  currency            String   @default("USD")
+  stripeId            String   @unique // Stripe Price ID
+  badge               String?  // "Starter", "Popular", "Best Value", etc.
+  popular             Boolean  @default(false)
+  active              Boolean  @default(true)
+  discountPercentage  Int      @default(0) // 0-100 percentage
+  
+  // Metadata
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  // Relations
+  purchases           GemPurchase[]
+  
+  @@map("gem_packages")
+}
+
+model GemPurchase {
+  id            String      @id @default(uuid())
+  userId        String
+  packageId     String
+  amount        Int         // Gems purchased
+  priceCents    Int         // Amount paid in cents
+  currency      String      @default("USD")
+  stripeId      String?     // Stripe Payment Intent ID
+  status        PurchaseStatus @default(PENDING)
+  
+  // Timestamps
+  createdAt     DateTime    @default(now())
+  completedAt   DateTime?
+  
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package       GemPackage  @relation(fields: [packageId], references: [id])
+  
+  @@map("gem_purchases")
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
 }
 
 model FriendRequest {

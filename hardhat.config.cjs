@@ -23,6 +23,10 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 31337,
+      gas: 50000000, // 50M gas limit
+      blockGasLimit: 50000000, // 50M block gas limit
+      gasPrice: 20000000000,
+      allowUnlimitedContractSize: true, // For large contracts
     },
     localhost: {
       url: "http://127.0.0.1:8545",
