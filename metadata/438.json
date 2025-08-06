@@ -1,0 +1,15 @@
+{
+  "name": "Pidgeot",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex6/10_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Colorless"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo"
+    }
+  ]
+}

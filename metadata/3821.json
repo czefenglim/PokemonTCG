@@ -1,0 +1,15 @@
+{
+  "name": "Clefairy",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/swsh11/62_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

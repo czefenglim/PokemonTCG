@@ -1,16 +1,16 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [pokemonSprite, setPokemonSprite] = useState('');
-  const [pokemonSprite2, setPokemonSprite2] = useState('');
+  const [pokemonSprite, setPokemonSprite] = useState("");
+  const [pokemonSprite2, setPokemonSprite2] = useState("");
   const router = useRouter();
 
   // State for client-side only animations
@@ -43,7 +43,7 @@ export default function RegisterPage() {
         setPokemonSprite2(data2.sprites.front_default);
       })
       .catch((error) => {
-        console.error('Failed to fetch Pokemon sprites:', error);
+        console.error("Failed to fetch Pokemon sprites:", error);
       });
 
     // Generate random styles only on client side
@@ -54,11 +54,11 @@ export default function RegisterPage() {
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
       background: [
-        'radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,140,0,0.4) 50%, transparent)',
-        'radial-gradient(circle, rgba(30,144,255,0.8) 0%, rgba(0,191,255,0.4) 50%, transparent)',
-        'radial-gradient(circle, rgba(50,205,50,0.8) 0%, rgba(0,255,127,0.4) 50%, transparent)',
-        'radial-gradient(circle, rgba(255,20,147,0.8) 0%, rgba(255,69,0,0.4) 50%, transparent)',
-        'radial-gradient(circle, rgba(138,43,226,0.8) 0%, rgba(75,0,130,0.4) 50%, transparent)',
+        "radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,140,0,0.4) 50%, transparent)",
+        "radial-gradient(circle, rgba(30,144,255,0.8) 0%, rgba(0,191,255,0.4) 50%, transparent)",
+        "radial-gradient(circle, rgba(50,205,50,0.8) 0%, rgba(0,255,127,0.4) 50%, transparent)",
+        "radial-gradient(circle, rgba(255,20,147,0.8) 0%, rgba(255,69,0,0.4) 50%, transparent)",
+        "radial-gradient(circle, rgba(138,43,226,0.8) 0%, rgba(75,0,130,0.4) 50%, transparent)",
       ][i % 5],
       animationDelay: `${Math.random() * 4}s`,
       animationDuration: `${Math.random() * 6 + 4}s`,
@@ -78,24 +78,34 @@ export default function RegisterPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!username.trim()) {
-      setError('Username is required.');
+      setError("Username is required.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match!');
+      setError("Passwords do not match!");
+      return;
+    }
+
+    if (!walletAddress.trim()) {
+      setError("Wallet address is required.");
+      return;
+    }
+
+    if (walletAddress !== confirmWalletAddress) {
+      setError("Wallet addresses do not match!");
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
       });
 
@@ -104,20 +114,20 @@ export default function RegisterPage() {
       try {
         data = await res.clone().json();
       } catch (err) {
-        console.warn('Failed to parse JSON body');
+        console.warn("Failed to parse JSON body");
       }
 
       if (!res.ok) {
-        setError(data?.error || 'Something went wrong.');
+        setError(data?.error || "Something went wrong.");
         setLoading(false);
         return;
       }
 
-      alert('Registration successful!');
-      router.push('/login');
+      alert("Registration successful!");
+      router.push("/login");
     } catch (err) {
-      console.error('Network or server error:', err);
-      setError('Something went wrong while registering.');
+      console.error("Network or server error:", err);
+      setError("Something went wrong while registering.");
       setLoading(false);
     }
   }
@@ -308,28 +318,28 @@ export default function RegisterPage() {
               <div
                 className="absolute w-1 h-32 bg-gradient-to-b from-transparent via-yellow-400 to-transparent animate-lightning"
                 style={{
-                  top: '20%',
-                  left: '15%',
-                  animationDelay: '0s',
-                  transform: 'rotate(-15deg)',
+                  top: "20%",
+                  left: "15%",
+                  animationDelay: "0s",
+                  transform: "rotate(-15deg)",
                 }}
               />
               <div
                 className="absolute w-1 h-32 bg-gradient-to-b from-transparent via-yellow-400 to-transparent animate-lightning"
                 style={{
-                  top: '40%',
-                  left: '50%',
-                  animationDelay: '1s',
-                  transform: 'rotate(10deg)',
+                  top: "40%",
+                  left: "50%",
+                  animationDelay: "1s",
+                  transform: "rotate(10deg)",
                 }}
               />
               <div
                 className="absolute w-1 h-32 bg-gradient-to-b from-transparent via-yellow-400 to-transparent animate-lightning"
                 style={{
-                  top: '30%',
-                  left: '85%',
-                  animationDelay: '2s',
-                  transform: 'rotate(-20deg)',
+                  top: "30%",
+                  left: "85%",
+                  animationDelay: "2s",
+                  transform: "rotate(-20deg)",
                 }}
               />
             </>
@@ -355,7 +365,7 @@ export default function RegisterPage() {
             <div className="relative w-full h-full">
               <div
                 className="absolute inset-0 bg-blue-400/30 rounded-full blur-xl animate-pulse"
-                style={{ animationDelay: '1s' }}
+                style={{ animationDelay: "1s" }}
               ></div>
               <img
                 src={pokemonSprite2}
@@ -383,7 +393,7 @@ export default function RegisterPage() {
             <div className="relative w-full h-full">
               <div
                 className="absolute inset-0 bg-blue-500/30 rounded-full blur-lg animate-pulse"
-                style={{ animationDelay: '2s' }}
+                style={{ animationDelay: "2s" }}
               ></div>
               <div className="relative w-full h-full bg-gradient-to-br from-blue-500 to-blue-700 rounded-full border-4 border-white/30">
                 <div className="absolute top-1/2 left-0 right-0 h-1 bg-black/50"></div>
@@ -582,8 +592,8 @@ export default function RegisterPage() {
               disabled={loading}
               className={`w-full mt-6 py-4 px-6 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 hover:from-red-500 hover:via-yellow-400 hover:to-red-500 text-white font-bold rounded-xl shadow-2xl transition-all duration-300 flex items-center justify-center text-lg border-2 border-yellow-400/30 backdrop-blur-sm relative overflow-hidden group ${
                 loading
-                  ? 'opacity-80 cursor-not-allowed'
-                  : 'hover:shadow-yellow-500/25 transform hover:-translate-y-1 hover:scale-105'
+                  ? "opacity-80 cursor-not-allowed"
+                  : "hover:shadow-yellow-500/25 transform hover:-translate-y-1 hover:scale-105"
               }`}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -608,7 +618,7 @@ export default function RegisterPage() {
             {/* Enhanced Footer */}
             <div className="mt-4 text-center">
               <p className="text-sm text-gray-300">
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <a
                   href="/login"
                   className="text-transparent bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text font-bold hover:from-yellow-300 hover:to-red-400 transition-all duration-300 hover:underline"

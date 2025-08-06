@@ -1,0 +1,15 @@
+{
+  "name": "Rocket's Zapdos ex",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex7/106_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Darkness"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo EX"
+    }
+  ]
+}

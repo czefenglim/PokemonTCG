@@ -1,0 +1,15 @@
+{
+  "name": "Articuno",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/xy6/17_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    }
+  ]
+}

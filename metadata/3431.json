@@ -1,0 +1,15 @@
+{
+  "name": "Slowpoke & Psyduck-GX",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/sm11/217_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Ultra"
+    }
+  ]
+}

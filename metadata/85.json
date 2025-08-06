@@ -1,0 +1,15 @@
+{
+  "name": "Brock's Ninetales",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/gym2/3_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -12,8 +12,8 @@ const createMalaysiaTime = () => {
 
 export async function POST(req: Request) {
   // Ensure content-type is JSON
-  if (!req.headers.get('content-type')?.includes('application/json')) {
-    return new Response(JSON.stringify({ error: 'Invalid content type' }), {
+  if (!req.headers.get("content-type")?.includes("application/json")) {
+    return new Response(JSON.stringify({ error: "Invalid content type" }), {
       status: 400,
     });
   }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch (e) {
-    return new Response(JSON.stringify({ error: 'Invalid JSON format' }), {
+    return new Response(JSON.stringify({ error: "Invalid JSON format" }), {
       status: 400,
     });
   }
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   if (!email || !password || !username) {
     return new Response(
       JSON.stringify({
-        error: 'Email, password, and username are required.',
+        error: "Email, password, and username are required.",
       }),
       { status: 400 }
     );
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 
   if (existing) {
     return new Response(
-      JSON.stringify({ error: 'Email is already registered.' }),
+      JSON.stringify({ error: "Email is already registered." }),
       { status: 400 }
     );
   }
@@ -54,13 +54,13 @@ export async function POST(req: Request) {
   // Force Malaysia time for both timestamps
   const malaysiaTime = createMalaysiaTime();
 
-  console.log('🇲🇾 Registration Time Debug:');
-  console.log('UTC Now:', new Date().toISOString());
-  console.log('Malaysia Time (UTC+8):', malaysiaTime.toISOString());
+  console.log("🇲🇾 Registration Time Debug:");
+  console.log("UTC Now:", new Date().toISOString());
+  console.log("Malaysia Time (UTC+8):", malaysiaTime.toISOString());
   console.log(
-    'Malaysia Time Display:',
-    malaysiaTime.toLocaleString('en-US', {
-      timeZone: 'Asia/Kuala_Lumpur',
+    "Malaysia Time Display:",
+    malaysiaTime.toLocaleString("en-US", {
+      timeZone: "Asia/Kuala_Lumpur",
     })
   );
 
@@ -72,16 +72,17 @@ export async function POST(req: Request) {
       gems: 100,
       createdAt: malaysiaTime, // ← Malaysia time for registration
       nextPackAt: malaysiaTime, // ← Malaysia time for pack availability
-      role: 'USER',
+      role: "USER",
+      walletAddress, // ✅ Include this if available
     },
   });
 
   console.log(
-    '✅ User created with Malaysia time for both createdAt and nextPackAt'
+    "✅ User created with Malaysia time for both createdAt and nextPackAt"
   );
 
   return new Response(
-    JSON.stringify({ message: 'User created successfully.' }),
+    JSON.stringify({ message: "User created successfully." }),
     { status: 201 }
   );
 }

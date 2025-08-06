@@ -1,0 +1,15 @@
+{
+  "name": "Team Rocket's Nidoqueen",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/sv10/116_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Darkness"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

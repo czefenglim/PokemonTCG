@@ -1,0 +1,15 @@
+{
+  "name": "Galarian Moltres",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/swshp/SWSH284_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Darkness"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Promo"
+    }
+  ]
+}

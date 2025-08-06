@@ -1,0 +1,15 @@
+{
+  "name": "Ditto",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/swsh12pt5/107_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Colorless"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo"
+    }
+  ]
+}

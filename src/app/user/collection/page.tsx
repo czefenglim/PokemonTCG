@@ -1,10 +1,10 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import abi from '@/lib/pokemonCardABI.json';
-import pokemonList from '@/lib/pokemon-list.json';
+"use client";
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import abi from "@/lib/pokemonCardABI.json";
+import pokemonList from "@/lib/pokemon-list.json";
 
 type OwnedCard = {
   tokenId: number;
@@ -26,13 +26,13 @@ export default function CollectionPage() {
   const [loading, setLoading] = useState(false);
   const [cards, setCards] = useState<OwnedCard[]>([]);
   const [address, setAddress] = useState<string | null>(null);
-  const [rarityFilter, setRarityFilter] = useState<string>('All');
-  const [typeFilter, setTypeFilter] = useState<string>('All');
+  const [rarityFilter, setRarityFilter] = useState<string>("All");
+  const [typeFilter, setTypeFilter] = useState<string>("All");
 
   // UI STATE
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedCard, setSelectedCard] = useState<OwnedCard | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [useMetadataAPI, setUseMetadataAPI] = useState(true);
 
   // SIMPLIFIED COLLECTION LOADING
@@ -46,7 +46,7 @@ export default function CollectionPage() {
       const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
       if (!contractAddress) {
-        throw new Error('Contract address not configured.');
+        throw new Error("Contract address not configured.");
       }
 
       const contract = new ethers.Contract(contractAddress, abi, signer);
@@ -58,7 +58,7 @@ export default function CollectionPage() {
         balances = await contract.getUserBalances(userAddress, tokenIds);
       } catch (contractError) {
         console.warn(
-          'getUserBalances failed, trying individual balanceOf calls...',
+          "getUserBalances failed, trying individual balanceOf calls...",
           contractError
         );
         // Fallback to individual calls
@@ -98,8 +98,8 @@ export default function CollectionPage() {
                   name: metadata.name,
                   imageUrl: metadata.image,
                   amount: balance.toString(),
-                  rarity: metadata.gameData?.rarity || 'Common',
-                  type: metadata.gameData?.type || 'Unknown',
+                  rarity: metadata.gameData?.rarity || "Common",
+                  type: metadata.gameData?.type || "Unknown",
                   strikePower: metadata.gameData?.strikePower,
                   battleRating: metadata.gameData?.battleRating,
                   description: metadata.description,
@@ -122,8 +122,8 @@ export default function CollectionPage() {
               name: localInfo.name,
               imageUrl: localInfo.largeImage,
               amount: balance.toString(),
-              rarity: localInfo.rarity ?? 'Common',
-              type: localInfo.type ?? 'Unknown',
+              rarity: localInfo.rarity ?? "Common",
+              type: localInfo.type ?? "Unknown",
               description: localInfo.description,
             });
           }
@@ -133,13 +133,13 @@ export default function CollectionPage() {
       console.log(`📦 Loaded ${owned.length} owned cards`);
       setCards(owned);
     } catch (err: any) {
-      console.error('[Collection] Error loading collection:', err);
+      console.error("[Collection] Error loading collection:", err);
 
       // Only show error if we have an address (wallet is connected)
       // If no cards found, it's likely just an empty collection, not an error
       if (address) {
         console.log(
-          'Failed to load collection, but wallet is connected. This might be an empty collection.'
+          "Failed to load collection, but wallet is connected. This might be an empty collection."
         );
       }
 
@@ -154,7 +154,7 @@ export default function CollectionPage() {
       return;
     }
     const provider = new ethers.BrowserProvider(window.ethereum);
-    const accounts = await provider.send('eth_accounts', []);
+    const accounts = await provider.send("eth_accounts", []);
     if (accounts.length > 0) {
       setAddress(accounts[0]);
       await loadCollection(accounts[0]);
@@ -170,50 +170,50 @@ export default function CollectionPage() {
   // UI HELPER FUNCTIONS
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'Common':
-        return 'from-gray-400 to-gray-600';
-      case 'Uncommon':
-        return 'from-green-400 to-green-600';
-      case 'Rare':
-        return 'from-blue-400 to-blue-600';
-      case 'Rare Holo':
-        return 'from-purple-400 to-purple-600';
-      case 'Ultra Rare':
-        return 'from-pink-400 to-red-500';
-      case 'Secret Rare':
-        return 'from-yellow-400 to-orange-500';
+      case "Common":
+        return "from-gray-400 to-gray-600";
+      case "Uncommon":
+        return "from-green-400 to-green-600";
+      case "Rare":
+        return "from-blue-400 to-blue-600";
+      case "Rare Holo":
+        return "from-purple-400 to-purple-600";
+      case "Ultra Rare":
+        return "from-pink-400 to-red-500";
+      case "Secret Rare":
+        return "from-yellow-400 to-orange-500";
       default:
-        return 'from-yellow-400 to-yellow-600';
+        return "from-yellow-400 to-yellow-600";
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Fire':
-        return 'bg-red-500';
-      case 'Water':
-        return 'bg-blue-500';
-      case 'Grass':
-        return 'bg-green-500';
-      case 'Electric':
-        return 'bg-yellow-500';
-      case 'Psychic':
-        return 'bg-purple-500';
-      case 'Fighting':
-        return 'bg-orange-500';
-      case 'Dark':
-        return 'bg-gray-800';
-      case 'Steel':
-        return 'bg-gray-400';
+      case "Fire":
+        return "bg-red-500";
+      case "Water":
+        return "bg-blue-500";
+      case "Grass":
+        return "bg-green-500";
+      case "Electric":
+        return "bg-yellow-500";
+      case "Psychic":
+        return "bg-purple-500";
+      case "Fighting":
+        return "bg-orange-500";
+      case "Dark":
+        return "bg-gray-800";
+      case "Steel":
+        return "bg-gray-400";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
   // Handle trade navigation
   const handleTradeCard = (card: OwnedCard) => {
     localStorage.setItem(
-      'selectedCardForTrade',
+      "selectedCardForTrade",
       JSON.stringify({
         tokenId: card.tokenId,
         tcgId: card.tcgId,
@@ -228,23 +228,23 @@ export default function CollectionPage() {
       })
     );
 
-    router.push('/user/marketplace');
+    router.push("/user/marketplace");
   };
 
   // FILTER LOGIC
   const rarityOptions = [
-    'All',
+    "All",
     ...Array.from(new Set(cards.map((c) => c.rarity).filter(Boolean))),
   ];
 
   const typeOptions = [
-    'All',
+    "All",
     ...Array.from(new Set(cards.map((c) => c.type).filter(Boolean))),
   ];
 
   const filteredCards = cards.filter((c) => {
-    const matchesRarity = rarityFilter === 'All' || c.rarity === rarityFilter;
-    const matchesType = typeFilter === 'All' || c.type === typeFilter;
+    const matchesRarity = rarityFilter === "All" || c.rarity === rarityFilter;
+    const matchesType = typeFilter === "All" || c.type === typeFilter;
     const matchesSearch = c.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -269,7 +269,7 @@ export default function CollectionPage() {
             y: [0, -50, 0],
             scale: [1, 1.2, 1],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           className="absolute bottom-40 right-20 w-40 h-40 rounded-full bg-purple-500/20 blur-3xl"
@@ -278,7 +278,7 @@ export default function CollectionPage() {
             y: [0, 60, 0],
             scale: [1, 0.8, 1],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 
@@ -399,7 +399,7 @@ export default function CollectionPage() {
                             value={rarity}
                             className="bg-gray-800"
                           >
-                            {rarity === 'All' ? 'All Rarities' : rarity}
+                            {rarity === "All" ? "All Rarities" : rarity}
                           </option>
                         ))}
                       </select>
@@ -415,7 +415,7 @@ export default function CollectionPage() {
                             value={type}
                             className="bg-gray-800"
                           >
-                            {type === 'All' ? 'All Types' : type}
+                            {type === "All" ? "All Types" : type}
                           </option>
                         ))}
                       </select>
@@ -423,11 +423,11 @@ export default function CollectionPage() {
                       {/* View Mode Toggle */}
                       <div className="flex bg-white/10 rounded-xl p-1">
                         <button
-                          onClick={() => setViewMode('grid')}
+                          onClick={() => setViewMode("grid")}
                           className={`p-2 rounded-lg transition-all ${
-                            viewMode === 'grid'
-                              ? 'bg-purple-500 text-white'
-                              : 'text-white/60 hover:text-white'
+                            viewMode === "grid"
+                              ? "bg-purple-500 text-white"
+                              : "text-white/60 hover:text-white"
                           }`}
                         >
                           <svg
@@ -445,11 +445,11 @@ export default function CollectionPage() {
                           </svg>
                         </button>
                         <button
-                          onClick={() => setViewMode('list')}
+                          onClick={() => setViewMode("list")}
                           className={`p-2 rounded-lg transition-all ${
-                            viewMode === 'list'
-                              ? 'bg-purple-500 text-white'
-                              : 'text-white/60 hover:text-white'
+                            viewMode === "list"
+                              ? "bg-purple-500 text-white"
+                              : "text-white/60 hover:text-white"
                           }`}
                         >
                           <svg
@@ -474,7 +474,7 @@ export default function CollectionPage() {
                         disabled={loading}
                         className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 text-white font-medium px-6 py-2 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none"
                       >
-                        {loading ? 'Loading...' : 'Refresh'}
+                        {loading ? "Loading..." : "Refresh"}
                       </button>
                     </div>
                   </div>
@@ -493,7 +493,7 @@ export default function CollectionPage() {
                   <div className="w-16 h-16 border-4 border-purple-300 rounded-full animate-spin border-t-transparent"></div>
                   <div
                     className="absolute inset-0 w-16 h-16 border-4 border-pink-300 rounded-full animate-spin border-t-transparent"
-                    style={{ animationDelay: '0.5s' }}
+                    style={{ animationDelay: "0.5s" }}
                   ></div>
                 </div>
                 <span className="ml-4 text-white text-lg">
@@ -533,7 +533,7 @@ export default function CollectionPage() {
                     your legendary collection today!
                   </p>
                   <button
-                    onClick={() => router.push('/user/packs')}
+                    onClick={() => router.push("/user/packs")}
                     className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105"
                   >
                     Open Packs
@@ -555,9 +555,9 @@ export default function CollectionPage() {
                   </div>
                   <button
                     onClick={() => {
-                      setRarityFilter('All');
-                      setTypeFilter('All');
-                      setSearchTerm('');
+                      setRarityFilter("All");
+                      setTypeFilter("All");
+                      setSearchTerm("");
                     }}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium px-6 py-2 rounded-xl transition-all duration-300"
                   >
@@ -568,7 +568,7 @@ export default function CollectionPage() {
             )}
 
             {/* Cards Display - Grid View */}
-            {!loading && filteredCards.length > 0 && viewMode === 'grid' && (
+            {!loading && filteredCards.length > 0 && viewMode === "grid" && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -591,7 +591,7 @@ export default function CollectionPage() {
                           {/* Rarity Glow */}
                           <div
                             className={`absolute inset-0 bg-gradient-to-r ${getRarityColor(
-                              card.rarity || 'Common'
+                              card.rarity || "Common"
                             )} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
                           ></div>
 
@@ -617,7 +617,7 @@ export default function CollectionPage() {
                             {/* Type Badge */}
                             {card.type && (
                               <div
-                                className={`absolute top-2 left-2 ${getTypeColor(
+                                className={`absolute top-10 left-2 ${getTypeColor(
                                   card.type
                                 )} text-white text-xs font-bold px-2 py-1 rounded-full`}
                               >
@@ -641,12 +641,16 @@ export default function CollectionPage() {
                             <div className="flex justify-between items-center">
                               <div
                                 className={`inline-block bg-gradient-to-r ${getRarityColor(
-                                  card.rarity || 'Common'
+                                  card.rarity || "Common"
                                 )} text-white text-xs font-bold px-3 py-1 rounded-full`}
                               >
                                 {card.rarity}
                               </div>
                             </div>
+                          </div>
+                          {/* Token ID Badge */}
+                          <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
+                            #{card.tokenId}
                           </div>
                         </div>
                       </motion.div>
@@ -657,7 +661,7 @@ export default function CollectionPage() {
             )}
 
             {/* Cards Display - List View */}
-            {!loading && filteredCards.length > 0 && viewMode === 'list' && (
+            {!loading && filteredCards.length > 0 && viewMode === "list" && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -703,7 +707,7 @@ export default function CollectionPage() {
                               )}
                               <span
                                 className={`bg-gradient-to-r ${getRarityColor(
-                                  card.rarity || 'Common'
+                                  card.rarity || "Common"
                                 )} text-white text-xs font-bold px-2 py-1 rounded`}
                               >
                                 {card.rarity}
@@ -780,17 +784,17 @@ export default function CollectionPage() {
                     )}
                     <span
                       className={`bg-gradient-to-r ${getRarityColor(
-                        selectedCard.rarity || 'Common'
+                        selectedCard.rarity || "Common"
                       )} text-white text-sm font-bold px-3 py-1 rounded-full`}
                     >
                       {selectedCard.rarity}
                     </span>
                   </div>
                   <div className="text-white/80 mb-6">
-                    You own{' '}
+                    You own{" "}
                     <span className="font-bold text-yellow-400">
                       ×{selectedCard.amount}
-                    </span>{' '}
+                    </span>{" "}
                     of this card
                   </div>
 

@@ -1,0 +1,15 @@
+{
+  "name": "Kabutops δ",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex13/9_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Lightning"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo"
+    }
+  ]
+}

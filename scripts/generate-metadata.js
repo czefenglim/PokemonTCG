@@ -1,12 +1,63 @@
-import fs from 'fs';
-import path from 'path';
-import 'dotenv/config';
+// import fs from "fs";
+// import path from "path";
+// import "dotenv/config";
 
-const jsonPath = path.resolve('./src/app/lib/pokemon-list.json');
-const raw = fs.readFileSync(jsonPath, 'utf-8');
+// const jsonPath = path.resolve("./src/lib/pokemon-list.json");
+// const raw = fs.readFileSync(jsonPath, "utf-8");
+// const pokemonList = JSON.parse(raw);
+
+// const outputDir = path.resolve("./metadata");
+
+// if (fs.existsSync(outputDir)) {
+//   fs.rmSync(outputDir, { recursive: true });
+// }
+// fs.mkdirSync(outputDir);
+
+// function padNumber(n) {
+//   return String(n).padStart(3, "0");
+// }
+
+// function buildMetadata(pokemon) {
+//   return {
+//     name: pokemon.name,
+//     description: pokemon.description,
+//     image: pokemon.image,
+//     attributes: [
+//       { trait_type: "Type", value: pokemon.type },
+//       { trait_type: "Rarity", value: pokemon.rarity },
+//     ],
+//   };
+// }
+
+// function main() {
+//   pokemonList.forEach((p) => {
+//     const folderName = padNumber(p.id);
+//     const folderPath = path.join(outputDir, folderName);
+
+//     fs.mkdirSync(folderPath, { recursive: true });
+
+//     const metadata = buildMetadata(p);
+
+//     const metadataPath = path.join(folderPath, "metadata.json");
+//     fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), "utf-8");
+
+//     console.log(
+//       `✅ Generated metadata for ${p.name} -> ${folderName}/metadata.json`
+//     );
+//   });
+// }
+
+// main();
+
+import fs from "fs";
+import path from "path";
+import "dotenv/config";
+
+const jsonPath = path.resolve("./src/lib/pokemon-list.json");
+const raw = fs.readFileSync(jsonPath, "utf-8");
 const pokemonList = JSON.parse(raw);
 
-const outputDir = path.resolve('./metadata');
+const outputDir = path.resolve("./metadata");
 
 if (fs.existsSync(outputDir)) {
   fs.rmSync(outputDir, { recursive: true });
@@ -14,36 +65,30 @@ if (fs.existsSync(outputDir)) {
 fs.mkdirSync(outputDir);
 
 function padNumber(n) {
-  return String(n).padStart(3, '0');
+  return String(n).padStart(3, "0");
 }
 
 function buildMetadata(pokemon) {
   return {
     name: pokemon.name,
-    description: pokemon.description,
-    image: pokemon.image,
+    description: pokemon.description || "A Pokémon trading card NFT",
+    image: pokemon.largeImage, // ✅ Use the large image from pokemon-list.json
     attributes: [
-      { trait_type: 'Type', value: pokemon.type },
-      { trait_type: 'Rarity', value: pokemon.rarity },
+      { trait_type: "Type", value: pokemon.type },
+      { trait_type: "Rarity", value: pokemon.rarity },
     ],
   };
 }
 
 function main() {
   pokemonList.forEach((p) => {
-    const folderName = padNumber(p.id);
-    const folderPath = path.join(outputDir, folderName);
-
-    fs.mkdirSync(folderPath, { recursive: true });
-
+    const fileName = `${p.tokenId}.json`; // tokenId already 1,2,3...
     const metadata = buildMetadata(p);
 
-    const metadataPath = path.join(folderPath, 'metadata.json');
-    fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8');
+    const metadataPath = path.join(outputDir, fileName);
+    fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), "utf-8");
 
-    console.log(
-      `✅ Generated metadata for ${p.name} -> ${folderName}/metadata.json`
-    );
+    console.log(`✅ Generated metadata for ${p.name} -> ${fileName}`);
   });
 }
 

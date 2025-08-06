@@ -1,0 +1,15 @@
+{
+  "name": "Erika's Weepinbell",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/gym1/49_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

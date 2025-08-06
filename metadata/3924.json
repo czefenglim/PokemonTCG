@@ -1,0 +1,15 @@
+{
+  "name": "Pikachu",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/swsh12pt5gg/GG30_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Lightning"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Trainer Gallery Rare Holo"
+    }
+  ]
+}

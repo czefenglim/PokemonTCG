@@ -1,0 +1,15 @@
+{
+  "name": "Dodrio",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/base2/34_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Colorless"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

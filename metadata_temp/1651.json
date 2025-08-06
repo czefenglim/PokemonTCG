@@ -1,0 +1,15 @@
+{
+  "name": "Persian δ",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex13/48_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Darkness"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

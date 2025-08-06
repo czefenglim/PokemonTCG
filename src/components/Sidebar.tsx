@@ -1,11 +1,11 @@
-'use client';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useDisconnect } from 'wagmi';
-import { signOut } from 'next-auth/react';
-import clsx from 'clsx';
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useDisconnect } from "wagmi";
+import { signOut } from "next-auth/react";
+import clsx from "clsx";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,9 +14,9 @@ import {
   WifiOff,
   ChevronDown,
   Gem,
-} from 'lucide-react';
-import ConfirmLogoutModal from '@/components/ConfirmLogoutModal';
-import { getFeaturesForSidebar } from '@/lib/features-config';
+} from "lucide-react";
+import ConfirmLogoutModal from "@/components/ConfirmLogoutModal";
+import { getFeaturesForSidebar } from "@/lib/features-config";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -39,30 +39,30 @@ export default function Sidebar() {
   // Close wallet menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showWalletMenu && !event.target.closest('.wallet-menu-container')) {
+      if (showWalletMenu && !event.target.closest(".wallet-menu-container")) {
         setShowWalletMenu(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showWalletMenu]);
 
   // Fetch user gems
   useEffect(() => {
     const fetchGems = async () => {
       try {
-        const response = await fetch('/api/user/gems');
+        const response = await fetch("/api/user/gems");
         if (response.ok) {
           const data = await response.json();
           setGems(data.gems);
           // Store in localStorage for cross-component sync
-          localStorage.setItem('userGems', data.gems.toString());
+          localStorage.setItem("userGems", data.gems.toString());
         } else {
-          console.error('Failed to fetch gems');
+          console.error("Failed to fetch gems");
         }
       } catch (error) {
-        console.error('Error fetching gems:', error);
+        console.error("Error fetching gems:", error);
       } finally {
         setGemsLoading(false);
       }
@@ -76,7 +76,7 @@ export default function Sidebar() {
   // 🔥 NEW: Listen for gem updates from other components (like pack page)
   useEffect(() => {
     // Load gems from localStorage on mount
-    const storedGems = localStorage.getItem('userGems');
+    const storedGems = localStorage.getItem("userGems");
     if (storedGems && !gemsLoading) {
       setGems(parseInt(storedGems));
     }
@@ -85,25 +85,25 @@ export default function Sidebar() {
     const handleGemsUpdate = (event) => {
       if (event.detail?.gems !== undefined) {
         setGems(event.detail.gems);
-        localStorage.setItem('userGems', event.detail.gems.toString());
+        localStorage.setItem("userGems", event.detail.gems.toString());
       }
     };
 
     // Listen for localStorage changes (cross-tab sync)
     const handleStorageChange = (event) => {
-      if (event.key === 'userGems' && event.newValue) {
+      if (event.key === "userGems" && event.newValue) {
         setGems(parseInt(event.newValue));
       }
     };
 
     // Add event listeners
-    window.addEventListener('gemsUpdated', handleGemsUpdate);
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener("gemsUpdated", handleGemsUpdate);
+    window.addEventListener("storage", handleStorageChange);
 
     // Cleanup
     return () => {
-      window.removeEventListener('gemsUpdated', handleGemsUpdate);
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("gemsUpdated", handleGemsUpdate);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, [gemsLoading]);
 
@@ -115,8 +115,8 @@ export default function Sidebar() {
   return (
     <aside
       className={clsx(
-        'min-h-screen flex flex-col border-r border-white/10 transition-all duration-300 ease-in-out relative',
-        collapsed ? 'w-20 px-3 pt-4 pb-8' : 'w-64 px-6 pt-6 pb-10'
+        "min-h-screen flex flex-col border-r border-white/10 transition-all duration-300 ease-in-out relative",
+        collapsed ? "w-20 px-3 pt-4 pb-8" : "w-64 px-6 pt-6 pb-10"
       )}
     >
       {/* Logo Toggle */}
@@ -135,10 +135,10 @@ export default function Sidebar() {
                 className="w-full h-full object-contain"
                 onError={(e) => {
                   e.target.src =
-                    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png';
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png";
                   e.target.onerror = () => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
                   };
                 }}
               />
@@ -167,10 +167,10 @@ export default function Sidebar() {
               key={item.href}
               href={item.href}
               className={clsx(
-                'group flex items-center gap-3 px-3 py-3 rounded-xl relative transition-all duration-200 overflow-hidden',
+                "group flex items-center gap-3 px-3 py-3 rounded-xl relative transition-all duration-200 overflow-hidden",
                 isActive
-                  ? 'bg-gradient-to-r from-yellow-400/10 to-yellow-400/5 text-yellow-300 shadow-lg shadow-yellow-400/5'
-                  : 'text-white/70 hover:bg-white/5 hover:text-white'
+                  ? "bg-gradient-to-r from-yellow-400/10 to-yellow-400/5 text-yellow-300 shadow-lg shadow-yellow-400/5"
+                  : "text-white/70 hover:bg-white/5 hover:text-white"
               )}
             >
               {isActive && (
@@ -182,10 +182,10 @@ export default function Sidebar() {
               <div className="relative z-10 flex items-center gap-3 w-full">
                 <div
                   className={clsx(
-                    'p-2 rounded-lg transition-all duration-200',
+                    "p-2 rounded-lg transition-all duration-200",
                     isActive
-                      ? 'bg-yellow-400/20 text-yellow-300'
-                      : 'bg-white/5 group-hover:bg-white/10'
+                      ? "bg-yellow-400/20 text-yellow-300"
+                      : "bg-white/5 group-hover:bg-white/10"
                   )}
                 >
                   <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
@@ -193,8 +193,8 @@ export default function Sidebar() {
                 {!collapsed && (
                   <span
                     className={clsx(
-                      'font-medium truncate transition-all duration-200',
-                      isActive ? 'font-semibold' : 'group-hover:translate-x-1'
+                      "font-medium truncate transition-all duration-200",
+                      isActive ? "font-semibold" : "group-hover:translate-x-1"
                     )}
                   >
                     {item.label}
@@ -265,22 +265,22 @@ export default function Sidebar() {
               mounted: connectButtonMounted,
             }) => {
               const ready =
-                connectButtonMounted && authenticationStatus !== 'loading';
+                connectButtonMounted && authenticationStatus !== "loading";
               const connected =
                 ready &&
                 account &&
                 chain &&
                 (!authenticationStatus ||
-                  authenticationStatus === 'authenticated');
+                  authenticationStatus === "authenticated");
 
               return (
                 <div
                   {...(!ready && {
-                    'aria-hidden': true,
+                    "aria-hidden": true,
                     style: {
                       opacity: 0,
-                      pointerEvents: 'none',
-                      userSelect: 'none',
+                      pointerEvents: "none",
+                      userSelect: "none",
                     },
                   })}
                   className="w-full"
@@ -292,8 +292,8 @@ export default function Sidebar() {
                         onClick={() => setShowWalletMenu(!showWalletMenu)}
                         type="button"
                         className={clsx(
-                          'group relative flex items-center w-full px-3 py-3 rounded-xl transition-all duration-200 overflow-hidden bg-gradient-to-r from-green-500/10 to-green-600/10 hover:from-green-500/20 hover:to-green-600/20 border border-green-500/20',
-                          collapsed ? 'justify-center' : 'justify-between'
+                          "group relative flex items-center w-full px-3 py-3 rounded-xl transition-all duration-200 overflow-hidden bg-gradient-to-r from-green-500/10 to-green-600/10 hover:from-green-500/20 hover:to-green-600/20 border border-green-500/20",
+                          collapsed ? "justify-center" : "justify-between"
                         )}
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-green-400/5 to-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
@@ -322,7 +322,7 @@ export default function Sidebar() {
                               <ChevronDown
                                 size={16}
                                 className={`text-white/60 transition-transform duration-200 ${
-                                  showWalletMenu ? 'rotate-180' : ''
+                                  showWalletMenu ? "rotate-180" : ""
                                 }`}
                               />
                             </div>
@@ -359,8 +359,8 @@ export default function Sidebar() {
                       onClick={openConnectModal}
                       type="button"
                       className={clsx(
-                        'group relative flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-xl transition-all duration-200 font-semibold shadow-lg shadow-blue-500/20 overflow-hidden',
-                        collapsed && 'justify-center'
+                        "group relative flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-xl transition-all duration-200 font-semibold shadow-lg shadow-blue-500/20 overflow-hidden",
+                        collapsed && "justify-center"
                       )}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
@@ -409,7 +409,7 @@ export default function Sidebar() {
           <ConfirmLogoutModal
             isOpen={showLogoutConfirm}
             onClose={() => setShowLogoutConfirm(false)}
-            onConfirm={() => signOut({ callbackUrl: '/' })}
+            onConfirm={() => signOut({ callbackUrl: "/" })}
           />
         </div>
       )}

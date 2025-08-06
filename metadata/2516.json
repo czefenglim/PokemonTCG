@@ -1,0 +1,15 @@
+{
+  "name": "Koga's Weedle",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/gym2/82_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

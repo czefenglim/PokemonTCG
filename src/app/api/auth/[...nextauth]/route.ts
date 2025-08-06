@@ -1,17 +1,17 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
@@ -29,13 +29,13 @@ export const authOptions: NextAuthOptions = {
         if (!isValid) return null;
 
         // Dynamically assign ADMIN role
-        const adminEmails = process.env.ADMIN_EMAILS?.split(',') || [];
+        const adminEmails = process.env.ADMIN_EMAILS?.split(",") || [];
         let finalUser = user;
 
-        if (adminEmails.includes(user.email) && user.role !== 'ADMIN') {
+        if (adminEmails.includes(user.email) && user.role !== "ADMIN") {
           finalUser = await prisma.user.update({
             where: { email: user.email },
-            data: { role: 'ADMIN' },
+            data: { role: "ADMIN" },
           });
         }
 
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
 
   callbacks: {
@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = user.role;
       }
-      console.log('🔐 JWT token:', token); // ✅
+      console.log("🔐 JWT token:", token); // ✅
       return token;
     },
     async session({ session, token }) {
@@ -67,13 +67,13 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
       }
-      console.log('📦 Session object:', session); // ✅
+      console.log("📦 Session object:", session); // ✅
       return session;
     },
   },
   pages: {
-    signIn: '/login',
-    error: '/unauthorized', // You can define this if needed
+    signIn: "/login",
+    error: "/unauthorized", // You can define this if needed
   },
 
   secret: process.env.NEXTAUTH_SECRET,

@@ -1,0 +1,15 @@
+{
+  "name": "Galarian Meowth",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/swsh45sv/SV086_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Metal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Shiny"
+    }
+  ]
+}
