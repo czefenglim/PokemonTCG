@@ -22,7 +22,7 @@ async function main() {
   const BASE_URI =
     network.chainId === 31337n
       ? "http://localhost:3000/api/pokemon/"
-      : "https://gateway.pinata.cloud/ipfs/<YOUR_CID>/";
+      : "https://ipfs.io/ipfs/QmbLwqnjh1hoiVazc126mL1gv6xZgm4sTcGkdZfdzU3cT6/";
 
   // Deploy PokemonCard1155
   const PokemonCard1155 = await hre.ethers.getContractFactory(
@@ -62,6 +62,7 @@ async function main() {
   // ✅ Verify contracts if testnet
   if (network.chainId !== 31337n && network.chainId !== 1337n) {
     console.log("Waiting for block confirmations...");
+    console.log("Base URI:", BASE_URI);
     await new Promise((r) => setTimeout(r, 30000));
 
     try {

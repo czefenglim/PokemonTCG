@@ -1,0 +1,15 @@
+{
+  "name": "Dugtrio",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/g1/39_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    }
+  ]
+}

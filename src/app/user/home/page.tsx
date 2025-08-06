@@ -28,28 +28,24 @@ export default function HomePage() {
   const [sentRequest, selectSentRequest] = useState(false);
 
   useEffect(() => {
-<<<<<<< HEAD:src/app/home/page.tsx
-    const stored = localStorage.getItem("selectedAvatar");
-=======
     // Load selected avatar from localStorage
-    const stored = localStorage.getItem('selectedAvatar');
->>>>>>> origin/main:src/app/user/home/page.tsx
+    const stored = localStorage.getItem("selectedAvatar");
     if (stored) {
       setAvatarUrl(stored);
     }
 
     // Auto-play music if flagged after login
-    const shouldAutoPlay = localStorage.getItem('shouldAutoPlayMusic');
-    if (shouldAutoPlay === 'true' && audioRef.current) {
+    const shouldAutoPlay = localStorage.getItem("shouldAutoPlayMusic");
+    if (shouldAutoPlay === "true" && audioRef.current) {
       audioRef.current
         .play()
         .then(() => {
           setPlaying(true);
-          console.log('🎵 Music started');
-          localStorage.removeItem('shouldAutoPlayMusic'); // prevent repeat
+          console.log("🎵 Music started");
+          localStorage.removeItem("shouldAutoPlayMusic"); // prevent repeat
         })
         .catch((err) => {
-          console.warn('🔇 Autoplay blocked by browser:', err);
+          console.warn("🔇 Autoplay blocked by browser:", err);
           // Optionally: show a UI prompt to let user manually start music
         });
     }

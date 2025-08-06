@@ -95,9 +95,18 @@ contract PokemonCard1155 is ERC1155, Ownable {
     /**
      * Get Pokemon metadata URL
      */
-    function uri(uint256 tokenId) public view override returns (string memory) {
-        return string(abi.encodePacked(_baseURI, _toString(tokenId)));
+    // function uri(uint256 tokenId) public view override returns (string memory) {
+    //     return string(abi.encodePacked(_baseURI, _toString(tokenId)));
+    // }
+   function uri(uint256 tokenId) public view override returns (string memory) {
+        return string(
+            abi.encodePacked(_baseURI, _toString(tokenId), ".json")
+        );
     }
+
+
+    
+
 
     /**
      * Update base URI for metadata - only owner
