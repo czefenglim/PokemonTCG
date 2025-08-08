@@ -1,0 +1,15 @@
+{
+  "name": "Graveler",
+  "description": "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "rock"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

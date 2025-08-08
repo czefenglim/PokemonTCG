@@ -1,0 +1,15 @@
+{
+  "name": "Magneton",
+  "description": "Formed by several MAGNEMITEs linked together. They frequently appear when sunspots flare up.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Dewgong",
+  "description": "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/87.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

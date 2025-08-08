@@ -1,0 +1,15 @@
+{
+  "name": "Parasect",
+  "description": "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/47.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

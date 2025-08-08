@@ -1,0 +1,15 @@
+{
+  "name": "Omastar",
+  "description": "A prehistoric POKéMON that died out when its heavy shell made it impossible to catch prey.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/139.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "rock"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

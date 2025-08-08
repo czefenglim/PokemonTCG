@@ -1,0 +1,15 @@
+{
+  "name": "Porygon",
+  "description": "A POKéMON that consists entirely of programming code. Capable of moving freely in cyberspace.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

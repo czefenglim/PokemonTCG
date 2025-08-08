@@ -1,0 +1,15 @@
+{
+  "name": "Victreebel",
+  "description": "Said to live in huge colonies deep in jungles, although no one has ever returned from there.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/71.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

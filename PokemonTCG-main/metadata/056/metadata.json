@@ -1,0 +1,15 @@
+{
+  "name": "Mankey",
+  "description": "Extremely quick to anger. It could be docile one moment then thrashing away the next instant.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/56.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

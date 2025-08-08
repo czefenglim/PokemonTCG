@@ -1,0 +1,15 @@
+{
+  "name": "Voltorb",
+  "description": "Usually found in power plants. Easily mistaken for a POKé BALL, they have zapped many people.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/100.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

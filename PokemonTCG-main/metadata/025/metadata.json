@@ -1,0 +1,15 @@
+{
+  "name": "Pikachu",
+  "description": "When several of these POKéMON gather, their electricity could build and cause lightning storms.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

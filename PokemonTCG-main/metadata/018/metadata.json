@@ -1,0 +1,15 @@
+{
+  "name": "Pidgeot",
+  "description": "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

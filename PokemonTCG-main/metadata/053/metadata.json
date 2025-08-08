@@ -1,0 +1,15 @@
+{
+  "name": "Persian",
+  "description": "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/53.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

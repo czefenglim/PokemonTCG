@@ -1,0 +1,15 @@
+{
+  "name": "Flareon",
+  "description": "When storing thermal energy in its body, its temperature could soar to over 1600 degrees.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/136.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}
