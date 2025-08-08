@@ -151,7 +151,7 @@ export default function HomePage() {
     try {
       // 1. Fetch the friend's ID by username
       const resUser = await fetch(
-        "/api/friends/getFriendID?username=" + friendUsername
+        "../api/friends/getFriendID?username=" + friendUsername
       );
 
       if (!resUser.ok) {

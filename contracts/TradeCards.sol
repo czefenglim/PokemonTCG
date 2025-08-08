@@ -161,7 +161,7 @@ contract TradeContract is Ownable, ERC1155Holder {
         TradeStatus status;
     }
 
-    uint256 public tradeFee = 0.1 ether;
+    uint256 public tradeFee = 0.0001 ether;
     mapping(bytes32 => PendingTrade) public trades;
     
     event TradeInitiated(bytes32 indexed tradeId, address indexed sender, address indexed receiver);

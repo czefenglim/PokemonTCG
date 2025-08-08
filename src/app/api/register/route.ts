@@ -27,12 +27,20 @@ export async function POST(req: Request) {
     });
   }
 
-  const { email, password, username } = body;
+  const { email, password, username, walletAddress, profilePicture, country } =
+    body;
 
-  if (!email || !password || !username) {
+  if (
+    !email ||
+    !password ||
+    !username ||
+    !walletAddress ||
+    !profilePicture ||
+    !country
+  ) {
     return new Response(
       JSON.stringify({
-        error: "Email, password, and username are required.",
+        error: "Email, password, username, and wallet address are required.",
       }),
       { status: 400 }
     );
@@ -74,6 +82,8 @@ export async function POST(req: Request) {
       nextPackAt: malaysiaTime, // ← Malaysia time for pack availability
       role: "USER",
       walletAddress, // ✅ Include this if available
+      profilePicture, // ← Add this line
+      country, // ← And this
     },
   });
 

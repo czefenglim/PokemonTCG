@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { motion } from "framer-motion";
-import abi from "@/app/lib/pokemonCardABI.json";
-import pokemonList from "@/app/lib/pokemon-list.json";
+import nftAbi from "@/lib/pokemonCardABI.json";
+import pokemonList from "@/lib/pokemon-list.json";
 import { useSearchParams } from "next/navigation";
+import tradeAbi from "../../../../../lib/tradeCardABI.json";
 
 type OwnedCard = {
   tokenId: number;
@@ -26,13 +27,17 @@ export default function CollectionPage() {
 
   const searchParams = useSearchParams();
   const friendWallet = searchParams.get("friendWallet");
+  const tradeRequestId = searchParams.get("tradeRequestId");
 
-  useEffect(() => {
-    if (friendWallet) {
-      console.log("Trading with wallet:", friendWallet);
-      // Save to state or use directly for transaction
-    }
-  }, [friendWallet]);
+  const nftAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as string;
+  const tradeContractAddress = process.env.NEXT_PUBLIC_TRADE_CONTRACT as string;
+
+  // useEffect(() => {
+  //   if (friendWallet) {
+  //     console.log("Trading with wallet:", friendWallet);
+  //     // Save to state or use directly for transaction
+  //   }
+  // }, [friendWallet]);
 
   const loadCollection = async (userAddress: string) => {
     setLoading(true);
@@ -46,7 +51,7 @@ export default function CollectionPage() {
         throw new Error("Contract address not configured.");
       }
 
-      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const contract = new ethers.Contract(contractAddress, nftAbi, signer);
 
       const ids = pokemonList.map((p) => BigInt(p.tokenId));
       const addresses = ids.map(() => userAddress);
@@ -128,10 +133,6 @@ export default function CollectionPage() {
           Please connect your wallet using the sidebar to view your collection.
         </p>
       )}
-
-      <h1 className="text-4xl sm:text-5xl font-extrabold text-yellow-300 mb-8">
-        Select a Card to Trade
-      </h1>
 
       {/* ✅ Wallet Connected */}
       {address && (
@@ -295,55 +296,107 @@ export default function CollectionPage() {
       {selectedCard && (
         <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
           <button
+            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6 py-2 rounded-full shadow-xl transition"
             onClick={async () => {
-              const confirmed = window.confirm(
-                `Are you sure you want to select "${selectedCard?.name}" to trade?`
-              );
-              if (!confirmed || !selectedCard || !address || !friendWallet)
-                return;
+              if (!selectedCard || !tradeRequestId) return;
 
               try {
-                // Fetch user IDs by wallet addresses
-                const [senderRes, receiverRes] = await Promise.all([
-                  fetch(`/api/user?wallet=${address}`),
-                  fetch(`/api/user?wallet=${friendWallet}`),
-                ]);
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const signer = await provider.getSigner();
 
-                const sender = await senderRes.json();
-                const receiver = await receiverRes.json();
+                const nftContract = new ethers.Contract(
+                  nftAddress,
+                  nftAbi,
+                  signer
+                );
 
-                if (!sender?.id || !receiver?.id) {
-                  alert("Could not find sender or receiver user info.");
+                if (!tradeContractAddress) {
+                  console.error(
+                    "Trade contract address is not defined in .env"
+                  );
+                  alert("Trade contract address is not configured.");
                   return;
                 }
+                const tradeContract = new ethers.Contract(
+                  tradeContractAddress,
+                  tradeAbi,
+                  signer
+                );
 
-                // Send trade request
-                const response = await fetch("/api/tradeRequest/sendRequest", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    senderId: sender.id,
-                    receiverId: receiver.id,
-                    offeredCardId: selectedCard.tokenId,
-                  }),
-                });
+                const userAddress = await signer.getAddress();
 
-                const result = await response.json();
+                // 1️⃣ Approve tradeContract to transfer your NFT
+                const approveTx = await nftContract.setApprovalForAll(
+                  tradeContractAddress,
+                  true
+                );
+                await approveTx.wait();
 
-                if (response.ok) {
-                  alert("Trade request sent!");
-                  setSelectedCard(null);
+                // 2️⃣ Deposit your NFT into the trade contract using depositNFT
+                // Update your depositNFT call with these changes:
+                const depositTx = await tradeContract.depositNFT(
+                  userAddress,
+                  friendWallet,
+                  selectedCard.tokenId,
+                  false,
+                  {
+                    value: ethers.parseEther("0.0001"),
+                    gasLimit: 6000000, // Increased to 6M gas
+                  }
+                );
+
+                // Add error handling
+                try {
+                  const txReceipt = await depositTx.wait();
+                  console.log("Transaction mined:", txReceipt.transactionHash);
+                } catch (error) {
+                  console.error("Transaction failed:", error);
+                  if (
+                    typeof error === "object" &&
+                    error !== null &&
+                    "receipt" in error
+                  ) {
+                    console.log("Transaction receipt:", (error as any).receipt);
+                  }
+                  if (
+                    typeof error === "object" &&
+                    error !== null &&
+                    "reason" in error
+                  ) {
+                    alert(`Transaction failed: ${(error as any).reason}`);
+                  } else {
+                    alert("Transaction failed (check console for details)");
+                  }
+                }
+
+                await depositTx.wait();
+
+                // 3️⃣ Call your backend to update tradeRequest status & store receiver NFT data
+                const res = await fetch(
+                  "/api/tradeRequest/receiverAcceptTrade",
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      tradeRequestId,
+                      receiverCardId: selectedCard.tokenId,
+                    }),
+                  }
+                );
+
+                const data = await res.json();
+
+                if (res.ok) {
+                  alert("NFT deposited and trade status updated!");
                 } else {
-                  alert("Failed to send trade request: " + result.error);
+                  console.error("API error:", data.error);
+                  alert("Failed to update trade");
                 }
               } catch (err) {
-                console.error("Error during trade request:", err);
-                alert("An unexpected error occurred.");
+                console.error(err);
+                alert("Something went wrong");
               }
             }}
-            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6 py-2 rounded-full shadow-xl transition"
           >
             OK
           </button>

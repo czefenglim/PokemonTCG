@@ -6,27 +6,45 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+type Profile = {
+  email?: string;
+  gems?: number;
+  role?: string;
+  createdAt?: string;
+  username?: string;
+  walletAddress?: string;
+  profilePicture?: string; // Add this line
+};
+
 export default function EditProfile() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  type Profile = {
-    email?: string;
-    gems?: number;
-    role?: string;
-    createdAt?: string;
-    username?: string;
-    walletAddress?: string;
-  };
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [formData, setFormData] = useState({
     username: "",
     walletAddress: "",
+    profilePicture: "",
+    country: "", // Add this line
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showAvatarSelector, setShowAvatarSelector] = useState(false);
+  const avatars = [
+    "https://i.pinimg.com/564x/59/40/1c/59401cad1047716d7a916cae339dbf6b.jpg", // Ash
+    "https://preview.redd.it/put-my-avatar-in-a-misty-costume-for-halloween-v0-ewqonnongywd1.jpg?width=640&crop=smart&auto=webp&s=4e087c62f463302167a9199e38ea368d9e878485", // Misty
+    "https://imagedelivery.net/LBWXYQ-XnKSYxbZ-NuYGqQ/fee497b1-bf1e-44d0-b99c-ab256e6b8d00/avatarhd", // Brock
+    "https://cdn.costumewall.com/wp-content/uploads/2016/10/serena-pokemon-costume.jpg", // Serena
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsX070csr2Qhcc4sIfOG5M6L8zLiAExUA6vA&s", // Gary
+    "https://i.pinimg.com/736x/64/68/8d/64688d41df504d52071fd84852356ecb.jpg", // Professor Oak
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1BL3FlC2xopRJ43DV2hCy1VtkPqS0eGKtIw&s", // Nurse Joy
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ymgO-66nRZS9gcstj6Dp5ayW61hRTnIu-w&s", // Meow meow
+    "https://image1.gamme.com.tw/news2/2016/05/77/qZqYnaSYk6Kap6Q.jpg", // Musashi
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIwG39-AGz0YIc4wZsP-Y65yiBzXYS-H43dA&s", // James
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRH_keIoiDLL1bfJF2ZGTvFA6BvTvneJIFWAdafOurP_3qxj9qmWnoZIqMT97bnZtlkJU&usqp=CAU", // Wobbuffet
+  ];
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -49,6 +67,8 @@ export default function EditProfile() {
         setFormData({
           username: data.username || "",
           walletAddress: data.walletAddress || "",
+          profilePicture: data.profilePicture || "",
+          country: data.country || "", // Make sure this matches your API response
         });
       } else {
         setError(data.error || "Failed to fetch profile");
@@ -108,24 +128,30 @@ export default function EditProfile() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username: formData.username,
+          walletAddress: formData.walletAddress,
+          profilePicture: formData.profilePicture,
+          country: formData.country,
+        }),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        setSuccess("Profile updated successfully!");
-        setProfile(data);
-        // Redirect to view profile after 2 seconds
-        setTimeout(() => {
-          router.push("/viewProfile");
-        }, 2000);
-      } else {
-        setError(data.error || "Failed to update profile");
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to update profile");
       }
+
+      setSuccess("Profile updated successfully!");
+      setProfile(data);
+
+      // Redirect after 1.5 seconds to show success message
+      setTimeout(() => {
+        router.push("/user/profile/viewProfile");
+      }, 1500);
     } catch (error) {
       console.error("Error updating profile:", error);
-      setError("Failed to update profile. Please try again.");
+      setError(error.message || "Failed to update profile. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -229,7 +255,6 @@ export default function EditProfile() {
                   {success}
                 </div>
               )}
-
               {error && (
                 <div className="bg-red-900/30 border border-red-500/50 text-red-400 p-4 rounded-xl flex items-center backdrop-blur-sm">
                   <svg
@@ -247,7 +272,195 @@ export default function EditProfile() {
                   {error}
                 </div>
               )}
+              {/* Avatar Selection */}
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-slate-300">
+                  Trainer Avatar
+                </label>
+                <div className="flex flex-col items-center">
+                  <div
+                    className="relative group w-24 h-24 rounded-full border-4 border-yellow-400 shadow-lg cursor-pointer transition-all duration-300 hover:border-yellow-300 hover:shadow-yellow-500/50 mb-2"
+                    onClick={() => setShowAvatarSelector(!showAvatarSelector)}
+                  >
+                    {formData.profilePicture ? (
+                      <img
+                        src={formData.profilePicture}
+                        alt="Trainer Avatar"
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl">
+                        {formData.username
+                          ? formData.username.charAt(0).toUpperCase()
+                          : "?"}
+                      </div>
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity duration-300">
+                      <svg
+                        className="w-8 h-8 text-yellow-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowAvatarSelector(true)}
+                    className="text-sm text-yellow-400 hover:text-yellow-300 transition-colors"
+                  >
+                    Change Avatar
+                  </button>
+                </div>
+              </div>
+              {/* Avatar Selector Modal */}
+              {showAvatarSelector && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+                  <div className="relative bg-slate-800 rounded-2xl border border-yellow-500/30 shadow-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold text-yellow-400">
+                        Choose Your Trainer Avatar
+                      </h3>
+                      <button
+                        onClick={() => setShowAvatarSelector(false)}
+                        className="text-gray-400 hover:text-white"
+                      >
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
 
+                    <div className="grid grid-cols-3 gap-4">
+                      {avatars.map((avatar, index) => (
+                        <div
+                          key={index}
+                          className={`relative rounded-full border-4 cursor-pointer transition-all duration-200 ${
+                            formData.profilePicture === avatar
+                              ? "border-yellow-400 scale-105"
+                              : "border-transparent hover:border-yellow-300 hover:scale-105"
+                          }`}
+                          onClick={() => {
+                            setFormData((prev) => ({
+                              ...prev,
+                              profilePicture: avatar,
+                            }));
+                            setShowAvatarSelector(false);
+                          }}
+                        >
+                          <img
+                            src={avatar}
+                            alt={`Avatar ${index}`}
+                            className="w-full h-full rounded-full object-cover aspect-square"
+                          />
+                          {formData.profilePicture === avatar && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                              <svg
+                                className="w-8 h-8 text-yellow-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        onClick={() => setShowAvatarSelector(false)}
+                        className="px-6 py-2 bg-gradient-to-r from-yellow-600 to-orange-600 text-white font-bold rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all duration-300"
+                      >
+                        Confirm Selection
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Country Selection */}
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-slate-300 flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Country
+                </label>
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-green-600 rounded-xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
+                  <select
+                    name="country"
+                    value={formData.country}
+                    onChange={handleInputChange}
+                    className="relative w-full px-4 py-3 bg-slate-700/50 backdrop-blur-sm rounded-lg border border-white/10 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-white appearance-none"
+                    required
+                  >
+                    <option value="">Select your country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="JP">Japan</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="BR">Brazil</option>
+                    <option value="IN">India</option>
+                    <option value="SG">Singapore</option>
+                    <option value="MY">Malaysia</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-slate-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
               {/* Username Field */}
               <div className="space-y-4">
                 <label
@@ -289,7 +502,6 @@ export default function EditProfile() {
                   This will be your display name in the Pokémon TCG community
                 </p>
               </div>
-
               {/* Wallet Address Field */}
               <div className="space-y-4">
                 <label
@@ -316,35 +528,11 @@ export default function EditProfile() {
                       </div>
                     )}
                   </div>
-                  <button
-                    type="button"
-                    onClick={connectWallet}
-                    className="flex-shrink-0 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center group"
-                  >
-                    <span className="relative z-10 flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-2 group-hover:animate-bounce"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                      Connect
-                    </span>
-                  </button>
                 </div>
                 <p className="text-xs text-slate-400">
                   Connect your wallet to trade Pokémon cards and collectibles
                 </p>
               </div>
-
               {/* Current Profile Info */}
               <div className="bg-slate-700/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
                 <h3 className="text-sm font-semibold text-slate-300 mb-4 flex items-center">
@@ -465,7 +653,6 @@ export default function EditProfile() {
                   </div>
                 </div>
               </div>
-
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-8">
                 <button
@@ -522,7 +709,7 @@ export default function EditProfile() {
                 </button>
 
                 <Link
-                  href="/profile/viewProfile"
+                  href="/user/profile/viewProfile"
                   className="relative overflow-hidden group bg-slate-700 hover:bg-slate-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-slate-500/30 flex-1 text-center"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-3">

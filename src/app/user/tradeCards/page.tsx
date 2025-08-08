@@ -4,8 +4,8 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import nftAbi from "@/app/lib/pokemonCardABI.json";
-import tradeAbi from "@/app/lib/tradeCardABI.json";
+import nftAbi from "@/lib/pokemonCardABI.json";
+import tradeAbi from "@/lib/tradeCardABI.json";
 import { use } from "chai";
 
 export default function TradeCardsPage() {
@@ -25,7 +25,7 @@ export default function TradeCardsPage() {
   const tradeContractAddress = process.env.NEXT_PUBLIC_TRADE_CONTRACT as string;
 
   const handleTradeClick = () => {
-    router.push("/tradeCards/selectFriend");
+    router.push("/user/tradeCards/selectFriend");
   };
 
   const loadTradeCards = async () => {
@@ -118,14 +118,25 @@ export default function TradeCardsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ requestId, action }),
       });
-      const result = await res.json();
+
+      const text = await res.text(); // use text first
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        result = { message: text }; // fallback in case it's not JSON
+      }
+
       if (res.ok) {
         await fetchTradeRequests(address!);
       } else {
-        console.error("Failed:", result.message);
+        console.error(
+          "❌ Failed response:",
+          result.message || result || "Unknown error"
+        );
       }
     } catch (err) {
-      console.error("Error responding to received request:", err);
+      console.error("🔥 Exception in handleRespondToReceived:", err);
     } finally {
       setIsProcessing(false);
     }
@@ -167,7 +178,7 @@ export default function TradeCardsPage() {
           selectedTokenId,
           true,
           {
-            value: ethers.parseEther("0.1"),
+            value: ethers.parseEther("0.0001"),
           }
         );
         await depositTx.wait();
@@ -582,12 +593,17 @@ export default function TradeCardsPage() {
                   <>
                     <button
                       className={`flex-1 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
-                        selectedRequest.receiverStatus === "accepted"
+                        selectedRequest.receiverStatus === "accepted" ||
+                        selectedRequest.receiverStatus === "rejected"
                           ? "bg-gray-600/50 cursor-not-allowed opacity-50"
                           : "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg hover:shadow-red-500/30 hover:scale-105"
                       }`}
                       onClick={async () => {
                         if (selectedRequest.receiverStatus !== "accepted") {
+                          console.log(
+                            "Declining trade request:",
+                            selectedRequest.id
+                          );
                           await handleRespondToReceived(
                             selectedRequest.id,
                             "rejected"
@@ -604,7 +620,8 @@ export default function TradeCardsPage() {
                     </button>
                     <button
                       className={`flex-1 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
-                        selectedRequest.receiverStatus === "accepted"
+                        selectedRequest.receiverStatus === "accepted" ||
+                        selectedRequest.receiverStatus === "rejected"
                           ? "bg-gray-600/50 cursor-not-allowed opacity-50"
                           : "bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-emerald-500/30 hover:scale-105"
                       }`}
@@ -612,7 +629,7 @@ export default function TradeCardsPage() {
                         if (selectedRequest.receiverStatus !== "accepted") {
                           setShowModal(false);
                           router.push(
-                            `/tradeCards/selectCard/receiver?tradeRequestId=${selectedRequest.id}&friendWallet=${selectedRequest.sender.walletAddress}`
+                            `/user/tradeCards/selectCard/receiver?tradeRequestId=${selectedRequest.id}&friendWallet=${selectedRequest.sender.walletAddress}`
                           );
                         }
                       }}

@@ -4,16 +4,16 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const prisma = new PrismaClient();
   try {
-    const { tradeRequestId, action } = await req.json();
+    const { requestId, action } = await req.json();
 
     if (!["accepted", "rejected"].includes(action)) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
     const updated = await prisma.tradeRequest.update({
-      where: { id: tradeRequestId },
+      where: { id: requestId },
       data: {
-        senderStatus: action,
+        receiverStatus: action,
       },
     });
 

@@ -1,4 +1,4 @@
-import { cancelTrade } from "../../../lib/contract/cancelTrade";
+import { cancelTrade } from "../../../../lib/contract/cancelTrade";
 
 export async function POST(req: Request) {
   const body = await req.json();

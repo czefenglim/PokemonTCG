@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import pokemonList from "@/app/lib/pokemon-list.json";
+import pokemonList from "@/lib/pokemon-list.json";
 
 export async function GET(
   req: Request,

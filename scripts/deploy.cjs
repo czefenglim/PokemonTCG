@@ -17,28 +17,51 @@ async function main() {
     ethers.formatEther(await ethers.provider.getBalance(deployer.address)),
     "ETH"
   );
+  console.log("Deploying contract...");
 
   // 🔗 Base URI (switch depending on network)
   const BASE_URI =
     network.chainId === 31337n
       ? "http://localhost:3000/api/pokemon/"
-      : "https://ipfs.io/ipfs/QmbLwqnjh1hoiVazc126mL1gv6xZgm4sTcGkdZfdzU3cT6/";
+      : "https://ipfs.io/ipfs/QmUGayY6ZKVhCFS6NhqPQczfhg2BkBSmWQK1H1WJEhN7Xy/";
 
   // Deploy PokemonCard1155
   const PokemonCard1155 = await hre.ethers.getContractFactory(
     "PokemonCard1155"
   );
-  const contract = await PokemonCard1155.deploy(BASE_URI);
-  await contract.waitForDeployment();
+
+  // const contract = await PokemonCard1155.deploy(BASE_URI);
+
+  const feeData = await ethers.provider.getFeeData();
+
+  const contract = await PokemonCard1155.deploy(BASE_URI, {
+    gasPrice: feeData.gasPrice,
+    gasLimit: 5_000_000, // example, adjust as needed
+  });
+
+  const tx = contract.deploymentTransaction();
+  console.log("Deploy tx hash:", tx.hash);
+
+  await contract.waitForDeployment({ timeout: 60000 });
+
   console.log(`🃏 PokemonCard1155 deployed to: ${contract.target}`);
 
   // Deploy TradeContract
   const TradeContract = await hre.ethers.getContractFactory("TradeContract");
+  // const tradeContract = await TradeContract.deploy(
+  //   contract.target,
+  //   deployer.address
+  // );
   const tradeContract = await TradeContract.deploy(
     contract.target,
-    deployer.address
+    deployer.address,
+    {
+      gasPrice: feeData.gasPrice,
+      gasLimit: 5000000, // adjust if needed
+    }
   );
   await tradeContract.waitForDeployment();
+
   console.log(`🔄 TradeContract deployed to: ${tradeContract.target}`);
 
   // 📦 Load Pokémon JSON and set token IDs (only if localhost / dev)

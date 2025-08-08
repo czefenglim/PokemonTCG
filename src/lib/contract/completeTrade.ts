@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import tradeAbi from "../../lib/tradeCardABI.json";
 
 // === CONFIGURATION ===
-const RPC_URL = "http://127.0.0.1:8545"; // Local Hardhat node
+const RPC_URL = process.env.SEPOLIA_RPC_URL as string; // Local Hardhat node
 const PRIVATE_KEY = process.env.PRIVATE_KEY as string; // Your private key
 const TRADE_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_TRADE_CONTRACT as string; // Deployed TradeContract
 

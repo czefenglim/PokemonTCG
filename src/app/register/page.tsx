@@ -11,12 +11,37 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [pokemonSprite, setPokemonSprite] = useState("");
   const [pokemonSprite2, setPokemonSprite2] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [confirmWalletAddress, setConfirmWalletAddress] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [country, setCountry] = useState("");
+  const [showAvatarSelector, setShowAvatarSelector] = useState(false);
+
+  const avatars = [
+    "https://i.pinimg.com/564x/59/40/1c/59401cad1047716d7a916cae339dbf6b.jpg", // Ash
+    "https://preview.redd.it/put-my-avatar-in-a-misty-costume-for-halloween-v0-ewqonnongywd1.jpg?width=640&crop=smart&auto=webp&s=4e087c62f463302167a9199e38ea368d9e878485", // Misty
+    "https://imagedelivery.net/LBWXYQ-XnKSYxbZ-NuYGqQ/fee497b1-bf1e-44d0-b99c-ab256e6b8d00/avatarhd", // Brock
+    "https://cdn.costumewall.com/wp-content/uploads/2016/10/serena-pokemon-costume.jpg", // Serena
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsX070csr2Qhcc4sIfOG5M6L8zLiAExUA6vA&s", // Gary
+    "https://i.pinimg.com/736x/64/68/8d/64688d41df504d52071fd84852356ecb.jpg", // Professor Oak
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1BL3FlC2xopRJ43DV2hCy1VtkPqS0eGKtIw&s", // Nurse Joy
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ymgO-66nRZS9gcstj6Dp5ayW61hRTnIu-w&s", // Meow meow
+    "https://image1.gamme.com.tw/news2/2016/05/77/qZqYnaSYk6Kap6Q.jpg", // Musashi
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIwG39-AGz0YIc4wZsP-Y65yiBzXYS-H43dA&s", // James
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRH_keIoiDLL1bfJF2ZGTvFA6BvTvneJIFWAdafOurP_3qxj9qmWnoZIqMT97bnZtlkJU&usqp=CAU", // Wobbuffet
+  ];
+
   const router = useRouter();
 
   // State for client-side only animations
   const [mounted, setMounted] = useState(false);
   const [orbs, setOrbs] = useState<React.CSSProperties[]>([]);
   const [cards, setCards] = useState<React.CSSProperties[]>([]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * avatars.length);
+    setAvatarUrl(avatars[randomIndex]);
+  }, []);
 
   useEffect(() => {
     // Set mounted to true after component mounts
@@ -106,7 +131,14 @@ export default function RegisterPage() {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          walletAddress,
+          profilePicture: avatarUrl,
+          country, // This is already included in your code
+        }),
       });
 
       let data: any = {};
@@ -455,6 +487,137 @@ export default function RegisterPage() {
               </div>
             )}
 
+            {/* Avatar Selection */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="relative group">
+                <div
+                  className="w-24 h-24 rounded-full border-4 border-yellow-400 shadow-lg cursor-pointer transition-all duration-300 hover:border-yellow-300 hover:shadow-yellow-500/50"
+                  onClick={() => setShowAvatarSelector(!showAvatarSelector)}
+                >
+                  {avatarUrl && (
+                    <img
+                      src={avatarUrl}
+                      alt="Trainer Avatar"
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity duration-300">
+                    <svg
+                      className="w-8 h-8 text-yellow-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div className="absolute top-0 right-0 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-xs font-bold text-gray-900">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <p className="mt-2 text-sm text-yellow-400 font-medium">
+                Click to change avatar
+              </p>
+
+              {/* Avatar Selector Modal */}
+              {showAvatarSelector && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+                  <div className="relative bg-gray-800 rounded-2xl border border-yellow-500/30 shadow-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-xl font-bold text-yellow-400">
+                        Choose Your Trainer Avatar
+                      </h3>
+                      <button
+                        onClick={() => setShowAvatarSelector(false)}
+                        className="text-gray-400 hover:text-white"
+                      >
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4">
+                      {avatars.map((avatar, index) => (
+                        <div
+                          key={index}
+                          className={`relative rounded-full border-4 cursor-pointer transition-all duration-200 ${
+                            avatarUrl === avatar
+                              ? "border-yellow-400 scale-105"
+                              : "border-transparent hover:border-yellow-300 hover:scale-105"
+                          }`}
+                          onClick={() => {
+                            setAvatarUrl(avatar);
+                            setShowAvatarSelector(false);
+                          }}
+                        >
+                          <img
+                            src={avatar}
+                            alt={`Avatar ${index}`}
+                            className="w-full h-full rounded-full object-cover aspect-square"
+                          />
+                          {avatarUrl === avatar && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                              <svg
+                                className="w-8 h-8 text-yellow-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        onClick={() => setShowAvatarSelector(false)}
+                        className="px-6 py-2 bg-gradient-to-r from-yellow-600 to-orange-600 text-white font-bold rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all duration-300"
+                      >
+                        Confirm Selection
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div className="space-y-6">
               {/* Enhanced Input Fields */}
               <div className="group">
@@ -523,6 +686,65 @@ export default function RegisterPage() {
 
               <div className="group">
                 <label className="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                  <div className="w-5 h-5 mr-2 bg-gradient-to-r from-teal-400 to-green-500 rounded flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  Country
+                </label>
+                <div className="relative">
+                  <select
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="w-full px-5 py-4 bg-gray-800/90 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 backdrop-blur-sm group-hover:border-gray-500/70 appearance-none"
+                    required
+                  >
+                    <option value="">Select your country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="JP">Japan</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="BR">Brazil</option>
+                    <option value="IN">India</option>
+                    <option value="SG">Singapore</option>
+                    <option value="SG">Malaysia</option>
+                    {/* Add more countries as needed */}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">
+                    <svg
+                      className="w-5 h-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-500/0 to-teal-500/0 group-focus-within:from-teal-500/10 group-focus-within:to-green-500/10 transition-all duration-300 pointer-events-none"></div>
+                </div>
+              </div>
+
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
                   <div className="w-5 h-5 mr-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded flex items-center justify-center">
                     <svg
                       className="w-3 h-3 text-white"
@@ -582,6 +804,68 @@ export default function RegisterPage() {
                     required
                   />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 to-purple-500/0 group-focus-within:from-purple-500/10 group-focus-within:to-pink-500/10 transition-all duration-300 pointer-events-none"></div>
+                </div>
+              </div>
+
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                  <div className="w-5 h-5 mr-2 bg-gradient-to-r from-indigo-400 to-blue-500 rounded flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 11c0-1.104.896-2 2-2h4a2 2 0 110 4h-4a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </div>
+                  Wallet Address
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="0xYourWalletHere"
+                    value={walletAddress}
+                    onChange={(e) => setWalletAddress(e.target.value)}
+                    className="w-full px-5 py-4 bg-gray-800/90 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 backdrop-blur-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-200 mb-2 flex items-center">
+                  <div className="w-5 h-5 mr-2 bg-gradient-to-r from-indigo-400 to-blue-500 rounded flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 11c0-1.104.896-2 2-2h4a2 2 0 110 4h-4a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </div>
+                  Confirm Wallet Address
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="0xYourWalletHere"
+                    value={confirmWalletAddress}
+                    onChange={(e) => setConfirmWalletAddress(e.target.value)}
+                    className="w-full px-5 py-4 bg-gray-800/90 border-2 border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 backdrop-blur-sm"
+                    required
+                  />
                 </div>
               </div>
             </div>

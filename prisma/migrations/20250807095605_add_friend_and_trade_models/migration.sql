@@ -1,17 +1,14 @@
 /*
   Warnings:
 
-  - You are about to drop the `pokemon` table. If the table is not empty, all the data it contains will be lost.
-  - A unique constraint covering the columns `[username]` on the table `user` will be added. If there are existing duplicate values, this will fail.
   - A unique constraint covering the columns `[walletAddress]` on the table `user` will be added. If there are existing duplicate values, this will fail.
   - Added the required column `walletAddress` to the `user` table without a default value. This is not possible if the table is not empty.
 
 */
 -- AlterTable
-ALTER TABLE `user` ADD COLUMN `walletAddress` VARCHAR(191) NOT NULL;
-
--- DropTable
-DROP TABLE `pokemon`;
+ALTER TABLE `user` ADD COLUMN `country` VARCHAR(191) NULL,
+    ADD COLUMN `profilePicture` VARCHAR(191) NULL,
+    ADD COLUMN `walletAddress` VARCHAR(191) NOT NULL;
 
 -- CreateTable
 CREATE TABLE `friend_requests` (
@@ -34,24 +31,21 @@ CREATE TABLE `friends` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `TradeRequest` (
+CREATE TABLE `trade_request` (
     `id` VARCHAR(191) NOT NULL,
-    `sender_id` VARCHAR(191) NOT NULL,
-    `receiver_id` VARCHAR(191) NOT NULL,
+    `senderId` VARCHAR(191) NOT NULL,
+    `receiverId` VARCHAR(191) NOT NULL,
     `offeredCardId` INTEGER NOT NULL,
     `requestedCardId` INTEGER NULL,
-    `senderStatus` ENUM('pending', 'accepted', 'declined') NOT NULL DEFAULT 'pending',
-    `receiverStatus` ENUM('pending', 'accepted', 'declined') NOT NULL DEFAULT 'pending',
+    `senderStatus` ENUM('pending', 'accepted', 'rejected') NOT NULL DEFAULT 'pending',
+    `receiverStatus` ENUM('pending', 'accepted', 'rejected') NOT NULL DEFAULT 'pending',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    INDEX `TradeRequest_sender_id_idx`(`sender_id`),
-    INDEX `TradeRequest_receiver_id_idx`(`receiver_id`),
+    INDEX `trade_request_senderId_idx`(`senderId`),
+    INDEX `trade_request_receiverId_idx`(`receiverId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateIndex
-CREATE UNIQUE INDEX `user_username_key` ON `user`(`username`);
 
 -- CreateIndex
 CREATE UNIQUE INDEX `user_walletAddress_key` ON `user`(`walletAddress`);
@@ -69,10 +63,10 @@ ALTER TABLE `friends` ADD CONSTRAINT `friends_user_id_fkey` FOREIGN KEY (`user_i
 ALTER TABLE `friends` ADD CONSTRAINT `friends_friend_id_fkey` FOREIGN KEY (`friend_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TradeRequest` ADD CONSTRAINT `TradeRequest_sender_id_fkey` FOREIGN KEY (`sender_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `trade_request` ADD CONSTRAINT `trade_request_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TradeRequest` ADD CONSTRAINT `TradeRequest_receiver_id_fkey` FOREIGN KEY (`receiver_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `trade_request` ADD CONSTRAINT `trade_request_receiverId_fkey` FOREIGN KEY (`receiverId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- RenameIndex
 ALTER TABLE `user` RENAME INDEX `User_email_key` TO `user_email_key`;

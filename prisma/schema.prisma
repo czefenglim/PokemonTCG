@@ -16,12 +16,14 @@ model User {
   id              String   @id @default(uuid())
   email           String   @unique
   password        String
-  username        String?
+  username        String?  @unique
+  profilePicture  String?  // Optional URL to profile picture
+  country         String?  // Optional country name or code
   createdAt       DateTime @default(now())
   gems            Int      @default(100)
   nextPackAt      DateTime @default(now())
   role            Role     @default(USER)
-  walletAddress String   @unique
+  walletAddress   String   @unique
 
   // Friend Request Relations
   sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")

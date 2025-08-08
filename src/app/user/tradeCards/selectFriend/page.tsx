@@ -15,14 +15,14 @@ export default function SelectFriendPage() {
   const handleTradeClick = (walletAddress: string, username: string) => {
     setSelectedFriend(username);
     setTimeout(() => {
-      router.push(`/tradeCards/selectCard?friendWallet=${walletAddress}`);
+      router.push(`/user/tradeCards/selectCard?friendWallet=${walletAddress}`);
     }, 500);
   };
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const res = await fetch("../api/friends/getFriendList");
+        const res = await fetch("/api/friends/getFriendList");
         if (!res.ok) throw new Error("Failed to fetch friend list");
         const data = await res.json();
         setFriendList(data);

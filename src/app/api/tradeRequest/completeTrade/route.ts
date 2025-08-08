@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { completeTrade } from "../../../lib/contract/completeTrade";
+import { completeTrade } from "../../../../lib/contract/completeTrade";
 
 export async function POST(req: NextRequest) {
   try {

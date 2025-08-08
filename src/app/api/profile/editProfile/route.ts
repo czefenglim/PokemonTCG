@@ -14,7 +14,7 @@ export async function PUT(request) {
     }
 
     const body = await request.json();
-    const { username, walletAddress } = body;
+    const { username, walletAddress, country, profilePicture } = body;
 
     // Validation
     if (!username || username.trim().length < 3) {
@@ -30,6 +30,22 @@ export async function PUT(request) {
       return NextResponse.json(
         {
           error: "Invalid wallet address format",
+        },
+        { status: 400 }
+      );
+    }
+    if (country && typeof country !== "string") {
+      return NextResponse.json(
+        {
+          error: "Invalid country format",
+        },
+        { status: 400 }
+      );
+    }
+    if (profilePicture && typeof profilePicture !== "string") {
+      return NextResponse.json(
+        {
+          error: "Invalid profile picture format",
         },
         { status: 400 }
       );
@@ -76,6 +92,7 @@ export async function PUT(request) {
     }
 
     // Update user profile
+
     const updatedUser = await prisma.user.update({
       where: {
         email: session.user.email ?? "",
@@ -83,6 +100,8 @@ export async function PUT(request) {
       data: {
         username: username.trim(),
         ...(walletAddress && { walletAddress }),
+        ...(profilePicture && { profilePicture }), // Add this
+        ...(country && { country }), // Add this
       },
       select: {
         id: true,
@@ -92,7 +111,8 @@ export async function PUT(request) {
         createdAt: true,
         walletAddress: true,
         role: true,
-        nextPackAt: true,
+        profilePicture: true,
+        country: true,
       },
     });
 

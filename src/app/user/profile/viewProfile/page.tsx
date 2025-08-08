@@ -5,22 +5,22 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+
+type Profile = {
+  username?: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  gems: number;
+  friendCount?: number;
+  nextPackAt: string;
+  walletAddress?: string;
+  profilePicture?: string; // Add this line
+};
 
 export default function ViewProfile() {
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  type Profile = {
-    username?: string;
-    email: string;
-    role: string;
-    createdAt: string;
-    gems: number;
-    friendCount?: number;
-    nextPackAt: string;
-    walletAddress?: string;
-  };
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -213,12 +213,25 @@ export default function ViewProfile() {
               {/* Profile Avatar with Animation */}
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur opacity-20 group-hover:opacity-30 transition duration-500"></div>
-                <div className="relative w-32 h-32 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30 shadow-xl">
-                  <span className="text-5xl font-bold text-white">
-                    {profile.username
-                      ? profile.username.charAt(0).toUpperCase()
-                      : profile.email.charAt(0).toUpperCase()}
-                  </span>
+                <div className="relative w-32 h-32 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30 shadow-xl overflow-hidden">
+                  <img
+                    src={profile.profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "";
+                      e.currentTarget.parentElement!.innerHTML = `
+                        <span class="text-5xl font-bold text-white">
+                          ${
+                            profile.username
+                              ? profile.username.charAt(0).toUpperCase()
+                              : profile.email.charAt(0).toUpperCase()
+                          }
+                        </span>
+                      `;
+                    }}
+                  />
                 </div>
                 <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-400 rounded-full border-4 border-slate-800 flex items-center justify-center shadow-lg">
                   <div className="w-4 h-4 bg-green-600 rounded-full animate-pulse"></div>
@@ -434,7 +447,7 @@ export default function ViewProfile() {
             <div className="mt-12 pt-8 border-t border-slate-700">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Link
-                  href="/profile/editProfile"
+                  href="/user/profile/editProfile"
                   className="relative overflow-hidden group bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-5 px-6 rounded-xl text-center transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/30"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-3">

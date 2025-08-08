@@ -41,6 +41,8 @@ export async function GET(request) {
             userId: true, // Replace 'userId' with the correct field name from your schema
           },
         },
+        profilePicture: true,
+        country: true,
       },
     });
 
