@@ -3,166 +3,103 @@ const fs = require('fs');
 const path = require('path');
 
 async function main() {
-  console.log('🚀 Deploying Pokemon Card Contract...');
+  console.log('🚀 Starting Pokemon Card deployment...');
 
-  // Your metadata API URL
-  const BASE_URI = 'http://localhost:3000/api/pokemon/';
+  // 📖 Read Pokemon list to get dynamic count
+  const pokemonListPath = path.join(__dirname, '../src/lib/pokemon-list.json');
+  console.log(`📋 Reading Pokemon list from: ${pokemonListPath}`);
 
-  // Deploy contract
+  if (!fs.existsSync(pokemonListPath)) {
+    throw new Error(`❌ Pokemon list not found at: ${pokemonListPath}`);
+  }
+
+  const pokemonListData = fs.readFileSync(pokemonListPath, 'utf8');
+  const pokemonList = JSON.parse(pokemonListData);
+
+  // Get the actual count of Pokemon
+  const maxPokemonId = pokemonList.length;
+  console.log(`🎯 Found ${maxPokemonId} Pokemon in the list`);
+
+  // 🔗 Deploy contract
+  console.log('📦 Deploying PokemonCard1155 contract...');
+
+  const [deployer] = await ethers.getSigners();
+  console.log('💼 Deploying with account:', deployer.address);
+
   const PokemonCard1155 = await ethers.getContractFactory('PokemonCard1155');
-  const contract = await PokemonCard1155.deploy(BASE_URI);
+
+  const baseURI = 'http://localhost:3000/api/pokemon/';
+  console.log(`🔗 Base URI: ${baseURI}`);
+  console.log(`🎯 Max Pokemon ID: ${maxPokemonId}`);
+
+  console.log('⏳ Deploying contract (this may take a moment)...');
+
+  // Deploy with both baseURI and dynamic maxPokemonId
+  const contract = await PokemonCard1155.deploy(baseURI, maxPokemonId);
 
   await contract.waitForDeployment();
   const contractAddress = await contract.getAddress();
 
-  console.log('📝 Contract deployed to:', contractAddress);
-  console.log('🔗 Base URI set to:', BASE_URI);
+  console.log('🎉 Contract deployed successfully!');
+  console.log(`📍 Contract Address: ${contractAddress}`);
 
-  // Load Pokemon data from your JSON file
-  try {
-    const pokemonPath = path.join(__dirname, '../src/lib/pokemon-list.json');
-    const pokemonData = JSON.parse(fs.readFileSync(pokemonPath, 'utf8'));
-    const tokenIds = pokemonData.map((p) => p.tokenId);
-
-    console.log(`🎯 Found ${tokenIds.length} Pokemon in JSON file`);
-
-    if (tokenIds.length > 1000) {
-      // Set first 1000 Pokemon for gas efficiency
-      console.log('⚠️  Setting first 1000 Pokemon to avoid gas issues...');
-      const firstBatch = tokenIds.slice(0, 1000);
-
-      const tx = await contract.setValidTokenIds(firstBatch);
-      await tx.wait();
-
-      console.log(`✅ First 1000 Pokemon set successfully!`);
-      console.log(
-        `📋 Remaining ${tokenIds.length - 1000} Pokemon can be added later`
-      );
-    } else {
-      // Set all Pokemon if reasonable number
-      console.log('📦 Setting all Pokemon...');
-      const tx = await contract.setValidTokenIds(tokenIds);
-      await tx.wait();
-      console.log('✅ All Pokemon set successfully!');
-    }
-  } catch (error) {
-    console.log('⚠️  Could not load Pokemon data:', error.message);
-    console.log('   You can set valid token IDs manually later');
-  }
-
-  // Test contract functionality
-  console.log('\n🧪 Testing contract...');
-  try {
-    // Test 1: Check available Pokemon count
-    const availableIds = await contract.getAvailableTokenIds();
-    console.log(`✅ Available Pokemon: ${availableIds.length}`);
-
-    // Test 2: Check if specific Pokemon exist
-    const testIds = [1, 25, 150]; // Weedle, Pikachu, Mewtwo
-    for (const id of testIds) {
-      const isValid = await contract.isValidTokenId(id);
-      if (isValid) {
-        const uri = await contract.uri(id);
-        console.log(`✅ Pokemon ${id}: ${uri}`);
-      } else {
-        console.log(`❌ Pokemon ${id}: Not available`);
-      }
-    }
-
-    // Test 3: Test random Pokemon generation
-    if (availableIds.length > 0) {
-      const randomIds = await contract.getRandomPokemonIds(5, Date.now());
-      console.log(
-        `✅ Random Pokemon sample: ${randomIds.map((id) => id.toString())}`
-      );
-    }
-
-    // Test 4: Test pack minting (to contract owner)
-    console.log('\n🎁 Testing pack minting...');
-    const [owner] = await ethers.getSigners();
-
-    if (availableIds.length >= 3) {
-      const testMintIds = availableIds.slice(0, 3); // First 3 Pokemon
-      const amounts = [1, 1, 1]; // 1 of each
-
-      const mintTx = await contract.mintCardsForPack(
-        owner.address,
-        testMintIds,
-        amounts
-      );
-      await mintTx.wait();
-
-      console.log(
-        `✅ Test pack minted! Pokemon: ${testMintIds.map((id) =>
-          id.toString()
-        )}`
-      );
-
-      // Check balances
-      for (const id of testMintIds) {
-        const balance = await contract.balanceOf(owner.address, id);
-        console.log(`   Pokemon ${id}: Balance = ${balance.toString()}`);
-      }
-    }
-  } catch (error) {
-    console.log('⚠️  Contract test failed:', error.message);
-  }
-
-  // Save deployment information
+  // Save deployment info to JSON
   const deploymentInfo = {
-    contractAddress: contractAddress,
+    contractAddress,
     contractName: 'PokemonCard1155',
     network: 'localhost',
-    baseURI: BASE_URI,
+    baseURI,
+    maxPokemonId,
+    totalPokemonCount: maxPokemonId,
     deployedAt: new Date().toISOString(),
-    totalPokemon: 0, // Will be updated based on actual deployment
-    gasUsed: 'N/A',
+    deployer: deployer.address,
   };
 
-  // Update with actual Pokemon count
-  try {
-    const finalCount = await contract.getTotalPokemonTypes();
-    deploymentInfo.totalPokemon = parseInt(finalCount.toString());
-  } catch (error) {
-    console.log('Could not get final Pokemon count');
-  }
-
-  // Save to file
   const deploymentPath = path.join(__dirname, '../contract-deployment.json');
   fs.writeFileSync(deploymentPath, JSON.stringify(deploymentInfo, null, 2));
+  console.log('\n💾 Deployment info saved to: contract-deployment.json');
 
-  // Final summary
-  console.log('\n🎉 Deployment Complete!');
-  console.log('📋 Contract Address:', contractAddress);
-  console.log('💾 Deployment info saved to: contract-deployment.json');
-  console.log('\n🔧 Integration Info:');
-  console.log(`   Contract Address: "${contractAddress}"`);
-  console.log(`   Base URI: "${BASE_URI}"`);
-  console.log(`   Available Pokemon: ${deploymentInfo.totalPokemon}`);
+  // ✅ Auto-update .env with contract address
+  const envPath = path.join(__dirname, '../.env');
+  let envContents = '';
 
-  console.log('\n🚀 Next Steps:');
-  console.log(
-    '1. Update your pack opening component with this contract address'
-  );
-  console.log(
-    '2. Test API endpoints: curl http://localhost:3000/api/pokemon/1'
-  );
-  console.log('3. Test pack opening in your app');
-  console.log('4. Check NFTs in MetaMask wallet');
-
-  if (deploymentInfo.totalPokemon < 100) {
-    console.log('\n💡 To add more Pokemon:');
-    console.log(
-      '   npx hardhat run scripts/add-more-pokemon.cjs --network localhost'
-    );
+  if (fs.existsSync(envPath)) {
+    envContents = fs.readFileSync(envPath, 'utf8');
+    if (envContents.includes('NEXT_PUBLIC_CONTRACT_ADDRESS=')) {
+      envContents = envContents.replace(
+        /NEXT_PUBLIC_CONTRACT_ADDRESS=.*/g,
+        `NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`
+      );
+    } else {
+      envContents += `\nNEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`;
+    }
+  } else {
+    envContents = `NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`;
   }
 
-  return contractAddress;
+  fs.writeFileSync(envPath, envContents);
+  console.log(
+    `\n✅ Updated .env with new contract address: ${contractAddress}`
+  );
+
+  console.log('\n🎯 NEXT STEPS:');
+  console.log('1. Start your frontend with: npm run dev');
+  console.log(
+    '2. Your app will use the updated contract address automatically'
+  );
+  console.log(`3. Random Pokemon generation will use IDs 1-${maxPokemonId}`);
+  console.log(
+    '4. Users can now interact with the deployed Pokemon card contract!'
+  );
 }
 
 main()
-  .then(() => process.exit(0))
+  .then(() => {
+    console.log('\n✅ Deployment completed successfully!');
+    console.log('🎮 Ready for pack opening!');
+    process.exit(0);
+  })
   .catch((error) => {
-    console.error('💥 Deployment failed:', error);
+    console.error('❌ Deployment failed:', error);
     process.exit(1);
   });

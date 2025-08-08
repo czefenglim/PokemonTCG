@@ -84,7 +84,7 @@ export const FEATURES_CONFIG: Feature[] = [
   },
   {
     id: 'collection',
-    title: 'Card Vault',
+    title: 'Collection',
     subtitle: 'COLLECTION',
     desc: 'Showcase your legendary collection in an immersive gallery',
     href: '/user/collection',
@@ -136,7 +136,7 @@ export const FEATURES_CONFIG: Feature[] = [
   },
   {
     id: 'leaderboard',
-    title: 'Hall of Fame',
+    title: 'Leaderboard',
     subtitle: 'RANKINGS',
     desc: 'Climb the global leaderboard and earn legendary status',
     href: '/user/leaderboard',
