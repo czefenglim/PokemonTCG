@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
-import tradeAbi from "../../lib/tradeCardABI.json";
+import { ethers } from 'ethers';
+import tradeAbi from '../../lib/tradeCardABI.json';
 
 // === CONFIGURATION ===
 const RPC_URL = process.env.SEPOLIA_RPC_URL as string; // Local Hardhat node
@@ -20,16 +20,16 @@ async function cancelTrade(address1: string, address2: string): Promise<void> {
   try {
     const tradeId = generateTradeId(address1, address2);
     const trade = await tradeContract.trades(tradeId);
-    console.log("📄 Trade details before cancellation:", trade);
+    console.log('📄 Trade details before cancellation:', trade);
 
     // Call the cancelTrade method (sender must be wallet.address)
 
     const tx = await tradeContract.cancelTrade(address1, address2);
-    console.log("⏳ Cancel transaction sent! Hash:", tx.hash);
+    console.log('⏳ Cancel transaction sent! Hash:', tx.hash);
     await tx.wait();
-    console.log("✅ Trade cancelled successfully!");
+    console.log('✅ Trade cancelled successfully!');
   } catch (error) {
-    console.error("❌ Error during trade cancellation:", error);
+    console.error('❌ Error during trade cancellation:', error);
   }
 }
 
@@ -39,7 +39,7 @@ function generateTradeId(addr1: string, addr2: string): string {
     addr1.toLowerCase() < addr2.toLowerCase() ? [addr1, addr2] : [addr2, addr1];
 
   return ethers.keccak256(
-    ethers.solidityPacked(["address", "address"], [first, second])
+    ethers.solidityPacked(['address', 'address'], [first, second])
   );
 }
 

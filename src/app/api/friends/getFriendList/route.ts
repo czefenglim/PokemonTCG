@@ -28,7 +28,7 @@ export async function GET() {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching friend list:", error);
+    console.error("Error fetching friends:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
 }

@@ -30,35 +30,27 @@ export async function GET(req: NextRequest) {
  * Creates a new gem package.
  * Access restricted to ADMIN users only.
  */
-export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-
-  if (!session || session.user.role !== 'ADMIN') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
-  }
-
+export async function POST(req: Request) {
   try {
     const data = await req.json();
 
-    const created = await prisma.gemPackage.create({ data });
+    // Ensure proper type conversion
+    const created = await prisma.merchandise.create({
+      data: {
+        name: data.name,
+        price: parseFloat(data.price),
+        quantity: parseInt(data.quantity),
+        active: Boolean(data.active),
+        description: data.description || undefined,
+        imageUrl: data.imageUrl || undefined,
+      },
+    });
 
-    return NextResponse.json(created, { status: 201 });
-  } catch (error: any) {
-    // Handle duplicate stripeId
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2002' &&
-      error.meta?.target?.includes('stripeId')
-    ) {
-      return NextResponse.json(
-        { error: 'Stripe ID must be unique' },
-        { status: 400 }
-      );
-    }
-
-    console.error('POST /gem-packages error:', error);
+    return NextResponse.json(created);
+  } catch (err) {
+    console.error('Merchandise POST error:', err);
     return NextResponse.json(
-      { error: 'Unexpected server error' },
+      { error: 'Failed to create merchandise' },
       { status: 500 }
     );
   }

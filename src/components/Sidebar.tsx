@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useGems } from "@/context/GemContext";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useDisconnect } from "wagmi";
+import { useDisconnect, useAccount, useConnect, useChainId } from "wagmi";
 import { signOut } from "next-auth/react";
 import clsx from "clsx";
 import {
@@ -14,6 +15,10 @@ import {
   WifiOff,
   ChevronDown,
   Gem,
+  AlertTriangle,
+  RefreshCw,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import ConfirmLogoutModal from "@/components/ConfirmLogoutModal";
 import { getFeaturesForSidebar } from "@/lib/features-config";
@@ -24,10 +29,40 @@ export default function Sidebar() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [gems, setGems] = useState(0);
-  const [gemsLoading, setGemsLoading] = useState(true);
+  const { gems, gemsLoading } = useGems();
+
+  // 🆕 Enhanced wallet state management
+  const [connectionError, setConnectionError] = useState(null);
+  const [showConnectionStatus, setShowConnectionStatus] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const { disconnect } = useDisconnect();
+  const { isConnected, isConnecting, isReconnecting, address } = useAccount();
+  const chainId = useChainId();
+  const {
+    connect,
+    connectors,
+    error: connectError,
+    isLoading,
+    pendingConnector,
+  } = useConnect({
+    onError(error) {
+      console.error("Connection error (hidden from user):", error);
+      setConnectionError(getUserFriendlyError(error));
+      setShowConnectionStatus(true);
+
+      // Auto-hide error after 5 seconds
+      setTimeout(() => {
+        setConnectionError(null);
+        setShowConnectionStatus(false);
+      }, 5000);
+    },
+    onSuccess() {
+      setConnectionError(null);
+      setShowConnectionStatus(false);
+      setRetryCount(0);
+    },
+  });
 
   // Get navigation items from config
   const navItems = getFeaturesForSidebar();
@@ -35,6 +70,42 @@ export default function Sidebar() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 🛡️ User-friendly error message converter
+  const getUserFriendlyError = (error) => {
+    if (!error) return null;
+
+    const errorString = error.toString().toLowerCase();
+    const errorMessage = error.message?.toLowerCase() || "";
+
+    // Common RainbowKit/wagmi error patterns
+    if (error.code === 4001 || errorMessage.includes("user rejected")) {
+      return 'Connection cancelled. Click "Connect Wallet" when ready!';
+    }
+
+    if (error.code === -32002 || errorMessage.includes("already pending")) {
+      return "Please check MetaMask for a pending connection request.";
+    }
+
+    if (errorMessage.includes("connector not found")) {
+      return "Wallet not detected. Please install MetaMask and refresh the page.";
+    }
+
+    if (errorMessage.includes("network")) {
+      return "Network connection issue. Please check your internet connection.";
+    }
+
+    if (errorMessage.includes("timeout")) {
+      return "Connection timed out. Please try again.";
+    }
+
+    if (errorMessage.includes("metamask") && errorMessage.includes("install")) {
+      return "MetaMask is required. Please install MetaMask and refresh the page.";
+    }
+
+    // Fallback friendly message
+    return "Connection failed. Please check MetaMask and try again.";
+  };
 
   // Close wallet menu when clicking outside
   useEffect(() => {
@@ -48,68 +119,32 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showWalletMenu]);
 
-  // Fetch user gems
-  useEffect(() => {
-    const fetchGems = async () => {
-      try {
-        const response = await fetch("/api/user/gems");
-        if (response.ok) {
-          const data = await response.json();
-          setGems(data.gems);
-          // Store in localStorage for cross-component sync
-          localStorage.setItem("userGems", data.gems.toString());
-        } else {
-          console.error("Failed to fetch gems");
-        }
-      } catch (error) {
-        console.error("Error fetching gems:", error);
-      } finally {
-        setGemsLoading(false);
-      }
-    };
-
-    if (mounted) {
-      fetchGems();
-    }
-  }, [mounted]);
-
-  // 🔥 NEW: Listen for gem updates from other components (like pack page)
-  useEffect(() => {
-    // Load gems from localStorage on mount
-    const storedGems = localStorage.getItem("userGems");
-    if (storedGems && !gemsLoading) {
-      setGems(parseInt(storedGems));
-    }
-
-    // Listen for gem updates from pack page
-    const handleGemsUpdate = (event) => {
-      if (event.detail?.gems !== undefined) {
-        setGems(event.detail.gems);
-        localStorage.setItem("userGems", event.detail.gems.toString());
-      }
-    };
-
-    // Listen for localStorage changes (cross-tab sync)
-    const handleStorageChange = (event) => {
-      if (event.key === "userGems" && event.newValue) {
-        setGems(parseInt(event.newValue));
-      }
-    };
-
-    // Add event listeners
-    window.addEventListener("gemsUpdated", handleGemsUpdate);
-    window.addEventListener("storage", handleStorageChange);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("gemsUpdated", handleGemsUpdate);
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, [gemsLoading]);
-
   const handleDisconnect = () => {
-    disconnect();
-    setShowWalletMenu(false);
+    try {
+      disconnect();
+      setShowWalletMenu(false);
+      setConnectionError(null);
+      setShowConnectionStatus(false);
+    } catch (error) {
+      console.error("Disconnect error:", error);
+      // Usually disconnect doesn't fail, but just in case
+    }
+  };
+
+  // 🔄 Retry connection function
+  const handleRetryConnection = () => {
+    setRetryCount((prev) => prev + 1);
+    setConnectionError(null);
+    setShowConnectionStatus(false);
+
+    // Try to reconnect with MetaMask if available
+    const metaMaskConnector = connectors.find(
+      (connector) => connector.name === "MetaMask"
+    );
+
+    if (metaMaskConnector) {
+      connect({ connector: metaMaskConnector });
+    }
   };
 
   return (
@@ -130,7 +165,7 @@ export default function Sidebar() {
           <div className="flex items-center gap-3 relative z-10 flex-1">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg overflow-hidden bg-white/5">
               <img
-                src="https://archives.bulbagarden.net/media/upload/f/f4/Pok%C3%A9Coin.png"
+                src="https://cdn-icons-png.flaticon.com/512/188/188926.png"
                 alt="Pokémon Logo"
                 className="w-full h-full object-contain"
                 onError={(e) => {
@@ -233,7 +268,7 @@ export default function Sidebar() {
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                {gemsLoading ? (
+                {gemsLoading || gems === undefined ? (
                   <div className="flex items-center gap-1">
                     <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin"></div>
                     <span className="font-bold text-white/60 text-lg">...</span>
@@ -252,7 +287,28 @@ export default function Sidebar() {
         </div>
       )}
 
-      {/* Enhanced Connect Button with Disconnect Option */}
+      {/* 🆕 Connection Status Banner - Only show for actual errors, not network issues */}
+      {!collapsed && connectionError && !chainId && (
+        <div className="mb-4">
+          <div className="px-3 py-2 rounded-lg border bg-red-500/10 border-red-500/30 text-red-300 text-xs">
+            <div className="flex items-center gap-2">
+              <XCircle size={14} className="flex-shrink-0" />
+              <span className="flex-1">{connectionError}</span>
+              {retryCount < 3 && (
+                <button
+                  onClick={handleRetryConnection}
+                  className="flex-shrink-0 p-1 hover:bg-white/10 rounded transition-colors"
+                  title="Retry connection"
+                >
+                  <RefreshCw size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Connect Button with Better Error Handling */}
       <div className="mb-6 relative wallet-menu-container">
         {mounted ? (
           <ConnectButton.Custom>
@@ -261,6 +317,7 @@ export default function Sidebar() {
               chain,
               openAccountModal,
               openConnectModal,
+              openChainModal,
               authenticationStatus,
               mounted: connectButtonMounted,
             }) => {
@@ -273,6 +330,11 @@ export default function Sidebar() {
                 (!authenticationStatus ||
                   authenticationStatus === "authenticated");
 
+              // Show connection states
+              const showConnecting =
+                isConnecting || isReconnecting || isLoading;
+              const showError = connectError && !showConnecting;
+
               return (
                 <div
                   {...(!ready && {
@@ -283,7 +345,7 @@ export default function Sidebar() {
                       userSelect: "none",
                     },
                   })}
-                  className="w-full"
+                  className="w-full space-y-2"
                 >
                   {connected ? (
                     <>
@@ -300,20 +362,22 @@ export default function Sidebar() {
 
                         {collapsed ? (
                           <div className="relative z-10 w-8 h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                            {account.displayName?.[0]}
+                            <CheckCircle size={16} />
                           </div>
                         ) : (
                           <>
                             <div className="flex items-center gap-3 relative z-10">
                               <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                                {account.displayName?.[0]}
+                                {account.displayName?.[0] || (
+                                  <CheckCircle size={16} />
+                                )}
                               </div>
-                              <div className="flex flex-col items-start">
+                              <div className="flex flex-col items-start text-left w-full">
                                 <span className="font-medium text-white text-sm">
                                   {account.displayName}
                                 </span>
                                 <span className="text-xs text-green-300">
-                                  Connected • {chain.name}
+                                  Connected {chain?.name || "Unknown Network"}
                                 </span>
                               </div>
                             </div>
@@ -333,6 +397,41 @@ export default function Sidebar() {
                       {/* Wallet Dropdown Menu */}
                       {showWalletMenu && !collapsed && (
                         <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800/95 backdrop-blur-sm border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+                          {/* Account Info */}
+                          <div className="px-4 py-3 border-b border-white/10">
+                            <p className="text-white text-sm font-medium truncate">
+                              {account.displayName}
+                            </p>
+                            <p className="text-white/60 text-xs">
+                              {chain?.name || "Unknown Network"} •{" "}
+                              {address?.slice(0, 6)}...{address?.slice(-4)}
+                            </p>
+                          </div>
+
+                          {/* Switch Network (if chain is wrong) */}
+                          {chainId !== 31337 && (
+                            <button
+                              onClick={() => {
+                                openChainModal();
+                                setShowWalletMenu(false);
+                              }}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-yellow-500/10 transition-colors text-left group"
+                            >
+                              <AlertTriangle
+                                size={16}
+                                className="text-yellow-400"
+                              />
+                              <div className="flex-1">
+                                <span className="text-yellow-400 text-sm font-medium">
+                                  Switch Network
+                                </span>
+                                <p className="text-yellow-400/60 text-xs">
+                                  Connect to Localhost for pack opening
+                                </p>
+                              </div>
+                            </button>
+                          )}
+
                           {/* Disconnect Button */}
                           <button
                             onClick={handleDisconnect}
@@ -355,21 +454,49 @@ export default function Sidebar() {
                       )}
                     </>
                   ) : (
-                    <button
-                      onClick={openConnectModal}
-                      type="button"
-                      className={clsx(
-                        "group relative flex items-center justify-center w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-xl transition-all duration-200 font-semibold shadow-lg shadow-blue-500/20 overflow-hidden",
-                        collapsed && "justify-center"
-                      )}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    // Connection Button with States
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => {
+                          setConnectionError(null);
+                          setShowConnectionStatus(true);
+                          openConnectModal();
+                        }}
+                        disabled={showConnecting}
+                        type="button"
+                        className={clsx(
+                          "group relative flex items-center justify-center w-full px-4 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg overflow-hidden",
+                          collapsed && "justify-center",
+                          showConnecting
+                            ? "bg-gradient-to-r from-blue-400 to-blue-500 cursor-not-allowed"
+                            : showError
+                            ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 shadow-red-500/20"
+                            : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-blue-500/20",
+                          "text-white"
+                        )}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
-                      <div className="relative z-10 flex items-center gap-2">
-                        <Wallet size={18} />
-                        {!collapsed && <span>Connect Wallet</span>}
-                      </div>
-                    </button>
+                        <div className="relative z-10 flex items-center gap-2">
+                          {showConnecting ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              {!collapsed && <span>Connecting...</span>}
+                            </>
+                          ) : showError ? (
+                            <>
+                              <XCircle size={18} />
+                              {!collapsed && <span>Retry Connection</span>}
+                            </>
+                          ) : (
+                            <>
+                              <Wallet size={18} />
+                              {!collapsed && <span>Connect Wallet</span>}
+                            </>
+                          )}
+                        </div>
+                      </button>
+                    </div>
                   )}
                 </div>
               );
@@ -409,7 +536,7 @@ export default function Sidebar() {
           <ConfirmLogoutModal
             isOpen={showLogoutConfirm}
             onClose={() => setShowLogoutConfirm(false)}
-            onConfirm={() => signOut({ callbackUrl: "/" })}
+            onConfirm={() => signOut({ callbackUrl: "/login" })}
           />
         </div>
       )}

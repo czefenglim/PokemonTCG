@@ -51,7 +51,7 @@ export async function GET(request) {
     }
 
     // Calculate friend count
-    const friendCount = user.friends.length + user.friendOf.length;
+    const friendCount = user.friends.length;
 
     // Remove the arrays and add the count
     const { friends, friendOf, ...userProfile } = user;
@@ -62,7 +62,6 @@ export async function GET(request) {
 
     return NextResponse.json(profileData);
   } catch (error) {
-    console.error("Profile fetch error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   const session = await getServerSession(authOptions as AuthOptions);
-  console.log("Session in inventory route:", session);
 
   if (!session) {
     return new Response("Unauthorized", { status: 401 });
@@ -28,7 +27,7 @@ export async function GET() {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching friend requests:", error);
+    console.error("Error fetching received friend requests:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
 }

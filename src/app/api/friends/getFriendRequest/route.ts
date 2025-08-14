@@ -30,7 +30,7 @@ export async function GET() {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error fetching friend requests:", error);
+    console.error("Error fetching received friend requests:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
 }

@@ -12,6 +12,7 @@ enum Role {
   ADMIN
 }
 
+
 model User {
   id              String   @id @default(uuid())
   email           String   @unique
@@ -40,25 +41,31 @@ model User {
   // Relations
   gemPurchases    GemPurchase[]
 
+  transactions Transaction[]
+  
+  // Game/Battle Relations for Leaderboard
+  createdRooms    Room[]   @relation("RoomCreator")
+  player1Rooms    Room[]   @relation("Player1") 
+  player2Rooms    Room[]   @relation("Player2")
+  wonRooms        Room[]   @relation("RoomWinner")
+
   @@map("user")
 }
 
 model GemPackage {
   id                  String   @id @default(uuid())
-  amount              Int      // Number of gems in the package
-  priceCents          Int      // Price in cents (e.g., 700 for $7.00)
+  amount              Int      
+  priceCents          Int      
   currency            String   @default("USD")
-  stripeId            String   @unique // Stripe Price ID
-  badge               String?  // "Starter", "Popular", "Best Value", etc.
+  stripeId            String   @unique 
+  badge               String?  
   popular             Boolean  @default(false)
   active              Boolean  @default(true)
-  discountPercentage  Int      @default(0) // 0-100 percentage
+  discountPercentage  Int      @default(0) 
   
-  // Metadata
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   
-  // Relations
   purchases           GemPurchase[]
   
   @@map("gem_packages")
@@ -68,17 +75,15 @@ model GemPurchase {
   id            String      @id @default(uuid())
   userId        String
   packageId     String
-  amount        Int         // Gems purchased
-  priceCents    Int         // Amount paid in cents
+  amount        Int         
+  priceCents    Int         
   currency      String      @default("USD")
-  stripeId      String?     // Stripe Payment Intent ID
+  stripeId      String?     
   status        PurchaseStatus @default(PENDING)
   
-  // Timestamps
   createdAt     DateTime    @default(now())
   completedAt   DateTime?
   
-  // Relations
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   package       GemPackage  @relation(fields: [packageId], references: [id])
   
@@ -149,3 +154,95 @@ enum TradeStatus {
   accepted
   rejected
 }
+
+// Main model for tracking Pokemon TCG battles - REQUIRED FOR LEADERBOARD
+model Room {
+  id            String   @id @default(uuid())
+  name          String
+  isPrivate     Boolean  @default(false)
+  password      String?
+  players       Int      @default(1)
+  isFinished    Boolean  @default(false)  // KEY: Used to find completed games
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Player and winner tracking - REQUIRED FOR LEADERBOARD
+  creatorId     String
+  winnerId      String?  // KEY: Who won the game (for win streaks)
+  player1Id     String   // KEY: First player
+  player2Id     String?  // KEY: Second player
+  
+  // Game extras (optional)
+  player1DeckId String?
+  player2DeckId String?
+  player1Avatar String?  @db.Text
+  player2Avatar String?  @db.Text
+  player1Ready  Boolean  @default(false)
+  player2Ready  Boolean  @default(false)
+  
+  // Wager system 
+  wagerGems     Int?     
+  wagerRarity   String?  @db.VarChar(50)
+  wagerCardId1  String?
+  wagerCardId2  String?
+  
+  // Relations to User model - THESE MUST MATCH User model relations above
+  creator       User     @relation("RoomCreator", fields: [creatorId], references: [id])
+  player1       User     @relation("Player1", fields: [player1Id], references: [id]) 
+  player2       User?    @relation("Player2", fields: [player2Id], references: [id])
+  winner        User?    @relation("RoomWinner", fields: [winnerId], references: [id])
+  
+  // Indexes for fast leaderboard queries
+  @@index([isFinished])
+  @@index([createdAt]) 
+  @@index([winnerId])
+  @@index([player1Id])
+  @@index([player2Id])
+}
+
+model Merchandise {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  quantity    Int
+  currency    String   @default("USD")
+  active      Boolean  @default(true)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id             String     @id @default(uuid())
+  merchandiseId  String
+  merchandise    Merchandise @relation(fields: [merchandiseId], references: [id])
+  quantity       Int
+  totalAmount    Float
+  currency       String      @default("USD")
+
+  // Buyer details
+  location       String
+  phoneNumber    String
+  email          String?     // Optional
+
+  // Associate with User
+  userId         String
+  user           User       @relation(fields: [userId], references: [id])
+
+  // Tracking
+  status         TransactionStatus 
+  paymentRef     String?           // e.g., Stripe payment ID
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum TransactionStatus {
+  SHIPPED
+  COMPLETED
+}
+
+

@@ -7,9 +7,15 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:seed": "node prisma/seed.js",
+    "db:reset": "npx prisma migrate reset && npm run db:seed"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.30.1",
     "@heroicons/react": "^2.2.0",
     "@openzeppelin/contracts": "^5.4.0",
     "@pinata/sdk": "^2.1.0",
@@ -17,6 +23,7 @@
     "@rainbow-me/rainbowkit": "^2.2.8",
     "@react-three/drei": "^10.5.1",
     "@react-three/fiber": "^9.2.0",
+    "@stripe/stripe-js": "^7.8.0",
     "@tanstack/query-core": "^5.83.0",
     "@tanstack/react-query": "^5.83.0",
     "axios": "^1.10.0",
@@ -30,13 +37,15 @@
     "framer-motion-3d": "^12.4.13",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.525.0",
+    "luxon": "^3.7.1",
     "next": "^15.3.5",
     "next-auth": "^4.24.11",
     "nft.storage": "^7.2.0",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "stripe": "^18.3.0",
+    "recharts": "^3.1.2",
+    "stripe": "^18.4.0",
     "three": "^0.178.0",
     "vanilla-tilt": "^1.8.1",
     "viem": "^2.33.1",

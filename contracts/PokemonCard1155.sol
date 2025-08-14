@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract PokemonCard1155 is ERC1155, Ownable {
     string private _baseURI;
 
+    // Dynamic maximum Pokemon ID based on your Pokemon list
+    uint256 public maxPokemonId;
+
     // Track total supply of each Pokemon
     mapping(uint256 => uint256) public totalSupply;
 
@@ -17,9 +20,23 @@ contract PokemonCard1155 is ERC1155, Ownable {
         uint256 amount
     );
     event BaseURIUpdated(string newBaseURI);
+    event MaxPokemonIdUpdated(uint256 newMaxId);
 
-    constructor(string memory baseURI) ERC1155("") Ownable(msg.sender) {
+    constructor(
+        string memory baseURI,
+        uint256 _maxPokemonId
+    ) ERC1155("") Ownable(msg.sender) {
         _baseURI = baseURI;
+        maxPokemonId = _maxPokemonId;
+    }
+
+    /**
+     * Update the maximum Pokemon ID - call this when you add new Pokemon to your list
+     */
+    function setMaxPokemonId(uint256 _maxPokemonId) external onlyOwner {
+        require(_maxPokemonId > 0, "Max Pokemon ID must be greater than 0");
+        maxPokemonId = _maxPokemonId;
+        emit MaxPokemonIdUpdated(_maxPokemonId);
     }
 
     /**
@@ -38,6 +55,10 @@ contract PokemonCard1155 is ERC1155, Ownable {
         for (uint256 i = 0; i < tokenIds.length; i++) {
             require(amounts[i] > 0, "Amount must be greater than 0");
             require(tokenIds[i] > 0, "Token ID must be greater than 0");
+            require(
+                tokenIds[i] <= maxPokemonId,
+                "Token ID exceeds maximum Pokemon ID"
+            );
         }
 
         // Mint the NFTs to the caller
@@ -60,6 +81,7 @@ contract PokemonCard1155 is ERC1155, Ownable {
     ) external onlyOwner {
         require(to != address(0), "Cannot mint to zero address");
         require(tokenId > 0, "Token ID must be greater than 0");
+        require(tokenId <= maxPokemonId, "Token ID exceeds maximum Pokemon ID");
         require(amount > 0, "Amount must be greater than 0");
 
         _mint(to, tokenId, amount, "");
@@ -68,23 +90,51 @@ contract PokemonCard1155 is ERC1155, Ownable {
     }
 
     /**
-     * Get random Pokemon IDs for pack opening
+     * Get random Pokemon IDs for pack opening - now uses dynamic maxPokemonId
      */
     function getRandomPokemonIds(
         uint256 count,
         uint256 seed
     ) external view returns (uint256[] memory) {
         require(count > 0 && count <= 10, "Count must be between 1 and 10");
+        require(maxPokemonId > 0, "No Pokemon available");
 
         uint256[] memory randomIds = new uint256[](count);
 
         for (uint256 i = 0; i < count; i++) {
-            // Generate random Pokemon IDs from 1 to 1000
+            // Generate random Pokemon IDs from 1 to maxPokemonId (dynamic!)
             uint256 randomId = (uint256(
                 keccak256(
                     abi.encodePacked(seed, i, block.timestamp, block.prevrandao)
                 )
-            ) % 1000) + 1;
+            ) % maxPokemonId) + 1;
+
+            randomIds[i] = randomId;
+        }
+
+        return randomIds;
+    }
+
+    /**
+     * Alternative: Get random Pokemon IDs with custom max (for flexibility)
+     */
+    function getRandomPokemonIdsWithMax(
+        uint256 count,
+        uint256 seed,
+        uint256 customMaxId
+    ) external view returns (uint256[] memory) {
+        require(count > 0 && count <= 10, "Count must be between 1 and 10");
+        require(customMaxId > 0, "Custom max ID must be greater than 0");
+        require(customMaxId <= maxPokemonId, "Custom max exceeds contract max");
+
+        uint256[] memory randomIds = new uint256[](count);
+
+        for (uint256 i = 0; i < count; i++) {
+            uint256 randomId = (uint256(
+                keccak256(
+                    abi.encodePacked(seed, i, block.timestamp, block.prevrandao)
+                )
+            ) % customMaxId) + 1;
 
             randomIds[i] = randomId;
         }
@@ -103,9 +153,6 @@ contract PokemonCard1155 is ERC1155, Ownable {
             abi.encodePacked(_baseURI, _toString(tokenId), ".json")
         );
     }
-
-
-    
 
 
     /**

@@ -9,6 +9,8 @@ import {
   Trophy,
   Swords,
   User,
+  Repeat,
+  ListOrdered,
 } from "lucide-react";
 
 export interface Feature {
@@ -88,11 +90,11 @@ export const FEATURES_CONFIG: Feature[] = [
     title: "Trade Cards With Friends",
     subtitle: "TRADECARDS",
     desc: "Trade cards with friends and build your ultimate collection",
-    href: "/user/tradeCards",
+    href: "/user/tradeCards/tradeHome",
     image:
-      "https://www.indy100.com/media-library/image.gif?id=28085442&width=800&quality=85",
+      "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzF6bW8xdWExcGZ2cHBhdmlicGo5cGNtZTVrdnJrMXAxMjczcWcyYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x9YbrUtvXTXldtGOTr/giphy.gif",
     icon: "🏪",
-    lucideIcon: ShoppingCart,
+    lucideIcon: Repeat,
     stats: { value: "14", label: "Active Trades" },
     bgGradient: "from-cyan-400/20 via-blue-500/20 to-indigo-500/20",
     borderGradient: "from-cyan-400 to-blue-500",
@@ -103,7 +105,7 @@ export const FEATURES_CONFIG: Feature[] = [
   },
   {
     id: "collection",
-    title: "Card Vault",
+    title: "Collection",
     subtitle: "COLLECTION",
     desc: "Showcase your legendary collection in an immersive gallery",
     href: "/user/collection",
@@ -155,7 +157,7 @@ export const FEATURES_CONFIG: Feature[] = [
   },
   {
     id: "leaderboard",
-    title: "Hall of Fame",
+    title: "Leaderboard",
     subtitle: "RANKINGS",
     desc: "Climb the global leaderboard and earn legendary status",
     href: "/user/leaderboard",
@@ -194,7 +196,8 @@ export const FEATURES_CONFIG: Feature[] = [
     subtitle: "YOUR ACCOUNT",
     desc: "Manage your account, wallet, and personal settings",
     href: "/user/profile/viewProfile",
-    image: "https://media.tenor.com/OvXvHjG0jM8AAAAM/pikachu-pokemon.gif",
+    image:
+      "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NzlnYWs1NGgxa2FhNm51aXhwdTRtMDRlaGkzMWc4aWFwZnk1c2lndSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5RxNQCK01NdAc/giphy.gif",
     icon: "👤",
     lucideIcon: User,
     stats: { value: "NEW", label: "Customize" },
@@ -203,6 +206,24 @@ export const FEATURES_CONFIG: Feature[] = [
     glowColor: "shadow-gray-500/30",
     showInSidebar: true,
     sidebarOrder: 8, // 👈 next available order
+    category: "core",
+  },
+  {
+    id: "orders",
+    title: "Orders",
+    subtitle: "Your Order History",
+    desc: "View and manage all your past and current orders", // updated description
+    href: "/user/orders",
+    image:
+      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWxncW5hc3g1YTI0Nmx5amRubTd1MWY2dWNzb3YweWVzaDhscXZrcCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/eGLE18Dg6W0GvupRhO/giphy.gif",
+    icon: "🛒", // updated icon
+    lucideIcon: ListOrdered,
+    stats: { value: "NEW", label: "Customize" },
+    bgGradient: "from-purple-400/20 via-violet-500/20 to-indigo-500/20",
+    borderGradient: "from-purple-400 to-violet-500",
+    glowColor: "shadow-purple-500/30",
+    showInSidebar: true,
+    sidebarOrder: 8,
     category: "core",
   },
 ];
