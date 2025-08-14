@@ -15,6 +15,21 @@ export default function HomePage() {
   );
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
+  useEffect(() => {
+    // try saved choice first
+    const saved =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('selectedAvatar')
+        : null;
+
+    if (saved) {
+      setAvatarUrl(saved);
+    } else if (session?.user?.image) {
+      // fallback to the user's auth image
+      setAvatarUrl(session.user.image);
+    }
+  }, [session?.user?.image]);
+
   if (status === 'loading') {
     return (
       <main className="flex items-center justify-center min-h-screen">

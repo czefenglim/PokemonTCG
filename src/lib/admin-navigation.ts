@@ -1,22 +1,5 @@
 // lib/admin-navigation.ts
-import { Home, ShoppingBag, Gem } from 'lucide-react';
-
-export interface NavigationItem {
-  id: string;
-  title: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-  description?: string;
-  features?: string[];
-  color?: string; // For gradient colors
-}
-
-export interface NavigationSection {
-  id: string;
-  title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  items: NavigationItem[];
-}
+import { Home, ShoppingBag, Gem, CreditCard, Receipt } from 'lucide-react';
 
 export const adminNavigation: NavigationSection[] = [
   {
@@ -54,9 +37,24 @@ export const adminNavigation: NavigationSection[] = [
         color: 'from-blue-400 to-cyan-500',
       },
       {
+        id: 'gem-transactions',
+        title: 'Gem Transactions',
+        href: '/admin/gem-purchase',
+        icon: CreditCard,
+        description:
+          'Monitor gem package purchases, payments, and digital currency transactions',
+        features: [
+          'Gem Purchases',
+          'Payment Processing',
+          'Digital Currency',
+          'Purchase Analytics',
+        ],
+        color: 'from-emerald-400 to-teal-500',
+      },
+      {
         id: 'merchandise',
         title: 'Merchandise',
-        href: '/admin/manage-merchandise',
+        href: '/admin/merchandise-purchase',
         icon: ShoppingBag,
         description:
           'Complete merchandise lifecycle management with inventory tracking and order processing',
@@ -67,6 +65,21 @@ export const adminNavigation: NavigationSection[] = [
           'Shipping',
         ],
         color: 'from-purple-400 to-pink-500',
+      },
+      {
+        id: 'merchandise-transactions',
+        title: 'Merchandise Orders',
+        href: '/admin/merchandise-transactions',
+        icon: Receipt,
+        description:
+          'Track physical product orders, shipping, and merchandise payment processing',
+        features: [
+          'Order Management',
+          'Shipping Tracking',
+          'Refund Processing',
+          'Sales Analytics',
+        ],
+        color: 'from-orange-400 to-red-500',
       },
     ],
   },
