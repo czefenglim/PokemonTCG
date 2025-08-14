@@ -1,0 +1,15 @@
+{
+  "name": "Moltres",
+  "description": "Known as the legendary bird of fire. Every flap of its wings creates a dazzling flash of flames.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

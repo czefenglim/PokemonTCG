@@ -1,0 +1,15 @@
+{
+  "name": "Marowak",
+  "description": "The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ground"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

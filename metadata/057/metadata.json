@@ -1,0 +1,15 @@
+{
+  "name": "Primeape",
+  "description": "Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/57.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

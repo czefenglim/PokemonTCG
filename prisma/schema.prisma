@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:0183944118@localhost:3306/pokemon"
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  password        String
+  username        String?
+  createdAt       DateTime @default(now())
+  gems            Int      @default(100)
+  nextPackAt      DateTime @default(now())
+  role            Role     @default(USER)
+  
+  // Original Relations
+  gemPurchases    GemPurchase[]
+  
+  // Game/Battle Relations for Leaderboard
+  createdRooms    Room[]   @relation("RoomCreator")
+  player1Rooms    Room[]   @relation("Player1") 
+  player2Rooms    Room[]   @relation("Player2")
+  wonRooms        Room[]   @relation("RoomWinner")
+model pokemon {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  rarity      String
+  imageUri    String
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model user {
+  id        String   @id @default(uuid())
+  email     String   @unique(map: "User_email_key")
+  password  String
+  createdAt DateTime @default(now())
+  username  String
+  decks     Deck[]
+}
+
+model Deck {
+  id          String     @id @default(uuid())
+  name        String
+  userId      String
+  userAddress String
+  createdAt   DateTime   @default(now())
+  user        user       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Deck_userId_fkey")
+  cards       DeckCard[]
+
+  @@index([userId], map: "userId_idx")
+  @@map("deck")
+}
+
+model DeckCard {
+  id       String @id @default(uuid())
+  deckId   String
+  tokenId  String
+  name     String
+  imageUrl String @db.Text
+  rarity   String
+  type     String
+  deck     Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([deckId], map: "deck_card_deckId_fkey")
+  @@map("deck_card")
+model GemPackage {
+  id                  String   @id @default(uuid())
+  amount              Int      
+  priceCents          Int      
+  currency            String   @default("USD")
+  stripeId            String   @unique 
+  badge               String?  
+  popular             Boolean  @default(false)
+  active              Boolean  @default(true)
+  discountPercentage  Int      @default(0) 
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  purchases           GemPurchase[]
+  
+  @@map("gem_packages")
+}
+
+model GemPurchase {
+  id            String      @id @default(uuid())
+  userId        String
+  packageId     String
+  amount        Int         
+  priceCents    Int         
+  currency      String      @default("USD")
+  stripeId      String?     
+  status        PurchaseStatus @default(PENDING)
+  
+  createdAt     DateTime    @default(now())
+  completedAt   DateTime?
+  
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package       GemPackage  @relation(fields: [packageId], references: [id])
+  
+  @@map("gem_purchases")
+}
+
+// Main model for tracking Pokemon TCG battles - REQUIRED FOR LEADERBOARD
+model Room {
+  id            String   @id @default(uuid())
+  name          String
+  isPrivate     Boolean  @default(false)
+  password      String?
+  players       Int      @default(1)
+  isFinished    Boolean  @default(false)  // KEY: Used to find completed games
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Player and winner tracking - REQUIRED FOR LEADERBOARD
+  creatorId     String
+  winnerId      String?  // KEY: Who won the game (for win streaks)
+  player1Id     String   // KEY: First player
+  player2Id     String?  // KEY: Second player
+  
+  // Game extras (optional)
+  player1DeckId String?
+  player2DeckId String?
+  player1Avatar String?  @db.Text
+  player2Avatar String?  @db.Text
+  player1Ready  Boolean  @default(false)
+  player2Ready  Boolean  @default(false)
+  
+  // Wager system 
+  wagerGems     Int?     
+  wagerRarity   String?  @db.VarChar(50)
+  wagerCardId1  String?
+  wagerCardId2  String?
+  
+  // Relations to User model - THESE MUST MATCH User model relations above
+  creator       User     @relation("RoomCreator", fields: [creatorId], references: [id])
+  player1       User     @relation("Player1", fields: [player1Id], references: [id]) 
+  player2       User?    @relation("Player2", fields: [player2Id], references: [id])
+  winner        User?    @relation("RoomWinner", fields: [winnerId], references: [id])
+  
+  // Indexes for fast leaderboard queries
+  @@index([isFinished])
+  @@index([createdAt]) 
+  @@index([winnerId])
+  @@index([player1Id])
+  @@index([player2Id])
+}
+
+model Merchandise {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  quantity    Int
+  currency    String   @default("USD")
+  active      Boolean  @default(true)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model room {
+  id            String   @id
+  name          String
+  isPrivate     Boolean  @default(false)
+  password      String?
+  players       Int      @default(1)
+  isFinished    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  creatorId     String
+  winnerId      String?
+  player1Id     String
+  player2Id     String?
+  player1DeckId String?
+  player2DeckId String?
+  player1Avatar String?  @db.Text
+  player2Avatar String?  @db.Text
+  player1Ready  Boolean  @default(false)
+  player2Ready  Boolean  @default(false)
+  wagerRarity   String?  @db.VarChar(50)
+  wagerCardId1  String?
+  wagerCardId2  String?
+}

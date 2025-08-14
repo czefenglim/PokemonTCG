@@ -1,0 +1,15 @@
+{
+  "name": "Caterpie",
+  "description": "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Electrode",
+  "description": "It stores electric energy under very high pressure. It often explodes with little or no provocation.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/101.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "electric"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Clefable",
+  "description": "A timid fairy POKéMON that is rarely seen. It will run and hide the moment it senses people.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fairy"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

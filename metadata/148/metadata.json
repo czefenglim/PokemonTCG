@@ -1,0 +1,15 @@
+{
+  "name": "Dragonair",
+  "description": "A mystical POKéMON that exudes a gentle aura. Has the ability to change climate conditions.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/148.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "dragon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

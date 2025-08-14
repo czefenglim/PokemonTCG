@@ -1,0 +1,15 @@
+{
+  "name": "Vulpix",
+  "description": "At the time of birth, it has just one tail. The tail splits from its tip as it grows older.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/37.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

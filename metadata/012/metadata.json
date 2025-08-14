@@ -1,0 +1,15 @@
+{
+  "name": "Butterfree",
+  "description": "In battle, it flaps its wings at high speed to release highly toxic dust into the air.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "bug"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

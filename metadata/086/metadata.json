@@ -1,0 +1,15 @@
+{
+  "name": "Seel",
+  "description": "The protruding horn on its head is very hard. It is used for bashing through thick ice.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/86.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

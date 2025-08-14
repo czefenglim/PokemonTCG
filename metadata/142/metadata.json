@@ -1,0 +1,15 @@
+{
+  "name": "Aerodactyl",
+  "description": "A Pokémon that roamed the skies in the dinosaur era. Its teeth are like saw blades.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "rock"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

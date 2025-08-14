@@ -1,0 +1,15 @@
+{
+  "name": "Tentacool",
+  "description": "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/72.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

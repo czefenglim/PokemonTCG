@@ -1,0 +1,15 @@
+{
+  "name": "Psyduck",
+  "description": "While lulling its enemies with its vacant look, this wily POKéMON will use psychokinetic powers.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}
