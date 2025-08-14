@@ -116,17 +116,6 @@ export default function NFTGameFeatureSection() {
                     <p className="text-slate-200 text-sm leading-relaxed mb-4">
                       {feature.desc}
                     </p>
-
-                    {/* Stats Badge */}
-                    <div className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-full px-3 py-2 border border-white/10">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-white text-xs font-semibold">
-                        {feature.stats.value}
-                      </span>
-                      <span className="text-slate-300 text-xs">
-                        {feature.stats.label}
-                      </span>
-                    </div>
                   </div>
 
                   {/* Action Button - Appears on Hover */}

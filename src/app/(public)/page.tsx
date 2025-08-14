@@ -197,7 +197,7 @@ export default function CyberPokemonLanding() {
       <motion.div
         className="absolute inset-0"
         style={{
-          y: useTransform(scrollYProgress, [0, 1], [0, -200]),
+          y: useTransform(scrollYProgress, [0, 1], [0, -160]),
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-cyan-900/20"></div>
@@ -750,8 +750,8 @@ export default function CyberPokemonLanding() {
           </div>
         </motion.div>
 
-        {/* Enhanced blockchain features */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20 max-w-5xl mx-auto">
+        {/* Enhanced blockchain features — equal height cards */}
+        <div className="grid md:grid-cols-3 gap-8 mb-10 max-w-5xl mx-auto items-stretch auto-rows-fr">
           {[
             {
               icon: '🔐',
@@ -777,35 +777,37 @@ export default function CyberPokemonLanding() {
           ].map((feature, i) => (
             <motion.div
               key={i}
-              className="relative group"
+              className="relative group h-full" // ⬅️ fill the grid track
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 + i * 0.1 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
-              <div className="relative bg-gray-900/50 backdrop-blur border border-gray-800 rounded-2xl p-8 hover:border-cyan-400/30 transition-all">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all" />
+              <div className="relative h-full flex flex-col bg-gray-900/50 backdrop-blur border border-gray-800 rounded-2xl p-8 hover:border-cyan-400/30 transition-all">
                 <div className="text-5xl mb-4">{feature.icon}</div>
                 <h3
                   className={`text-xl font-bold mb-3 bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}
                 >
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <p className="text-gray-400 text-sm leading-relaxed flex-1">
                   {feature.description}
                 </p>
+                {/* add a CTA/badge here and it will stick to the bottom */}
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Footer */}
-        <motion.div
-          className="text-center py-8 border-t border-gray-800"
-          initial={{ opacity: 0 }}
+        {/* Full-width gradient line above footer */}
+        <div className="w-screen h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-100 -mx-[calc((100vw-100%)/2)]"></div>
+
+        <motion.footer
+          className="relative z-20 w-full grid h-24 place-content-center gap-3 text-center bg-black/50 backdrop-blur"
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
         >
-          <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="flex items-center justify-center gap-3 mt-15">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
@@ -821,15 +823,40 @@ export default function CyberPokemonLanding() {
               POWERED BY <span className="text-cyan-400">ETHEREUM</span>
             </span>
           </div>
-          <p className="text-xs text-gray-600">
-            © 2024 Pokémon Cyber Chain. Not affiliated with Nintendo, Game
-            Freak, or The Pokémon Company.
-          </p>
-        </motion.div>
-      </div>
 
-      {/* Animated cyber lines */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
+          <p className="text-xs text-gray-600">
+            © {new Date().getFullYear()} Cyber Creatures (Coursework). Not
+            affiliated with Nintendo, Game Freak, Creatures, or The Pokémon
+            Company. No official artwork, logos, or character names used.
+          </p>
+
+          <nav className="text-[12px] text-gray-400 flex justify-center gap-6">
+            <Link
+              href="?about=1"
+              scroll={false}
+              className="hover:text-cyan-300"
+            >
+              About
+            </Link>
+            <a
+              href="mailto:ganminghui0000@gmail.com"
+              className="hover:text-cyan-300"
+            >
+              Contact
+            </a>
+            <a
+              href="https://github.com/czefenglim/PokemonTCG"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-cyan-300"
+            >
+              GitHub
+            </a>
+          </nav>
+
+          {/* Full-width cyan line inside footer */}
+        </motion.footer>
+      </div>
     </div>
   );
 }

@@ -1,105 +1,82 @@
+// scripts/deploy.js
 const { ethers } = require('hardhat');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
+
+function mustEndWithSlash(uri) {
+  if (!uri.endsWith('/')) throw new Error(`Base URI must end with '/': ${uri}`);
+  return uri;
+}
 
 async function main() {
   console.log('🚀 Starting Pokemon Card deployment...');
 
-  // 📖 Read Pokemon list to get dynamic count
+  // Load pokemon count
   const pokemonListPath = path.join(__dirname, '../src/lib/pokemon-list.json');
-  console.log(`📋 Reading Pokemon list from: ${pokemonListPath}`);
-
   if (!fs.existsSync(pokemonListPath)) {
     throw new Error(`❌ Pokemon list not found at: ${pokemonListPath}`);
   }
-
-  const pokemonListData = fs.readFileSync(pokemonListPath, 'utf8');
-  const pokemonList = JSON.parse(pokemonListData);
-
-  // Get the actual count of Pokemon
+  const pokemonList = JSON.parse(fs.readFileSync(pokemonListPath, 'utf8'));
   const maxPokemonId = pokemonList.length;
   console.log(`🎯 Found ${maxPokemonId} Pokemon in the list`);
 
-  // 🔗 Deploy contract
-  console.log('📦 Deploying PokemonCard1155 contract...');
+  // Resolve baseURI (prefer .env, fallback to your CID)
+  const baseURI = mustEndWithSlash(
+    process.env.NEXT_PUBLIC_BASE_URI ||
+      'ipfs://QmUGayY6ZKVhCFS6NhqPQczfhg2BkBSmWQK1H1WJEhN7Xy/'
+  );
 
   const [deployer] = await ethers.getSigners();
-  console.log('💼 Deploying with account:', deployer.address);
+  console.log('💼 Deployer:', deployer.address);
+  console.log('🔗 Base URI:', baseURI);
 
   const PokemonCard1155 = await ethers.getContractFactory('PokemonCard1155');
-
-  const baseURI = 'http://localhost:3000/api/pokemon/';
-  console.log(`🔗 Base URI: ${baseURI}`);
-  console.log(`🎯 Max Pokemon ID: ${maxPokemonId}`);
-
-  console.log('⏳ Deploying contract (this may take a moment)...');
-
-  // Deploy with both baseURI and dynamic maxPokemonId
+  console.log('⏳ Deploying…');
   const contract = await PokemonCard1155.deploy(baseURI, maxPokemonId);
-
   await contract.waitForDeployment();
   const contractAddress = await contract.getAddress();
+  console.log('🎉 Deployed at:', contractAddress);
 
-  console.log('🎉 Contract deployed successfully!');
-  console.log(`📍 Contract Address: ${contractAddress}`);
-
-  // Save deployment info to JSON
+  // Save deployment info
   const deploymentInfo = {
     contractAddress,
     contractName: 'PokemonCard1155',
-    network: 'localhost',
+    network: (hre.network && hre.network.name) || 'localhost',
     baseURI,
     maxPokemonId,
     totalPokemonCount: maxPokemonId,
     deployedAt: new Date().toISOString(),
     deployer: deployer.address,
   };
+  fs.writeFileSync(
+    path.join(__dirname, '../contract-deployment.json'),
+    JSON.stringify(deploymentInfo, null, 2)
+  );
+  console.log('💾 Saved contract-deployment.json');
 
-  const deploymentPath = path.join(__dirname, '../contract-deployment.json');
-  fs.writeFileSync(deploymentPath, JSON.stringify(deploymentInfo, null, 2));
-  console.log('\n💾 Deployment info saved to: contract-deployment.json');
-
-  // ✅ Auto-update .env with contract address
+  // Upsert .env with address & base URI
   const envPath = path.join(__dirname, '../.env');
-  let envContents = '';
+  let env = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
 
-  if (fs.existsSync(envPath)) {
-    envContents = fs.readFileSync(envPath, 'utf8');
-    if (envContents.includes('NEXT_PUBLIC_CONTRACT_ADDRESS=')) {
-      envContents = envContents.replace(
-        /NEXT_PUBLIC_CONTRACT_ADDRESS=.*/g,
-        `NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`
-      );
-    } else {
-      envContents += `\nNEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`;
-    }
-  } else {
-    envContents = `NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`;
+  function upsert(key, value) {
+    const re = new RegExp(`^${key}=.*$`, 'm');
+    if (re.test(env)) env = env.replace(re, `${key}=${value}`);
+    else env += (env.endsWith('\n') ? '' : '\n') + `${key}=${value}\n`;
   }
 
-  fs.writeFileSync(envPath, envContents);
+  upsert('NEXT_PUBLIC_CONTRACT_ADDRESS', contractAddress);
+  upsert('NEXT_PUBLIC_BASE_URI', baseURI);
+
+  fs.writeFileSync(envPath, env);
   console.log(
-    `\n✅ Updated .env with new contract address: ${contractAddress}`
+    '✅ .env updated (NEXT_PUBLIC_CONTRACT_ADDRESS, NEXT_PUBLIC_BASE_URI)'
   );
 
-  console.log('\n🎯 NEXT STEPS:');
-  console.log('1. Start your frontend with: npm run dev');
-  console.log(
-    '2. Your app will use the updated contract address automatically'
-  );
-  console.log(`3. Random Pokemon generation will use IDs 1-${maxPokemonId}`);
-  console.log(
-    '4. Users can now interact with the deployed Pokemon card contract!'
-  );
+  console.log('\n✅ Deployment complete. Ready for pack opening!');
 }
 
-main()
-  .then(() => {
-    console.log('\n✅ Deployment completed successfully!');
-    console.log('🎮 Ready for pack opening!');
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error('❌ Deployment failed:', error);
-    process.exit(1);
-  });
+main().catch((e) => {
+  console.error('❌ Deployment failed:', e);
+  process.exit(1);
+});

@@ -231,7 +231,7 @@ export default function AdminGemPackagesPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+      <div className="min-h-screen  flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 mx-auto mb-4 border-4 border-purple-300 rounded-full animate-spin border-t-transparent"></div>
           <p className="text-white text-xl">Loading gem packages...</p>
@@ -250,7 +250,7 @@ export default function AdminGemPackagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {emojiPositions.map((pos, i) => (
           <motion.div
@@ -278,7 +278,7 @@ export default function AdminGemPackagesPage() {
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="border-b border-white/10 backdrop-blur-md bg-white/5"
+          className="border-b border-white/10 backdrop-blur-md"
         >
           <div className="max-w-7xl mx-auto px-6 py-8">
             <div className="flex items-center justify-between">

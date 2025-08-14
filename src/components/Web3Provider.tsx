@@ -36,7 +36,7 @@ const wagmiConfig = getDefaultConfig({
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'demo', // 👈 Added fallback
   chains,
   ssr: true,
-  autoConnect: true, // 👈 enables automatic reconnect after reload
+  autoConnect: false, // 👈 enables automatic reconnect after reload
 });
 
 const queryClient = new QueryClient();

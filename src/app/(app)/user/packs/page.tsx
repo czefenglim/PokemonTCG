@@ -8,6 +8,18 @@ import abi from '@/lib/pokemonCardABI.json';
 import { useSession } from 'next-auth/react';
 import { useGems } from '@/context/GemContext';
 import Link from 'next/link';
+import { ShareButton } from '@/components/SocialShareModal';
+
+// Card interface for type safety
+interface PokemonCard {
+  tokenId: number;
+  name: string;
+  rarity?: string;
+  imageUrl?: string;
+  transactionHash?: string;
+  networkName?: string;
+  blockchainVerified?: boolean;
+}
 
 const SUPPORTED_NETWORKS = [
   {
@@ -41,15 +53,15 @@ const SUPPORTED_NETWORKS = [
 ];
 
 const networkUtils = {
-  isCorrectNetwork: (chainId, targetId) => chainId === targetId,
+  isCorrectNetwork: (chainId: number, targetId: number) => chainId === targetId,
 
-  switchToNetwork: async (network) => {
+  switchToNetwork: async (network: any) => {
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: `0x${network.chainId.toString(16)}` }],
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 4902) {
         await window.ethereum.request({
           method: 'wallet_addEthereumChain',
@@ -63,7 +75,7 @@ const networkUtils = {
     }
   },
 
-  getNetworkName: (chainId) => {
+  getNetworkName: (chainId: number) => {
     const found = SUPPORTED_NETWORKS.find((n) => n.chainId === chainId);
     return found ? found.chainName : `Unknown Network (${chainId})`;
   },
@@ -89,9 +101,17 @@ function NetworkSwitchModal({
   currentNetwork,
   selectedNetwork,
   setSelectedNetwork,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  onContinue: () => void;
+  currentNetwork: string;
+  selectedNetwork: any;
+  setSelectedNetwork: (network: any) => void;
 }) {
   const [hasChangedNetwork, setHasChangedNetwork] = useState(false);
-  const [localSelectedNetwork, setLocalSelectedNetwork] = useState(null);
+  const [localSelectedNetwork, setLocalSelectedNetwork] = useState<any>(null);
 
   // Reset the change tracking when modal opens
   useEffect(() => {
@@ -101,7 +121,7 @@ function NetworkSwitchModal({
     }
   }, [isOpen]);
 
-  const handleNetworkChange = (networkChainId) => {
+  const handleNetworkChange = (networkChainId: string) => {
     if (networkChainId === '') {
       // User selected the default "Choose network" option
       setLocalSelectedNetwork(null);
@@ -319,7 +339,19 @@ function NetworkSwitchModal({
 }
 
 // Gem Spending Confirmation Modal Component
-function GemSpendingModal({ isOpen, onClose, onConfirm, gems, timeRemaining }) {
+function GemSpendingModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  gems,
+  timeRemaining,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  gems: number;
+  timeRemaining: number;
+}) {
   const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
   const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -474,7 +506,7 @@ export default function PacksPage() {
   const [selectedNetwork, setSelectedNetwork] = useState(SUPPORTED_NETWORKS[0]);
   const [nextPackAt, setNextPackAt] = useState<number | null>(null);
   const { gems, setGems } = useGems();
-  const [cards, setCards] = useState<any[]>([]);
+  const [cards, setCards] = useState<PokemonCard[]>([]);
   const [revealed, setRevealed] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -500,7 +532,7 @@ export default function PacksPage() {
     if (!window.ethereum) return;
 
     // Function to update chain ID
-    const updateChainId = (chainIdHex) => {
+    const updateChainId = (chainIdHex: string) => {
       setConnectedChainId(parseInt(chainIdHex, 16));
     };
 
@@ -508,7 +540,7 @@ export default function PacksPage() {
     window.ethereum
       .request({ method: 'eth_chainId' })
       .then(updateChainId)
-      .catch((err) => console.error('Failed to get chain ID:', err));
+      .catch((err: any) => console.error('Failed to get chain ID:', err));
 
     // Listen for chain changes
     window.ethereum.on('chainChanged', updateChainId);
@@ -676,8 +708,53 @@ export default function PacksPage() {
         return;
       }
 
-      // STEP 6: Update UI with new data
-      setCards(fetchedCards);
+      // STEP 6: Load metadata via your API (which fetches from IPFS and falls back to JSON)
+      async function fetchCardViaApi(tokenId: number) {
+        const res = await fetch(`/api/pokemon/${tokenId}`, {
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(`API ${tokenId} -> ${res.status}`);
+        return await res.json();
+      }
+
+      const onchainCards: PokemonCard[] = await Promise.all(
+        fetchedCards.map(async (c: any) => {
+          try {
+            const meta = await fetchCardViaApi(c.tokenId);
+            // Normalize fields from API response into your UI shape
+            // (your API already converts ipfs:// image to http via ipfsToHttp)
+            const rarityFromMeta = (meta?.attributes || []).find(
+              (a: any) => a.trait_type === 'Rarity'
+            )?.value;
+
+            return {
+              ...c,
+              name: meta?.name ?? c.name,
+              rarity: rarityFromMeta ?? c.rarity,
+              imageUrl: meta?.image ?? c.imageUrl ?? c.image,
+              transactionHash: tx.hash,
+              networkName: networkUtils.getNetworkName(connectedChainId || 0),
+              blockchainVerified: true, // came from contract’s uri via API
+              onchainUri: meta?.onchainUri || undefined, // optional, if you add it in API
+            } as PokemonCard;
+          } catch (e) {
+            console.warn('API metadata fetch failed for token', c.tokenId, e);
+            // Final fallback: whatever prepare step provided (normalize image if ipfs)
+            return {
+              ...c,
+              imageUrl:
+                (window as any)?.ipfsToHttp?.(c.imageUrl ?? c.image) ??
+                c.imageUrl ??
+                c.image,
+              transactionHash: tx.hash,
+              networkName: networkUtils.getNetworkName(connectedChainId || 0),
+              blockchainVerified: false,
+            } as PokemonCard;
+          }
+        })
+      );
+
+      setCards(onchainCards);
       setRevealed([]);
       setGems(confirmData.updatedUserData.gems);
       setNextPackAt(confirmData.updatedUserData.nextPackAt);
@@ -745,7 +822,7 @@ export default function PacksPage() {
       setTimeout(() => {
         executePackOpen(pendingPackOpen);
       }, 1000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Network switch failed:', error);
       setShowNetworkModal(false);
       if (error.message === 'User rejected network switch') {
@@ -837,7 +914,7 @@ export default function PacksPage() {
         }}
         onConfirm={handleNetworkSwitch}
         onContinue={handleContinueWithCurrentNetwork}
-        currentNetwork={networkUtils.getNetworkName(connectedChainId)}
+        currentNetwork={networkUtils.getNetworkName(connectedChainId || 0)}
         selectedNetwork={selectedNetwork}
         setSelectedNetwork={setSelectedNetwork}
       />
@@ -1279,7 +1356,7 @@ export default function PacksPage() {
                             alt={card.name}
                             className="w-full h-full object-cover rounded-xl"
                             onError={(e) => {
-                              e.currentTarget.src =
+                              (e.target as HTMLImageElement).src =
                                 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI4MCIgdmlld0JveD0iMCAwIDIwMCAyODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjgwIiBmaWxsPSIjMzc0MTUxIiByeD0iMTIiLz4KPHN2ZyB4PSI3MCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzZCNzI4MCI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNWwtNS01aDNWOGg0djRoM2wtNSA1eiIvPgo8L3N2Zz4KPHR2ZXh0IHg9IjEwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5Q0E0QUYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNhcmQgSW1hZ2U8L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMjIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2QjcyODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vdCBGb3VuZDwvdGV4dD4KPC9zdmc+';
                             }}
                           />
@@ -1328,31 +1405,54 @@ export default function PacksPage() {
               })}
             </div>
 
-            {/* Action buttons */}
-            <div className="flex justify-center gap-4 mt-12">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setCards([]);
-                  setRevealed([]);
-                  setResetCount((prev) => prev + 1);
-                  setStatus(null);
-                  setShowCelebration(false);
-                }}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-3 rounded-xl shadow-lg font-medium border border-purple-400/30 transition-all duration-300 flex items-center gap-2"
-              >
-                <span className="text-lg">🎴</span>
-                Open Another Pack
-              </motion.button>
+            {/* Action buttons - ENHANCED WITH SOCIAL SHARING */}
+            <div className="space-y-6">
+              {/* Share prompt when all cards revealed */}
+              {cards.length > 0 && revealed.length === cards.length && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="text-center"
+                >
+                  <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl p-6 max-w-md mx-auto mb-6">
+                    <h3 className="text-xl font-bold text-yellow-300 mb-2">
+                      🎊 Pack Complete!
+                    </h3>
+                    <p className="text-gray-300 text-sm mb-4">
+                      Share your epic pack opening with the community!
+                    </p>
+                    <ShareButton cards={cards} />
+                  </div>
+                </motion.div>
+              )}
 
-              <Link
-                href="/user/collection"
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-8 py-3 rounded-xl shadow-lg font-medium border border-blue-400/30 transition-all duration-300 flex items-center gap-2 transform hover:scale-105 active:scale-95"
-              >
-                <span className="text-lg">👀</span>
-                View Collection
-              </Link>
+              {/* Main action buttons */}
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setCards([]);
+                    setRevealed([]);
+                    setResetCount((prev) => prev + 1);
+                    setStatus(null);
+                    setShowCelebration(false);
+                  }}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-3 rounded-xl shadow-lg font-medium border border-purple-400/30 transition-all duration-300 flex items-center gap-2 justify-center"
+                >
+                  <span className="text-lg">🎴</span>
+                  Open Another Pack
+                </motion.button>
+
+                <Link
+                  href="/user/collection"
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-8 py-3 rounded-xl shadow-lg font-medium border border-blue-400/30 transition-all duration-300 flex items-center gap-2 justify-center transform hover:scale-105 active:scale-95"
+                >
+                  <span className="text-lg">👀</span>
+                  View Collection
+                </Link>
+              </div>
             </div>
           </motion.section>
         )}

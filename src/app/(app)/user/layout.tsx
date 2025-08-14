@@ -4,8 +4,8 @@ import ClientLayout from '@/components/ClientLayout';
 import GlobalClickSound from '@/components/GlobalClickSound';
 import AnimatedBackground from '@/components/AnimatedBackground';
 
-// ⬇️ 新增：音乐相关
 import { MusicProvider } from '@/context/MusicContext';
+import { GemProvider } from '@/context/GemContext';
 import AuthenticatedMusicStarter from '@/components/AuthenticatedMusicStarter';
 
 const geistSans = Geist({
@@ -23,18 +23,24 @@ export const metadata: Metadata = {
   description: 'User dashboard for Pokémon TCG',
 };
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function UserLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <MusicProvider>
-      <AuthenticatedMusicStarter />
+      <GemProvider>
+        <AuthenticatedMusicStarter />
 
-      <div
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative z-10`}
-      >
-        <AnimatedBackground variant="default" intensity="medium" particles />
-        <GlobalClickSound />
-        <ClientLayout>{children}</ClientLayout>
-      </div>
+        <div
+          className={`${geistSans.variable} ${geistMono.variable} antialiased relative z-10`}
+        >
+          <AnimatedBackground variant="default" intensity="medium" particles />
+          <GlobalClickSound />
+          <ClientLayout>{children}</ClientLayout>
+        </div>
+      </GemProvider>
     </MusicProvider>
   );
 }
