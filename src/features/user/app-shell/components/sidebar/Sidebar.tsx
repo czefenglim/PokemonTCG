@@ -173,6 +173,7 @@ export default function Sidebar() {
                     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png';
                   e.target.onerror = () => {
                     e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
                   };
                 }}
               />

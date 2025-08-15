@@ -116,7 +116,7 @@ export default function CyberPokemonLanding() {
     fetchPokemonData();
   }, []);
 
-  // Animated counters
+  //Animated counters
   useEffect(() => {
     const controls = animate(count, 12450, { duration: 3 });
     const tradesControl = animate(trades, 28500, { duration: 3.5 });

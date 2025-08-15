@@ -1,0 +1,15 @@
+{
+  "name": "Seadra δ",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex13/52_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}
