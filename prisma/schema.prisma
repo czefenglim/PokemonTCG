@@ -12,32 +12,44 @@ enum Role {
   ADMIN
 }
 
-enum PurchaseStatus {
-  PENDING
-  COMPLETED
-  FAILED
-  CANCELLED
-  REFUNDED
-}
 
 model User {
   id              String   @id @default(uuid())
   email           String   @unique
   password        String
-  username        String?
+  username        String?  @unique
+  profilePicture  String?  // Optional URL to profile picture
+  country         String?  // Optional country name or code
   createdAt       DateTime @default(now())
   gems            Int      @default(100)
   nextPackAt      DateTime @default(now())
   role            Role     @default(USER)
-  
-  // Original Relations
+  walletAddress   String   @unique
+
+  // Friend Request Relations
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+
+  // Friends Relations
+  friends  Friend[] @relation("UserFriends")
+  friendOf Friend[] @relation("FriendOfUser")
+
+  // Trade Request Relations
+  sentTradeRequests     TradeRequest[] @relation("SentRequests")
+  receivedTradeRequests TradeRequest[] @relation("ReceivedRequests")
+
+  // Relations
   gemPurchases    GemPurchase[]
+
+  transactions Transaction[]
   
   // Game/Battle Relations for Leaderboard
   createdRooms    Room[]   @relation("RoomCreator")
   player1Rooms    Room[]   @relation("Player1") 
   player2Rooms    Room[]   @relation("Player2")
   wonRooms        Room[]   @relation("RoomWinner")
+
+  @@map("user")
 }
 
 model GemPackage {
@@ -76,6 +88,71 @@ model GemPurchase {
   package       GemPackage  @relation(fields: [packageId], references: [id])
   
   @@map("gem_purchases")
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+model FriendRequest {
+  id         Int                 @id @default(autoincrement())
+  sender     User                @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId   String              @map("sender_id")
+  receiver   User                @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String              @map("receiver_id")
+  status     FriendRequestStatus @default(pending)
+  createdAt  DateTime            @default(now()) @map("created_at")
+
+  @@map("friend_requests") // map to your actual table name
+}
+
+model Friend {
+  user      User     @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  friend    User     @relation("FriendOfUser", fields: [friendId], references: [id], onDelete: Cascade)
+  friendId  String   @map("friend_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([userId, friendId])
+  @@map("friends")
+}
+
+model TradeRequest {
+  id              String      @id @default(cuid())
+  senderId        String
+  receiverId      String
+  offeredCardId   Int
+  requestedCardId Int?
+  senderStatus    TradeStatus @default(pending)
+  receiverStatus  TradeStatus @default(pending)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  sender   User @relation("SentRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("trade_request")
+}
+
+
+
+
+enum FriendRequestStatus {
+  pending
+  accepted
+  rejected
+}
+
+enum TradeStatus {
+  pending
+  accepted
+  rejected
 }
 
 // Main model for tracking Pokemon TCG battles - REQUIRED FOR LEADERBOARD
@@ -134,4 +211,38 @@ model Merchandise {
   imageUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  transactions Transaction[]
 }
+
+model Transaction {
+  id             String     @id @default(uuid())
+  merchandiseId  String
+  merchandise    Merchandise @relation(fields: [merchandiseId], references: [id])
+  quantity       Int
+  totalAmount    Float
+  currency       String      @default("USD")
+
+  // Buyer details
+  location       String
+  phoneNumber    String
+  email          String?     // Optional
+
+  // Associate with User
+  userId         String
+  user           User       @relation(fields: [userId], references: [id])
+
+  // Tracking
+  status         TransactionStatus 
+  paymentRef     String?           // e.g., Stripe payment ID
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum TransactionStatus {
+  SHIPPED
+  COMPLETED
+}
+
+

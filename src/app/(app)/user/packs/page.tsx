@@ -50,6 +50,13 @@ const SUPPORTED_NETWORKS = [
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     blockExplorerUrls: null,
   },
+  {
+    chainId: 11155111,
+    chainName: 'Sepolia Testnet',
+    rpcUrls: [process.env.RPC_URL],
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    blockExplorerUrls: null,
+  },
 ];
 
 const networkUtils = {

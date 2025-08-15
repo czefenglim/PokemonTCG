@@ -1,9 +1,9 @@
-'use client';
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { ethers } from 'ethers';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import abi from '@/lib/pokemonCardABI.json';
+"use client";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { ethers } from "ethers";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import abi from "@/lib/pokemonCardABI.json";
 
 type OwnedCard = {
   tokenId: number;
@@ -25,13 +25,13 @@ export default function CollectionPage() {
   const [loading, setLoading] = useState(false);
   const [cards, setCards] = useState<OwnedCard[]>([]);
   const [address, setAddress] = useState<string | null>(null);
-  const [rarityFilter, setRarityFilter] = useState<string>('All');
-  const [typeFilter, setTypeFilter] = useState<string>('All');
+  const [rarityFilter, setRarityFilter] = useState<string>("All");
+  const [typeFilter, setTypeFilter] = useState<string>("All");
 
   // UI STATE
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedCard, setSelectedCard] = useState<OwnedCard | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Refs to prevent duplicate calls and track state
   const loadingRef = useRef(false);
@@ -51,20 +51,20 @@ export default function CollectionPage() {
 
   // ROBUST COLLECTION LOADING FUNCTION
   const loadCollection = useCallback(async (userAddress: string) => {
-    console.log('🚀 loadCollection called for address:', userAddress);
+    console.log("🚀 loadCollection called for address:", userAddress);
 
     // Prevent duplicate calls
     if (loadingRef.current) {
-      console.log('⚠️ Load already in progress, skipping');
+      console.log("⚠️ Load already in progress, skipping");
       return;
     }
 
     // More lenient mounted check - allow a brief delay for React StrictMode
     if (!mountedRef.current) {
-      console.log('⚠️ Component unmounted, waiting 100ms and retrying once...');
+      console.log("⚠️ Component unmounted, waiting 100ms and retrying once...");
       await new Promise((resolve) => setTimeout(resolve, 100));
       if (!mountedRef.current) {
-        console.log('❌ Component still unmounted after retry, skipping load');
+        console.log("❌ Component still unmounted after retry, skipping load");
         return;
       }
     }
@@ -84,7 +84,7 @@ export default function CollectionPage() {
 
     try {
       if (!window.ethereum) {
-        throw new Error('No ethereum wallet found');
+        throw new Error("No ethereum wallet found");
       }
 
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -97,31 +97,31 @@ export default function CollectionPage() {
 
       // Check if request was aborted
       if (signal.aborted || !mountedRef.current) {
-        console.log('⚠️ Request aborted or component unmounted');
+        console.log("⚠️ Request aborted or component unmounted");
         return;
       }
 
-      console.log('📊 Getting user balances...');
+      console.log("📊 Getting user balances...");
 
       // ✅ Step 1: For ERC1155 contracts, we need to check which tokens exist
       // Your contract generates random IDs from 1-1000, so we check that range
       // But first, let's try to be smarter about it
 
-      console.log('🔍 Checking which tokens have been minted...');
+      console.log("🔍 Checking which tokens have been minted...");
 
       // ✅ NEW - Dynamic Pokemon count detection
       let maxTokenId;
       try {
         const contractMaxId = await contract.maxPokemonId();
         maxTokenId = Number(contractMaxId); // Convert BigInt to number
-        console.log('✅ Got maxPokemonId from contract:', Number(maxTokenId));
+        console.log("✅ Got maxPokemonId from contract:", Number(maxTokenId));
       } catch (error) {
         // Fallback to API
-        const pokemonListResponse = await fetch('/api/pokemon-list');
+        const pokemonListResponse = await fetch("/api/pokemon-list");
         if (pokemonListResponse.ok) {
           const pokemonList = await pokemonListResponse.json();
           maxTokenId = pokemonList.length;
-          console.log('✅ Got maxPokemonId from Pokemon list API:', maxTokenId);
+          console.log("✅ Got maxPokemonId from Pokemon list API:", maxTokenId);
         }
       }
 
@@ -178,11 +178,11 @@ export default function CollectionPage() {
         console.log(
           `📊 Found ${existingTokenIds.length} existing tokens:`,
           existingTokenIds.slice(0, 10),
-          existingTokenIds.length > 10 ? '...' : ''
+          existingTokenIds.length > 10 ? "..." : ""
         );
       } catch (err) {
         console.warn(
-          '⚠️ Could not check token existence efficiently, using full range:',
+          "⚠️ Could not check token existence efficiently, using full range:",
           err
         );
         // Fallback: check all possible IDs (less efficient)
@@ -190,7 +190,7 @@ export default function CollectionPage() {
       }
 
       if (existingTokenIds.length === 0) {
-        console.log('📭 No tokens have been minted yet');
+        console.log("📭 No tokens have been minted yet");
         setLoading(false);
         loadingRef.current = false;
         return;
@@ -206,10 +206,10 @@ export default function CollectionPage() {
           `⚖️ Checking balances for ${tokenIds.length} existing tokens...`
         );
         balances = await contract.getUserBalances(userAddress, tokenIds);
-        console.log('✅ Batch balance fetch successful');
+        console.log("✅ Batch balance fetch successful");
       } catch (err) {
         console.warn(
-          '⚠️ getUserBalances failed, falling back to individual calls',
+          "⚠️ getUserBalances failed, falling back to individual calls",
           err
         );
 
@@ -228,7 +228,7 @@ export default function CollectionPage() {
 
       // Check if request was aborted
       if (signal.aborted || !mountedRef.current) {
-        console.log('⚠️ Request aborted after balance fetch');
+        console.log("⚠️ Request aborted after balance fetch");
         return;
       }
 
@@ -237,10 +237,10 @@ export default function CollectionPage() {
         ...new Set(tokenIds.filter((_, idx) => Number(balances[idx]) > 0)),
       ];
 
-      console.log('🎯 Unique owned token IDs:', ownedTokenIds);
+      console.log("🎯 Unique owned token IDs:", ownedTokenIds);
 
       if (!ownedTokenIds.length) {
-        console.log('📭 No owned cards found');
+        console.log("📭 No owned cards found");
         if (mountedRef.current) {
           setLoading(false);
         }
@@ -249,7 +249,7 @@ export default function CollectionPage() {
       }
 
       // ✅ Step 5: Fetch all metadata in parallel with abort signal
-      console.log('📡 Fetching metadata for', ownedTokenIds.length, 'cards...');
+      console.log("📡 Fetching metadata for", ownedTokenIds.length, "cards...");
 
       const ownedResults = await Promise.all(
         ownedTokenIds.map(async (tokenId) => {
@@ -273,8 +273,8 @@ export default function CollectionPage() {
               name: metadata.name,
               imageUrl: metadata.image,
               amount: balance.toString(),
-              rarity: metadata.gameData?.rarity || 'Common',
-              type: metadata.gameData?.type || 'Unknown',
+              rarity: metadata.gameData?.rarity || "Common",
+              type: metadata.gameData?.type || "Unknown",
               strikePower: metadata.gameData?.strikePower,
               battleRating: metadata.gameData?.battleRating,
               description: metadata.description,
@@ -291,18 +291,18 @@ export default function CollectionPage() {
 
       // Final abort check before setting state
       if (signal.aborted || !mountedRef.current) {
-        console.log('⚠️ Request aborted before setting results');
+        console.log("⚠️ Request aborted before setting results");
         return;
       }
 
       // ✅ Step 6: Save to state (filter out failed fetches)
       const validCards = ownedResults.filter((c): c is OwnedCard => c !== null);
-      console.log('✅ Successfully loaded', validCards.length, 'cards');
+      console.log("✅ Successfully loaded", validCards.length, "cards");
 
       setCards(validCards);
     } catch (err) {
       if (!signal.aborted && mountedRef.current) {
-        console.error('[Collection] Error loading collection:', err);
+        console.error("[Collection] Error loading collection:", err);
         setCards([]);
       }
     } finally {
@@ -315,40 +315,40 @@ export default function CollectionPage() {
 
   // CONNECTION CHECK FUNCTION
   const checkConnection = useCallback(async () => {
-    console.log('🔍 Checking wallet connection...');
+    console.log("🔍 Checking wallet connection...");
 
     if (!window.ethereum) {
-      console.log('❌ No ethereum wallet detected');
+      console.log("❌ No ethereum wallet detected");
       return;
     }
 
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.send('eth_accounts', []);
+      const accounts = await provider.send("eth_accounts", []);
 
       if (accounts.length > 0) {
         const currentAddress = accounts[0];
-        console.log('👛 Wallet connected:', currentAddress);
+        console.log("👛 Wallet connected:", currentAddress);
 
         // Only update if address actually changed
         if (currentAddress !== lastAddressRef.current) {
-          console.log('🔄 Address changed, updating...');
+          console.log("🔄 Address changed, updating...");
           lastAddressRef.current = currentAddress;
           setAddress(currentAddress);
 
           // Load collection for new address
           await loadCollection(currentAddress);
         } else {
-          console.log('✅ Same address, no action needed');
+          console.log("✅ Same address, no action needed");
         }
       } else {
-        console.log('👋 No wallet connected');
+        console.log("👋 No wallet connected");
         lastAddressRef.current = null;
         setAddress(null);
         setCards([]);
       }
     } catch (error) {
-      console.error('❌ Error checking connection:', error);
+      console.error("❌ Error checking connection:", error);
       setAddress(null);
       setCards([]);
     }
@@ -356,13 +356,13 @@ export default function CollectionPage() {
 
   // INITIAL CONNECTION CHECK - ONLY ONCE
   useEffect(() => {
-    console.log('🏁 Component mounted, checking initial connection');
+    console.log("🏁 Component mounted, checking initial connection");
     mountedRef.current = true; // Set mounted to true on mount
     checkConnection();
 
     // Cleanup function
     return () => {
-      console.log('🏁 Component cleanup');
+      console.log("🏁 Component cleanup");
       mountedRef.current = false;
     };
   }, []); // Empty dependency array - NEVER change this!
@@ -372,18 +372,18 @@ export default function CollectionPage() {
     if (!window.ethereum) return;
 
     const handleAccountsChanged = (accounts: string[]) => {
-      console.log('🔄 MetaMask accounts changed:', accounts);
+      console.log("🔄 MetaMask accounts changed:", accounts);
 
       if (accounts.length > 0) {
         const newAddress = accounts[0];
         if (newAddress !== lastAddressRef.current) {
-          console.log('🆕 New address from MetaMask:', newAddress);
+          console.log("🆕 New address from MetaMask:", newAddress);
           lastAddressRef.current = newAddress;
           setAddress(newAddress);
           loadCollection(newAddress);
         }
       } else {
-        console.log('👋 MetaMask disconnected');
+        console.log("👋 MetaMask disconnected");
         lastAddressRef.current = null;
         setAddress(null);
         setCards([]);
@@ -391,62 +391,62 @@ export default function CollectionPage() {
     };
 
     const handleChainChanged = () => {
-      console.log('⛓️ Chain changed, reloading...');
+      console.log("⛓️ Chain changed, reloading...");
       window.location.reload();
     };
 
     // Add event listeners
-    window.ethereum.on('accountsChanged', handleAccountsChanged);
-    window.ethereum.on('chainChanged', handleChainChanged);
+    window.ethereum.on("accountsChanged", handleAccountsChanged);
+    window.ethereum.on("chainChanged", handleChainChanged);
 
     // Cleanup
     return () => {
-      console.log('🧹 Cleaning up MetaMask listeners');
-      window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      window.ethereum.removeListener('chainChanged', handleChainChanged);
+      console.log("🧹 Cleaning up MetaMask listeners");
+      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+      window.ethereum.removeListener("chainChanged", handleChainChanged);
     };
   }, [loadCollection]);
 
   // UI HELPER FUNCTIONS
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'Common':
-        return 'from-gray-400 to-gray-600';
-      case 'Uncommon':
-        return 'from-green-400 to-green-600';
-      case 'Rare':
-        return 'from-blue-400 to-blue-600';
-      case 'Rare Holo':
-        return 'from-purple-400 to-purple-600';
-      case 'Ultra Rare':
-        return 'from-pink-400 to-red-500';
-      case 'Secret Rare':
-        return 'from-yellow-400 to-orange-500';
+      case "Common":
+        return "from-gray-400 to-gray-600";
+      case "Uncommon":
+        return "from-green-400 to-green-600";
+      case "Rare":
+        return "from-blue-400 to-blue-600";
+      case "Rare Holo":
+        return "from-purple-400 to-purple-600";
+      case "Ultra Rare":
+        return "from-pink-400 to-red-500";
+      case "Secret Rare":
+        return "from-yellow-400 to-orange-500";
       default:
-        return 'from-yellow-400 to-yellow-600';
+        return "from-yellow-400 to-yellow-600";
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Fire':
-        return 'bg-red-500';
-      case 'Water':
-        return 'bg-blue-500';
-      case 'Grass':
-        return 'bg-green-500';
-      case 'Electric':
-        return 'bg-yellow-500';
-      case 'Psychic':
-        return 'bg-purple-500';
-      case 'Fighting':
-        return 'bg-orange-500';
-      case 'Dark':
-        return 'bg-gray-800';
-      case 'Steel':
-        return 'bg-gray-400';
+      case "Fire":
+        return "bg-red-500";
+      case "Water":
+        return "bg-blue-500";
+      case "Grass":
+        return "bg-green-500";
+      case "Electric":
+        return "bg-yellow-500";
+      case "Psychic":
+        return "bg-purple-500";
+      case "Fighting":
+        return "bg-orange-500";
+      case "Dark":
+        return "bg-gray-800";
+      case "Steel":
+        return "bg-gray-400";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
@@ -454,7 +454,7 @@ export default function CollectionPage() {
   const handleTradeCard = useCallback(
     (card: OwnedCard) => {
       localStorage.setItem(
-        'selectedCardForTrade',
+        "selectedCardForTrade",
         JSON.stringify({
           tokenId: card.tokenId,
           tcgId: card.tcgId,
@@ -469,35 +469,35 @@ export default function CollectionPage() {
         })
       );
 
-      router.push('/user/marketplace');
+      router.push("/user/marketplace");
     },
     [router]
   );
 
   // Manual refresh function
   const handleRefresh = useCallback(() => {
-    console.log('🔄 Manual refresh requested');
+    console.log("🔄 Manual refresh requested");
     if (address && !loadingRef.current) {
       loadCollection(address);
     } else {
-      console.log('⚠️ Cannot refresh: no address or already loading');
+      console.log("⚠️ Cannot refresh: no address or already loading");
     }
   }, [address, loadCollection]);
 
   // FILTER LOGIC
   const rarityOptions = [
-    'All',
+    "All",
     ...Array.from(new Set(cards.map((c) => c.rarity).filter(Boolean))),
   ];
 
   const typeOptions = [
-    'All',
+    "All",
     ...Array.from(new Set(cards.map((c) => c.type).filter(Boolean))),
   ];
 
   const filteredCards = cards.filter((c) => {
-    const matchesRarity = rarityFilter === 'All' || c.rarity === rarityFilter;
-    const matchesType = typeFilter === 'All' || c.type === typeFilter;
+    const matchesRarity = rarityFilter === "All" || c.rarity === rarityFilter;
+    const matchesType = typeFilter === "All" || c.type === typeFilter;
     const matchesSearch = c.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -522,7 +522,7 @@ export default function CollectionPage() {
             y: [0, -50, 0],
             scale: [1, 1.2, 1],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           className="absolute bottom-40 right-20 w-40 h-40 rounded-full bg-purple-500/20 blur-3xl"
@@ -531,7 +531,7 @@ export default function CollectionPage() {
             y: [0, 60, 0],
             scale: [1, 0.8, 1],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 
@@ -652,7 +652,7 @@ export default function CollectionPage() {
                             value={rarity}
                             className="bg-gray-800"
                           >
-                            {rarity === 'All' ? 'All Rarities' : rarity}
+                            {rarity === "All" ? "All Rarities" : rarity}
                           </option>
                         ))}
                       </select>
@@ -668,7 +668,7 @@ export default function CollectionPage() {
                             value={type}
                             className="bg-gray-800"
                           >
-                            {type === 'All' ? 'All Types' : type}
+                            {type === "All" ? "All Types" : type}
                           </option>
                         ))}
                       </select>
@@ -676,11 +676,11 @@ export default function CollectionPage() {
                       {/* View Mode Toggle */}
                       <div className="flex bg-white/10 rounded-xl p-1">
                         <button
-                          onClick={() => setViewMode('grid')}
+                          onClick={() => setViewMode("grid")}
                           className={`p-2 rounded-lg transition-all ${
-                            viewMode === 'grid'
-                              ? 'bg-purple-500 text-white'
-                              : 'text-white/60 hover:text-white'
+                            viewMode === "grid"
+                              ? "bg-purple-500 text-white"
+                              : "text-white/60 hover:text-white"
                           }`}
                         >
                           <svg
@@ -698,11 +698,11 @@ export default function CollectionPage() {
                           </svg>
                         </button>
                         <button
-                          onClick={() => setViewMode('list')}
+                          onClick={() => setViewMode("list")}
                           className={`p-2 rounded-lg transition-all ${
-                            viewMode === 'list'
-                              ? 'bg-purple-500 text-white'
-                              : 'text-white/60 hover:text-white'
+                            viewMode === "list"
+                              ? "bg-purple-500 text-white"
+                              : "text-white/60 hover:text-white"
                           }`}
                         >
                           <svg
@@ -727,7 +727,7 @@ export default function CollectionPage() {
                         disabled={loading || loadingRef.current}
                         className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 text-white font-medium px-6 py-2 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none"
                       >
-                        {loading ? 'Loading...' : 'Refresh'}
+                        {loading ? "Loading..." : "Refresh"}
                       </button>
                     </div>
                   </div>
@@ -746,7 +746,7 @@ export default function CollectionPage() {
                   <div className="w-16 h-16 border-4 border-purple-300 rounded-full animate-spin border-t-transparent"></div>
                   <div
                     className="absolute inset-0 w-16 h-16 border-4 border-pink-300 rounded-full animate-spin border-t-transparent"
-                    style={{ animationDelay: '0.5s' }}
+                    style={{ animationDelay: "0.5s" }}
                   ></div>
                 </div>
                 <span className="ml-4 text-white text-lg">
@@ -786,7 +786,7 @@ export default function CollectionPage() {
                     your legendary collection today!
                   </p>
                   <button
-                    onClick={() => router.push('/user/packs')}
+                    onClick={() => router.push("/user/packs")}
                     className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105"
                   >
                     Open Packs
@@ -808,9 +808,9 @@ export default function CollectionPage() {
                   </div>
                   <button
                     onClick={() => {
-                      setRarityFilter('All');
-                      setTypeFilter('All');
-                      setSearchTerm('');
+                      setRarityFilter("All");
+                      setTypeFilter("All");
+                      setSearchTerm("");
                     }}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium px-6 py-2 rounded-xl transition-all duration-300"
                   >
@@ -821,7 +821,7 @@ export default function CollectionPage() {
             )}
 
             {/* Cards Display - Grid View */}
-            {!loading && filteredCards.length > 0 && viewMode === 'grid' && (
+            {!loading && filteredCards.length > 0 && viewMode === "grid" && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -844,7 +844,7 @@ export default function CollectionPage() {
                           {/* Rarity Glow */}
                           <div
                             className={`absolute inset-0 bg-gradient-to-r ${getRarityColor(
-                              card.rarity || 'Common'
+                              card.rarity || "Common"
                             )} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
                           ></div>
 
@@ -870,7 +870,7 @@ export default function CollectionPage() {
                             {/* Type Badge */}
                             {card.type && (
                               <div
-                                className={`absolute top-2 left-2 ${getTypeColor(
+                                className={`absolute top-10 left-2 ${getTypeColor(
                                   card.type
                                 )} text-white text-xs font-bold px-2 py-1 rounded-full`}
                               >
@@ -894,12 +894,16 @@ export default function CollectionPage() {
                             <div className="flex justify-between items-center">
                               <div
                                 className={`inline-block bg-gradient-to-r ${getRarityColor(
-                                  card.rarity || 'Common'
+                                  card.rarity || "Common"
                                 )} text-white text-xs font-bold px-3 py-1 rounded-full`}
                               >
                                 {card.rarity}
                               </div>
                             </div>
+                          </div>
+                          {/* Token ID Badge */}
+                          <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
+                            #{card.tokenId}
                           </div>
                         </div>
                       </motion.div>
@@ -910,7 +914,7 @@ export default function CollectionPage() {
             )}
 
             {/* Cards Display - List View */}
-            {!loading && filteredCards.length > 0 && viewMode === 'list' && (
+            {!loading && filteredCards.length > 0 && viewMode === "list" && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -956,7 +960,7 @@ export default function CollectionPage() {
                               )}
                               <span
                                 className={`bg-gradient-to-r ${getRarityColor(
-                                  card.rarity || 'Common'
+                                  card.rarity || "Common"
                                 )} text-white text-xs font-bold px-2 py-1 rounded`}
                               >
                                 {card.rarity}
@@ -1033,17 +1037,17 @@ export default function CollectionPage() {
                     )}
                     <span
                       className={`bg-gradient-to-r ${getRarityColor(
-                        selectedCard.rarity || 'Common'
+                        selectedCard.rarity || "Common"
                       )} text-white text-sm font-bold px-3 py-1 rounded-full`}
                     >
                       {selectedCard.rarity}
                     </span>
                   </div>
                   <div className="text-white/80 mb-6">
-                    You own{' '}
+                    You own{" "}
                     <span className="font-bold text-yellow-400">
                       ×{selectedCard.amount}
-                    </span>{' '}
+                    </span>{" "}
                     of this card
                   </div>
 

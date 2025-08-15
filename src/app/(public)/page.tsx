@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   motion,
@@ -7,11 +7,12 @@ import {
   animate,
   useScroll,
   useSpring,
-} from 'framer-motion';
+} from "framer-motion";
 
-import { useEffect, useState, useRef } from 'react';
-import FloatingParticles from '@/components/FloatingParticles';
-import Link from 'next/link';
+import { useEffect, useState, useRef } from "react";
+import FloatingParticles from "@/components/FloatingParticles";
+import Link from "next/link";
+
 export default function CyberPokemonLanding() {
   const [currentCard, setCurrentCard] = useState(0);
   const [glitchEffect, setGlitchEffect] = useState(false);
@@ -34,35 +35,35 @@ export default function CyberPokemonLanding() {
   const cyberCards = [
     {
       id: 6,
-      name: 'CYBERZARD',
-      type: 'FIRE',
-      rarity: 'LEGENDARY',
-      price: '2.4',
-      trend: '+12%',
+      name: "CYBERZARD",
+      type: "FIRE",
+      rarity: "LEGENDARY",
+      price: "2.4",
+      trend: "+12%",
     },
     {
       id: 25,
-      name: 'NEONACHU',
-      type: 'ELECTRIC',
-      rarity: 'MYTHIC',
-      price: '1.8',
-      trend: '+8%',
+      name: "NEONACHU",
+      type: "ELECTRIC",
+      rarity: "MYTHIC",
+      price: "1.8",
+      trend: "+8%",
     },
     {
       id: 9,
-      name: 'TECHTOISE',
-      type: 'WATER',
-      rarity: 'EPIC',
-      price: '1.2',
-      trend: '-3%',
+      name: "TECHTOISE",
+      type: "WATER",
+      rarity: "EPIC",
+      price: "1.2",
+      trend: "-3%",
     },
     {
       id: 150,
-      name: 'VIRTUALTWO',
-      type: 'PSYCHIC',
-      rarity: 'ULTRA',
-      price: '3.1',
-      trend: '+15%',
+      name: "VIRTUALTWO",
+      type: "PSYCHIC",
+      rarity: "ULTRA",
+      price: "3.1",
+      trend: "+15%",
     },
   ];
 
@@ -71,8 +72,8 @@ export default function CyberPokemonLanding() {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   // Fetch Pokémon data
@@ -88,7 +89,7 @@ export default function CyberPokemonLanding() {
             const pokemon = await response.json();
             return {
               ...card,
-              image: pokemon.sprites.other['official-artwork'].front_default,
+              image: pokemon.sprites.other["official-artwork"].front_default,
               stats: pokemon.stats.reduce((acc, stat) => {
                 acc[stat.stat.name] = stat.base_stat;
                 return acc;
@@ -99,13 +100,13 @@ export default function CyberPokemonLanding() {
         );
         setPokemonData(data);
       } catch (error) {
-        console.error('Error fetching Pokémon data:', error);
+        console.error("Error fetching Pokémon data:", error);
         // Fallback data if API fails
         setPokemonData(
           cyberCards.map((card) => ({
             ...card,
             stats: { hp: 100, attack: 120, defense: 80, speed: 90 },
-            abilities: ['cyber-boost', 'digital-shield'],
+            abilities: ["cyber-boost", "digital-shield"],
           }))
         );
       } finally {
@@ -116,7 +117,7 @@ export default function CyberPokemonLanding() {
     fetchPokemonData();
   }, []);
 
-  // Animated counters
+  //Animated counters
   useEffect(() => {
     const controls = animate(count, 12450, { duration: 3 });
     const tradesControl = animate(trades, 28500, { duration: 3.5 });
@@ -145,46 +146,46 @@ export default function CyberPokemonLanding() {
   // Helper functions
   function getRarityClass(rarity) {
     switch (rarity) {
-      case 'LEGENDARY':
-        return 'bg-gradient-to-r from-yellow-500 to-yellow-700 text-yellow-100';
-      case 'MYTHIC':
-        return 'bg-gradient-to-r from-purple-500 to-pink-600 text-purple-100';
-      case 'EPIC':
-        return 'bg-gradient-to-r from-blue-500 to-cyan-500 text-blue-100';
-      case 'ULTRA':
-        return 'bg-gradient-to-r from-red-500 to-pink-500 text-red-100';
+      case "LEGENDARY":
+        return "bg-gradient-to-r from-yellow-500 to-yellow-700 text-yellow-100";
+      case "MYTHIC":
+        return "bg-gradient-to-r from-purple-500 to-pink-600 text-purple-100";
+      case "EPIC":
+        return "bg-gradient-to-r from-blue-500 to-cyan-500 text-blue-100";
+      case "ULTRA":
+        return "bg-gradient-to-r from-red-500 to-pink-500 text-red-100";
       default:
-        return 'bg-gray-700 text-gray-300';
+        return "bg-gray-700 text-gray-300";
     }
   }
 
   function getTypeColor(type) {
     switch (type) {
-      case 'FIRE':
-        return '#ef4444';
-      case 'WATER':
-        return '#3b82f6';
-      case 'ELECTRIC':
-        return '#eab308';
-      case 'PSYCHIC':
-        return '#a855f7';
+      case "FIRE":
+        return "#ef4444";
+      case "WATER":
+        return "#3b82f6";
+      case "ELECTRIC":
+        return "#eab308";
+      case "PSYCHIC":
+        return "#a855f7";
       default:
-        return '#6b7280';
+        return "#6b7280";
     }
   }
 
   function getTypeGradient(type) {
     switch (type) {
-      case 'FIRE':
-        return 'rgba(239, 68, 68, 0.5), rgba(252, 165, 165, 0.3)';
-      case 'WATER':
-        return 'rgba(59, 130, 246, 0.5), rgba(147, 197, 253, 0.3)';
-      case 'ELECTRIC':
-        return 'rgba(234, 179, 8, 0.5), rgba(253, 224, 71, 0.3)';
-      case 'PSYCHIC':
-        return 'rgba(168, 85, 247, 0.5), rgba(196, 181, 253, 0.3)';
+      case "FIRE":
+        return "rgba(239, 68, 68, 0.5), rgba(252, 165, 165, 0.3)";
+      case "WATER":
+        return "rgba(59, 130, 246, 0.5), rgba(147, 197, 253, 0.3)";
+      case "ELECTRIC":
+        return "rgba(234, 179, 8, 0.5), rgba(253, 224, 71, 0.3)";
+      case "PSYCHIC":
+        return "rgba(168, 85, 247, 0.5), rgba(196, 181, 253, 0.3)";
       default:
-        return 'rgba(107, 114, 128, 0.5), rgba(156, 163, 175, 0.3)';
+        return "rgba(107, 114, 128, 0.5), rgba(156, 163, 175, 0.3)";
     }
   }
 
@@ -233,9 +234,9 @@ export default function CyberPokemonLanding() {
             className="absolute inset-0 blur-3xl"
             animate={{
               background: [
-                'radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%)',
-                'radial-gradient(circle, rgba(0,255,255,0.3) 0%, transparent 70%)',
-                'radial-gradient(circle, rgba(255,0,150,0.3) 0%, transparent 70%)',
+                "radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(0,255,255,0.3) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(255,0,150,0.3) 0%, transparent 70%)",
               ],
             }}
             transition={{ duration: 5, repeat: Infinity }}
@@ -249,9 +250,9 @@ export default function CyberPokemonLanding() {
               className="block text-5xl md:text-7xl mt-2 font-mono"
               animate={{
                 textShadow: [
-                  '0 0 20px rgba(0,255,255,0.8)',
-                  '0 0 40px rgba(0,255,255,0.8)',
-                  '0 0 20px rgba(0,255,255,0.8)',
+                  "0 0 20px rgba(0,255,255,0.8)",
+                  "0 0 40px rgba(0,255,255,0.8)",
+                  "0 0 20px rgba(0,255,255,0.8)",
                 ],
               }}
               transition={{ duration: 2, repeat: Infinity }}
@@ -264,7 +265,7 @@ export default function CyberPokemonLanding() {
 
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur border border-cyan-500/30 rounded-full mt-4"
-            whileHover={{ scale: 1.05, borderColor: 'rgba(0,255,255,0.8)' }}
+            whileHover={{ scale: 1.05, borderColor: "rgba(0,255,255,0.8)" }}
           >
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             <span className="text-sm font-mono text-cyan-300">
@@ -278,28 +279,28 @@ export default function CyberPokemonLanding() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 max-w-6xl mx-auto">
           {[
             {
-              label: 'CARDS MINTED',
+              label: "CARDS MINTED",
               value: rounded,
-              icon: '🎴',
-              color: 'from-purple-500 to-pink-500',
+              icon: "🎴",
+              color: "from-purple-500 to-pink-500",
             },
             {
-              label: 'ACTIVE PLAYERS',
-              value: '8,921',
-              icon: '👥',
-              color: 'from-cyan-400 to-blue-500',
+              label: "ACTIVE PLAYERS",
+              value: "8,921",
+              icon: "👥",
+              color: "from-cyan-400 to-blue-500",
             },
             {
-              label: 'DAILY TRADES',
+              label: "DAILY TRADES",
               value: tradesRounded,
-              icon: '📊',
-              color: 'from-green-400 to-emerald-500',
+              icon: "📊",
+              color: "from-green-400 to-emerald-500",
             },
             {
-              label: 'FLOOR PRICE',
-              value: 'Ξ0.42',
-              icon: '💎',
-              color: 'from-yellow-400 to-orange-500',
+              label: "FLOOR PRICE",
+              value: "Ξ0.42",
+              icon: "💎",
+              color: "from-yellow-400 to-orange-500",
             },
           ].map((stat, i) => (
             <motion.div
@@ -324,7 +325,7 @@ export default function CyberPokemonLanding() {
                   <div
                     className={`text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
                   >
-                    {typeof stat.value === 'object' ? (
+                    {typeof stat.value === "object" ? (
                       <motion.span>{stat.value}</motion.span>
                     ) : (
                       stat.value
@@ -349,12 +350,12 @@ export default function CyberPokemonLanding() {
               <motion.div
                 className="w-24 h-24 border-4 border-cyan-400/30 rounded-full"
                 animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               />
               <motion.div
                 className="absolute inset-0 w-24 h-24 border-4 border-purple-400/30 rounded-full"
                 animate={{ rotate: -360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-cyan-300 font-mono text-sm">LOADING</span>
@@ -382,13 +383,13 @@ export default function CyberPokemonLanding() {
                       rotateY: offset * -15,
                       opacity: Math.abs(offset) > 2 ? 0 : 1,
                     }}
-                    transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
                     onHoverStart={() => setHoveredCard(index)}
                     onHoverEnd={() => setHoveredCard(null)}
                   >
                     <motion.div
                       className={`relative w-full h-full rounded-3xl overflow-hidden cursor-pointer ${
-                        isActive ? 'shadow-[0_0_80px_rgba(0,255,255,0.4)]' : ''
+                        isActive ? "shadow-[0_0_80px_rgba(0,255,255,0.4)]" : ""
                       }`}
                       whileHover={{ scale: 1.05, rotateY: 5 }}
                       onClick={() => setCurrentCard(index)}
@@ -399,11 +400,11 @@ export default function CyberPokemonLanding() {
                         animate={{
                           background: isActive
                             ? [
-                                'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-                                'linear-gradient(135deg, #16213e 0%, #0f3460 50%, #1a1a2e 100%)',
-                                'linear-gradient(135deg, #0f3460 0%, #1a1a2e 50%, #16213e 100%)',
+                                "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+                                "linear-gradient(135deg, #16213e 0%, #0f3460 50%, #1a1a2e 100%)",
+                                "linear-gradient(135deg, #0f3460 0%, #1a1a2e 50%, #16213e 100%)",
                               ]
-                            : 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)',
+                            : "linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)",
                         }}
                         transition={{ duration: 5, repeat: Infinity }}
                       />
@@ -413,11 +414,11 @@ export default function CyberPokemonLanding() {
                         className="absolute inset-0 opacity-30"
                         style={{
                           background:
-                            'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
-                          backgroundSize: '200% 200%',
+                            "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
+                          backgroundSize: "200% 200%",
                         }}
                         animate={{
-                          backgroundPosition: ['0% 0%', '100% 100%'],
+                          backgroundPosition: ["0% 0%", "100% 100%"],
                         }}
                         transition={{ duration: 3, repeat: Infinity }}
                       />
@@ -429,7 +430,7 @@ export default function CyberPokemonLanding() {
                           <div>
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-xs font-mono text-cyan-400">
-                                #{card.id.toString().padStart(3, '0')}
+                                #{card.id.toString().padStart(3, "0")}
                               </span>
                               <span className="text-xs px-2 py-0.5 bg-cyan-500/20 text-cyan-300 rounded-full border border-cyan-500/30">
                                 GEN I
@@ -475,9 +476,9 @@ export default function CyberPokemonLanding() {
                                   ? {
                                       y: [0, -10, 0],
                                       filter: [
-                                        'drop-shadow(0 20px 30px rgba(0,255,255,0.3))',
-                                        'drop-shadow(0 30px 40px rgba(0,255,255,0.5))',
-                                        'drop-shadow(0 20px 30px rgba(0,255,255,0.3))',
+                                        "drop-shadow(0 20px 30px rgba(0,255,255,0.3))",
+                                        "drop-shadow(0 30px 40px rgba(0,255,255,0.5))",
+                                        "drop-shadow(0 20px 30px rgba(0,255,255,0.3))",
                                       ],
                                     }
                                   : {}
@@ -517,9 +518,9 @@ export default function CyberPokemonLanding() {
                             </div>
                             <motion.span
                               className={`text-sm font-bold ${
-                                card.trend.startsWith('+')
-                                  ? 'text-green-400'
-                                  : 'text-red-400'
+                                card.trend.startsWith("+")
+                                  ? "text-green-400"
+                                  : "text-red-400"
                               }`}
                               animate={{ opacity: [0.5, 1, 0.5] }}
                               transition={{ duration: 2, repeat: Infinity }}
@@ -533,23 +534,23 @@ export default function CyberPokemonLanding() {
                             {Object.entries({
                               hp: {
                                 color:
-                                  'bg-gradient-to-r from-green-500 to-emerald-500',
-                                icon: '❤️',
+                                  "bg-gradient-to-r from-green-500 to-emerald-500",
+                                icon: "❤️",
                               },
                               attack: {
                                 color:
-                                  'bg-gradient-to-r from-red-500 to-orange-500',
-                                icon: '⚔️',
+                                  "bg-gradient-to-r from-red-500 to-orange-500",
+                                icon: "⚔️",
                               },
                               defense: {
                                 color:
-                                  'bg-gradient-to-r from-blue-500 to-cyan-500',
-                                icon: '🛡️',
+                                  "bg-gradient-to-r from-blue-500 to-cyan-500",
+                                icon: "🛡️",
                               },
                               speed: {
                                 color:
-                                  'bg-gradient-to-r from-yellow-500 to-amber-500',
-                                icon: '⚡',
+                                  "bg-gradient-to-r from-yellow-500 to-amber-500",
+                                icon: "⚡",
                               },
                             }).map(([stat, config]) => (
                               <div
@@ -598,7 +599,7 @@ export default function CyberPokemonLanding() {
                                   key={i}
                                   className="text-xs px-2 py-1 bg-purple-500/20 text-purple-300 rounded-lg border border-purple-500/30"
                                 >
-                                  {ability.replace('-', ' ').toUpperCase()}
+                                  {ability.replace("-", " ").toUpperCase()}
                                 </span>
                               ))}
                             </motion.div>
@@ -613,12 +614,12 @@ export default function CyberPokemonLanding() {
                           background: `linear-gradient(90deg, transparent, ${getTypeColor(
                             card.type
                           )}40, transparent)`,
-                          backgroundSize: '200% 100%',
+                          backgroundSize: "200% 100%",
                         }}
                         animate={
                           isActive
                             ? {
-                                backgroundPosition: ['200% 0', '-200% 0'],
+                                backgroundPosition: ["200% 0", "-200% 0"],
                               }
                             : {}
                         }
@@ -644,14 +645,14 @@ export default function CyberPokemonLanding() {
                     <div
                       className={`absolute inset-0 ${
                         currentCard === index
-                          ? 'bg-gradient-to-r from-cyan-400 to-purple-500'
-                          : 'bg-gray-700'
+                          ? "bg-gradient-to-r from-cyan-400 to-purple-500"
+                          : "bg-gray-700"
                       } transition-all duration-300`}
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span
                         className={`text-xs font-bold ${
-                          currentCard === index ? 'text-white' : 'text-gray-400'
+                          currentCard === index ? "text-white" : "text-gray-400"
                         }`}
                       >
                         {index + 1}
@@ -699,9 +700,9 @@ export default function CyberPokemonLanding() {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 opacity-90"></div>
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400"
-                  animate={{ x: ['0%', '100%', '0%'] }}
+                  animate={{ x: ["0%", "100%", "0%"] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  style={{ mixBlendMode: 'overlay' }}
+                  style={{ mixBlendMode: "overlay" }}
                 />
                 <span className="relative z-10 flex items-center gap-3">
                   <span>START COLLECTING</span>
@@ -726,7 +727,7 @@ export default function CyberPokemonLanding() {
 
             <motion.button
               className="group relative px-10 py-5 rounded-2xl font-bold text-lg border-2 border-cyan-500/50 overflow-hidden"
-              whileHover={{ scale: 1.02, borderColor: 'rgba(0,255,255,0.8)' }}
+              whileHover={{ scale: 1.02, borderColor: "rgba(0,255,255,0.8)" }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 to-purple-900/20 group-hover:opacity-50 transition-opacity"></div>
@@ -754,25 +755,25 @@ export default function CyberPokemonLanding() {
         <div className="grid md:grid-cols-3 gap-8 mb-10 max-w-5xl mx-auto items-stretch auto-rows-fr">
           {[
             {
-              icon: '🔐',
-              title: 'TRUE OWNERSHIP',
+              icon: "🔐",
+              title: "TRUE OWNERSHIP",
               description:
-                'Every card is a unique NFT stored on the blockchain. You own your cards forever.',
-              gradient: 'from-purple-500 to-pink-500',
+                "Every card is a unique NFT stored on the blockchain. You own your cards forever.",
+              gradient: "from-purple-500 to-pink-500",
             },
             {
-              icon: '⚡',
-              title: 'INSTANT TRADES',
+              icon: "⚡",
+              title: "INSTANT TRADES",
               description:
-                'Trade cards instantly with players worldwide. No intermediaries, just peer-to-peer.',
-              gradient: 'from-cyan-500 to-blue-500',
+                "Trade cards instantly with players worldwide. No intermediaries, just peer-to-peer.",
+              gradient: "from-cyan-500 to-blue-500",
             },
             {
-              icon: '🌐',
-              title: 'GLOBAL BATTLES',
+              icon: "🌐",
+              title: "GLOBAL BATTLES",
               description:
-                'Battle trainers across the metaverse with verifiable on-chain results.',
-              gradient: 'from-green-500 to-emerald-500',
+                "Battle trainers across the metaverse with verifiable on-chain results.",
+              gradient: "from-green-500 to-emerald-500",
             },
           ].map((feature, i) => (
             <motion.div
@@ -810,7 +811,7 @@ export default function CyberPokemonLanding() {
           <div className="flex items-center justify-center gap-3 mt-15">
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             >
               <svg className="w-6 h-6 text-cyan-400" viewBox="0 0 24 24">
                 <path

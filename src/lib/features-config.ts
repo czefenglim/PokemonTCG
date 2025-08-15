@@ -8,6 +8,9 @@ import {
   ShoppingBag,
   Trophy,
   Swords,
+  User,
+  Repeat,
+  ListOrdered,
 } from 'lucide-react';
 
 export interface Feature {
@@ -64,7 +67,7 @@ export const FEATURES_CONFIG: Feature[] = [
   },
   {
     id: 'marketplace',
-    title: 'Trading Hub',
+    title: 'Marketplace',
     subtitle: 'MARKETPLACE',
     desc: 'Trade rare cards with trainers across the digital world',
     href: '/user/marketplace',
@@ -72,6 +75,23 @@ export const FEATURES_CONFIG: Feature[] = [
       'https://www.indy100.com/media-library/image.gif?id=28085442&width=800&quality=85',
     icon: '🏪',
     lucideIcon: ShoppingCart,
+    bgGradient: 'from-cyan-400/20 via-blue-500/20 to-indigo-500/20',
+    borderGradient: 'from-cyan-400 to-blue-500',
+    glowColor: 'shadow-blue-500/30',
+    showInSidebar: true,
+    sidebarOrder: 4,
+    category: 'core',
+  },
+  {
+    id: 'tradeCards',
+    title: 'Trade Cards With Friends',
+    subtitle: 'TRADECARDS',
+    desc: 'Trade cards with friends and build your ultimate collection',
+    href: '/user/tradeCards/tradeHome',
+    image:
+      'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzF6bW8xdWExcGZ2cHBhdmlicGo5cGNtZTVrdnJrMXAxMjczcWcyYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x9YbrUtvXTXldtGOTr/giphy.gif',
+    icon: '🏪',
+    lucideIcon: Repeat,
     bgGradient: 'from-cyan-400/20 via-blue-500/20 to-indigo-500/20',
     borderGradient: 'from-cyan-400 to-blue-500',
     glowColor: 'shadow-blue-500/30',
@@ -160,6 +180,42 @@ export const FEATURES_CONFIG: Feature[] = [
     showInSidebar: true,
     sidebarOrder: 7,
     category: 'commerce',
+  },
+  {
+    id: 'profile',
+    title: 'Profile',
+    subtitle: 'YOUR ACCOUNT',
+    desc: 'Manage your account, wallet, and personal settings',
+    href: '/user/profile/viewProfile',
+    image:
+      'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NzlnYWs1NGgxa2FhNm51aXhwdTRtMDRlaGkzMWc4aWFwZnk1c2lndSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5RxNQCK01NdAc/giphy.gif',
+    icon: '👤',
+    lucideIcon: User,
+    stats: { value: 'NEW', label: 'Customize' },
+    bgGradient: 'from-gray-400/20 via-slate-500/20 to-zinc-500/20',
+    borderGradient: 'from-gray-400 to-slate-500',
+    glowColor: 'shadow-gray-500/30',
+    showInSidebar: true,
+    sidebarOrder: 8, // 👈 next available order
+    category: 'core',
+  },
+  {
+    id: 'orders',
+    title: 'Orders',
+    subtitle: 'Your Order History',
+    desc: 'View and manage all your past and current orders', // updated description
+    href: '/user/orders',
+    image:
+      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWxncW5hc3g1YTI0Nmx5amRubTd1MWY2dWNzb3YweWVzaDhscXZrcCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/eGLE18Dg6W0GvupRhO/giphy.gif',
+    icon: '🛒', // updated icon
+    lucideIcon: ListOrdered,
+    stats: { value: 'NEW', label: 'Customize' },
+    bgGradient: 'from-purple-400/20 via-violet-500/20 to-indigo-500/20',
+    borderGradient: 'from-purple-400 to-violet-500',
+    glowColor: 'shadow-purple-500/30',
+    showInSidebar: true,
+    sidebarOrder: 8,
+    category: 'core',
   },
 ];
 

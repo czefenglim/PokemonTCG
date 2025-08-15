@@ -1,0 +1,15 @@
+{
+  "name": "Charmeleon δ",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex14/30_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Lightning"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

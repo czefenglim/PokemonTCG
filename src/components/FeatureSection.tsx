@@ -1,7 +1,7 @@
 // components/NFTGameFeatureSection.tsx
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getFeaturesForGrid } from '@/lib/features-config';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getFeaturesForGrid } from "@/lib/features-config";
 
 export default function NFTGameFeatureSection() {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -15,7 +15,7 @@ export default function NFTGameFeatureSection() {
     setMounted(true);
   }, []);
 
-  const playClick = () => console.log('Click sound played');
+  const playClick = () => console.log("Click sound played");
 
   const handleCardClick = (feature) => {
     playClick();
@@ -51,8 +51,8 @@ export default function NFTGameFeatureSection() {
               key={feature.id}
               className={`group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-500 hover:scale-105 hover:-translate-y-2 ${
                 mounted
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
               style={{
                 transitionDelay: `${index * 100}ms`,
@@ -72,8 +72,8 @@ export default function NFTGameFeatureSection() {
                     style={{
                       filter:
                         hoveredCard === feature.id
-                          ? 'blur(0px) brightness(1)'
-                          : 'blur(1px) brightness(0.6)',
+                          ? "blur(0px) brightness(1)"
+                          : "blur(1px) brightness(0.6)",
                     }}
                   />
 
@@ -89,7 +89,7 @@ export default function NFTGameFeatureSection() {
                   className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
                     hoveredCard === feature.id
                       ? `bg-gradient-to-r ${feature.borderGradient} p-0.5 ${feature.glowColor} shadow-2xl`
-                      : 'bg-slate-700/30 p-0.5'
+                      : "bg-slate-700/30 p-0.5"
                   }`}
                 >
                   <div className="w-full h-full bg-transparent rounded-2xl"></div>
@@ -122,8 +122,8 @@ export default function NFTGameFeatureSection() {
                   <div
                     className={`transform transition-all duration-300 ${
                       hoveredCard === feature.id
-                        ? 'translate-y-0 opacity-100'
-                        : 'translate-y-4 opacity-0'
+                        ? "translate-y-0 opacity-100"
+                        : "translate-y-4 opacity-0"
                     }`}
                   >
                     <button className="w-full bg-white/10 backdrop-blur-sm border-2 border-white/40 hover:border-white/70 hover:bg-white/20 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-2xl hover:shadow-white/30 group relative overflow-hidden">
@@ -158,8 +158,8 @@ export default function NFTGameFeatureSection() {
                 <div
                   className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 transition-all duration-700 ${
                     hoveredCard === feature.id
-                      ? 'translate-x-full'
-                      : '-translate-x-full'
+                      ? "translate-x-full"
+                      : "-translate-x-full"
                   }`}
                 />
               </div>

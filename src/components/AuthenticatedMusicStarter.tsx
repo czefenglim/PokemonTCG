@@ -1,14 +1,14 @@
-'use client';
-import { useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useMusic } from '@/context/MusicContext';
+"use client";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useMusic } from "@/context/MusicContext";
 
 export default function AuthenticatedMusicStarter() {
   const { status } = useSession();
-  const { play, isPlaying } = useMusic();
+  const { play, isPlaying, userPaused } = useMusic(); // ✅ add userPaused from context
 
   useEffect(() => {
-    if (status !== 'authenticated') return;
+    if (status !== "authenticated" || userPaused) return; // ✅ don't autoplay if user paused
 
     // try to start immediately
     play().catch(() => {
@@ -17,7 +17,8 @@ export default function AuthenticatedMusicStarter() {
 
     // fallback: start on first interaction if blocked
     const go = async () => {
-      if (!isPlaying) {
+      if (!isPlaying && !userPaused) {
+        // ✅ respect user pause
         try {
           await play();
         } catch {}
@@ -25,15 +26,15 @@ export default function AuthenticatedMusicStarter() {
       cleanup();
     };
     const cleanup = () => {
-      document.removeEventListener('pointerdown', go);
-      document.removeEventListener('keydown', go);
-      document.removeEventListener('touchstart', go);
+      document.removeEventListener("pointerdown", go);
+      document.removeEventListener("keydown", go);
+      document.removeEventListener("touchstart", go);
     };
-    document.addEventListener('pointerdown', go, { once: true });
-    document.addEventListener('keydown', go, { once: true });
-    document.addEventListener('touchstart', go, { once: true });
+    document.addEventListener("pointerdown", go, { once: true });
+    document.addEventListener("keydown", go, { once: true });
+    document.addEventListener("touchstart", go, { once: true });
     return cleanup;
-  }, [status, play, isPlaying]);
+  }, [status, play, isPlaying, userPaused]);
 
   return null;
 }

@@ -149,6 +149,7 @@ contract PokemonCard1155 is ERC1155, Ownable {
         return string(abi.encodePacked(_baseURI, _toString(tokenId), ".json"));
     }
 
+
     /**
      * Update base URI for metadata - only owner
      */
@@ -163,6 +164,7 @@ contract PokemonCard1155 is ERC1155, Ownable {
     function getBaseURI() external view returns (string memory) {
         return _baseURI;
     }
+
 
     /**
      * Check if token has been minted (exists)

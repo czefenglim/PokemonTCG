@@ -1,4 +1,13 @@
+// require("@nomicfoundation/hardhat-toolbox");
+
+// /** @type import('hardhat/config').HardhatUserConfig */
+// module.exports = {
+//   solidity: "0.8.28",
+// };
+
 require('@nomicfoundation/hardhat-toolbox');
+require('@nomicfoundation/hardhat-verify');
+require('dotenv').config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -12,22 +21,45 @@ module.exports = {
     },
   },
   networks: {
-    localhost: {
-      url: 'http://127.0.0.1:8545',
-      gas: 50000000, // 50M gas limit (much higher)
-      blockGasLimit: 50000000, // 50M block gas limit
-      gasPrice: 20000000000, // 20 gwei
-      timeout: 60000, // 60 second timeout
-    },
     hardhat: {
+      chainId: 31337,
       gas: 50000000, // 50M gas limit
       blockGasLimit: 50000000, // 50M block gas limit
       gasPrice: 20000000000,
       allowUnlimitedContractSize: true, // For large contracts
     },
+    localhost: {
+      url: 'http://127.0.0.1:8545',
+      chainId: 31337,
+    },
+    sepolia: {
+      url: process.env.RPC_URL,
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 11155111,
+    },
+    // monadTestnet: {
+    //   url: "https://testnet-rpc.monad.xyz",   // RPC endpoint
+    //   chainId: 4242,                          // Monad Testnet Chain ID
+    //   accounts: [process.env.PRIVATE_KEY],    // your wallet private key
+    // },
   },
-  // Increase timeout for large transactions
+  etherscan: {
+    apiKey: {
+      sepolia: process.env.ETHERSCAN_API_KEY,
+      // monadTestnet: process.env.MONADSCAN_API_KEY, // Monad Testnet Etherscan API key
+    },
+  },
+  paths: {
+    sources: './contracts',
+    tests: './test',
+    cache: './cache',
+    artifacts: './artifacts',
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: 'USD',
+  },
   mocha: {
-    timeout: 120000, // 2 minutes
+    timeout: 40000,
   },
 };

@@ -37,6 +37,21 @@ export const adminNavigation: NavigationSection[] = [
         color: 'from-blue-400 to-cyan-500',
       },
       {
+        id: 'merchandise',
+        title: 'Merchandise',
+        href: '/admin/manage-merchandise',
+        icon: ShoppingBag,
+        description:
+          'Complete merchandise lifecycle management with inventory tracking and order processing',
+        features: [
+          'Inventory Management',
+          'Stock Alerts',
+          'Order Processing',
+          'Shipping',
+        ],
+        color: 'from-purple-400 to-pink-500',
+      },
+      {
         id: 'gem-transactions',
         title: 'Gem Transactions',
         href: '/admin/gem-purchase',
@@ -52,17 +67,17 @@ export const adminNavigation: NavigationSection[] = [
         color: 'from-emerald-400 to-teal-500',
       },
       {
-        id: 'merchandise',
-        title: 'Merchandise',
-        href: '/admin/merchandise-purchase',
+        id: 'transaction',
+        title: 'View Transactions',
+        href: '/admin/view-transaction',
         icon: ShoppingBag,
         description:
-          'Complete merchandise lifecycle management with inventory tracking and order processing',
+          'View and manage all transactions with detailed insights and filters',
         features: [
-          'Inventory Management',
-          'Stock Alerts',
-          'Order Processing',
-          'Shipping',
+          'Transaction History',
+          'User Management',
+          'Merchandise Insights',
+          'Order Tracking',
         ],
         color: 'from-purple-400 to-pink-500',
       },
