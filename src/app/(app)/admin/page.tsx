@@ -19,7 +19,7 @@ import {
 import {
   getMainManagementTools,
   getQuickActions,
-} from '@/lib/admin-navigation';
+} from '@/lib/admin/navigation/admin-navigation';
 import {
   TrendingUp,
   TrendingDown,

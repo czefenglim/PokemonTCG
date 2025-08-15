@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GemSuccessNotification } from '@/components/GemSuccessNotification';
-import { useGems } from '@/context/GemContext';
+import { GemSuccessNotification } from '@/features/user/buy-gems/components/GemSuccessNotification';
+import { useGems } from '@/features/user/buy-gems/contexts/GemContext';
 
 type GemPackage = {
   id: string;
@@ -31,8 +31,8 @@ export default function BuyGemsPage() {
     const fetchData = async () => {
       try {
         const [packagesRes, gemsRes] = await Promise.all([
-          fetch('/api/gems'),
-          fetch('/api/user/gems'),
+          fetch('/api/gems/packages'),
+          fetch('/api/gems/balance'),
         ]);
 
         const [packagesData, gemsData] = await Promise.all([
@@ -82,7 +82,7 @@ export default function BuyGemsPage() {
       setPurchasedAmount(selectedPackage.amount);
     }
 
-    const res = await fetch('/api/create-checkout-session', {
+    const res = await fetch('/api/gems/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

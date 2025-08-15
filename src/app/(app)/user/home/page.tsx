@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/solid';
-import FeatureSection from '@/components/FeatureSection';
-import AvatarPickerModal from '@/components/AvatarPickerModal';
+import FeatureSection from '@/features/user/home/components/FeatureSection';
+import AvatarPickerModal from '@/features/user/profile/components/AvatarPickerModal';
 import { motion } from 'framer-motion';
 
 export default function HomePage() {

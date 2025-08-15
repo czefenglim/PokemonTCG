@@ -10,7 +10,7 @@ import {
 } from 'framer-motion';
 
 import { useEffect, useState, useRef } from 'react';
-import FloatingParticles from '@/components/FloatingParticles';
+import FloatingParticles from '@/features/public/landingpage/components/FloatingParticles';
 import Link from 'next/link';
 export default function CyberPokemonLanding() {
   const [currentCard, setCurrentCard] = useState(0);

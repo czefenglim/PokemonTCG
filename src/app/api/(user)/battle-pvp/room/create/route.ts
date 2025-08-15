@@ -1,0 +1,88 @@
+// used in battle/pvp/page.tsx
+
+import { prisma } from '@/lib/db/prisma';
+import { NextResponse } from 'next/server';
+// import { isValidRarity } from '@/lib/user/utils/cardUtils';
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const {
+      id,
+      name,
+      isPrivate,
+      password,
+      creatorId,
+      player1Id,
+      player1DeckId,
+      player1Avatar,
+      player1Address,
+      wagerRarity,
+    } = body;
+
+    console.log('Creating room with data:', {
+      id,
+      name,
+      isPrivate,
+      wagerRarity,
+      player1Address,
+    });
+
+    // Validate required fields
+    if (!id || !name || !creatorId || !player1Id) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    // // Validate rarity if provided
+    // if (wagerRarity) {
+    //   if (!isValidRarity(wagerRarity)) {
+    //     return NextResponse.json(
+    //       { error: 'Invalid card rarity selected' },
+    //       { status: 400 }
+    //     );
+    //   }
+
+    //   if (!player1Address) {
+    //     console.warn('No blockchain address provided for card verification');
+    //   }
+    // }
+
+    // Create the room
+    const room = await prisma.room.create({
+      data: {
+        id,
+        name,
+        isPrivate,
+        password,
+        creatorId,
+        player1Id,
+        player1DeckId,
+        player1Avatar,
+        wagerRarity,
+        players: 1,
+      },
+    });
+
+    console.log('Room created successfully:', room.id);
+    return NextResponse.json(room);
+  } catch (error) {
+    console.error('Error creating room:', error);
+
+    // More detailed error logging
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+
+    return NextResponse.json(
+      {
+        error: 'Failed to create room',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
+  }
+}

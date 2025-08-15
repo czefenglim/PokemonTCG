@@ -1,0 +1,15 @@
+{
+  "name": "Lapras ex",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/sv7/158_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Ultra Rare"
+    }
+  ]
+}

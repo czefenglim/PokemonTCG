@@ -84,7 +84,7 @@ export default function AdminGemPackagesPage() {
   const fetchPackages = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/gem-packages');
+      const response = await fetch('/api/gem-packages');
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -105,7 +105,7 @@ export default function AdminGemPackagesPage() {
     setActionLoading(editingPackage ? 'update' : 'create');
 
     try {
-      const url = '/api/admin/gem-packages';
+      const url = '/api/gem-packages';
       const method = editingPackage ? 'PUT' : 'POST';
       const body = editingPackage
         ? { id: editingPackage.id, ...formData }
@@ -151,7 +151,7 @@ export default function AdminGemPackagesPage() {
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`/api/admin/gem-packages?id=${id}`, {
+      const res = await fetch(`/api/gem-packages?id=${id}`, {
         method: 'DELETE',
       });
 
@@ -203,7 +203,7 @@ export default function AdminGemPackagesPage() {
   const toggleStatus = async (id: string, currentStatus: boolean) => {
     setActionLoading(`toggle-${id}`);
     try {
-      const response = await fetch('/api/admin/gem-packages', {
+      const response = await fetch('/api/gem-packages', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, active: !currentStatus }),
@@ -272,7 +272,6 @@ export default function AdminGemPackagesPage() {
           </motion.div>
         ))}
       </div>
-
       <div className="relative z-10">
         {/* Enhanced Header */}
         <motion.header
@@ -556,7 +555,6 @@ export default function AdminGemPackagesPage() {
           )}
         </div>
       </div>
-
       {/* Modal */}
       <AnimatePresence>
         {showModal && (
@@ -564,7 +562,7 @@ export default function AdminGemPackagesPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4 z-50"
             onClick={() => setShowModal(false)}
           >
             <motion.div

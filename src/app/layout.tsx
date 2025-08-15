@@ -1,8 +1,8 @@
 // app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
-import SessionWrapper from '@/components/SessionWrapper';
-import Web3Provider from '@/components/Web3Provider';
+import SessionWrapper from '@/features/auth/providers/SessionWrapper';
+import Web3Provider from '@/features/user/web3/components/Web3Provider';
 
 export const metadata: Metadata = {
   title: 'Pokémon TCG',

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import PokemonCart from '@/components/PokemonCart'; // Adjust path as needed
+import PokemonCart from '@/features/user/merchandise/components/PokemonCart'; // Adjust path as needed
 import {
   ShoppingCart,
   Star,

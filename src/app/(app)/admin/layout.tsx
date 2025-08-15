@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import SessionWrapper from '@/components/SessionWrapper';
-import GlobalClickSound from '@/components/GlobalClickSound';
-import AnimatedBackground from '@/components/AnimatedBackground';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import SessionWrapper from '@/features/auth/providers/SessionWrapper';
+import GlobalClickSound from '@/features/public/shared/ui/GlobalClickSound';
+import AdminSidebar from '@/features/admin/app-shell/components/AdminSidebar';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({
@@ -201,27 +200,18 @@ export default function AdminLayout({
         <div className="absolute inset-0 bg-gradient-to-bl from-emerald-950/10 via-transparent to-cyan-950/10 transform scale-102" />
       </div>
 
-      {/* Enhanced AnimatedBackground */}
-      <AnimatedBackground variant="admin" intensity="medium" particles={true} />
-
       <GlobalClickSound />
 
-      <SessionWrapper>
-        {/* Admin Layout Container */}
-        <div className="relative z-20 flex min-h-screen">
-          {/* Sidebar */}
-          <AdminSidebar />
-
-          {/* Main Content Area */}
-          <main className="flex-1 overflow-hidden">
-            <div className="w-full h-full lg:ml-0 pt-16 lg:pt-0">
-              <div className="w-full h-full overflow-auto backdrop-blur-[1px] backdrop-saturate-150">
-                {children}
-              </div>
+      <div className="relative z-20 flex min-h-screen">
+        <AdminSidebar />
+        <main className="flex-1 overflow-hidden">
+          <div className="w-full h-full lg:ml-0 pt-16 lg:pt-0">
+            <div className="w-full h-full overflow-auto backdrop-blur-[1px] backdrop-saturate-150">
+              {children}
             </div>
-          </main>
-        </div>
-      </SessionWrapper>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

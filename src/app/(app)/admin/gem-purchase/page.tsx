@@ -187,7 +187,7 @@ const EnhancedGemPurchaseAdmin = () => {
         ...(dateRange.end ? { endDate: dateRange.end } : {}),
       });
 
-      const res = await fetch(`/api/admin/gem-purchases?${params.toString()}`);
+      const res = await fetch(`/api/gem-purchases?${params.toString()}`);
       if (!res.ok) throw new Error('Failed to fetch transactions');
 
       const data: TransactionResponse = await res.json();
@@ -213,7 +213,7 @@ const EnhancedGemPurchaseAdmin = () => {
         ...(dateRange.start ? { startDate: dateRange.start } : {}),
         ...(dateRange.end ? { endDate: dateRange.end } : {}),
       });
-      const res = await fetch(`/api/admin/gem-purchases?${params.toString()}`);
+      const res = await fetch(`/api/gem-purchases?${params.toString()}`);
       if (!res.ok) return;
 
       const data = await res.json();
@@ -262,9 +262,7 @@ const EnhancedGemPurchaseAdmin = () => {
           limit: String(pageSizeForExport),
           ...baseParams,
         });
-        const res = await fetch(
-          `/api/admin/gem-purchases?${params.toString()}`
-        );
+        const res = await fetch(`/api/gem-purchases?${params.toString()}`);
         if (!res.ok) throw new Error('Failed to fetch for export');
         const data: TransactionResponse = await res.json();
         all = all.concat(data.transactions);
