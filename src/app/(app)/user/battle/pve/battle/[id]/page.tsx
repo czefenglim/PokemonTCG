@@ -1096,12 +1096,6 @@ export default function PvEBattlePage() {
             >
               Back to Opponents
             </button>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
-            >
-              Battle Again
-            </button>
           </div>
         </motion.div>
       </div>
@@ -1510,9 +1504,16 @@ export default function PvEBattlePage() {
             </div>
             <div className="w-px h-4 bg-white/30" />
             <div className="text-white text-sm">
-              Prizes:{' '}
+              Player Prizes:{' '}
               <span className="text-yellow-400 font-bold">
                 {bs.prizes?.playerDefeated || 0}/2
+              </span>
+            </div>
+            <div className="w-px h-4 bg-white/30" />
+            <div className="text-white text-sm">
+              AI Prizes:{' '}
+              <span className="text-red-400 font-bold">
+                {bs.prizes?.aiDefeated || 0}/2
               </span>
             </div>
           </div>
