@@ -870,7 +870,7 @@ export default function CollectionPage() {
                             {/* Type Badge */}
                             {card.type && (
                               <div
-                                className={`absolute top-2 left-2 ${getTypeColor(
+                                className={`absolute top-10 left-2 ${getTypeColor(
                                   card.type
                                 )} text-white text-xs font-bold px-2 py-1 rounded-full`}
                               >
@@ -900,6 +900,10 @@ export default function CollectionPage() {
                                 {card.rarity}
                               </div>
                             </div>
+                          </div>
+                          {/* Token ID Badge */}
+                          <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
+                            #{card.tokenId}
                           </div>
                         </div>
                       </motion.div>

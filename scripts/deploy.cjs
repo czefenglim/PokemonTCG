@@ -24,6 +24,8 @@ async function main() {
   const maxPokemonId = pokemonList.length;
   console.log(`🎯 Found ${maxPokemonId} Pokemon in the list`);
 
+  const network = await ethers.provider.getNetwork();
+
   // Resolve baseURI (prefer .env, fallback to your CID)
   const baseURI = mustEndWithSlash(
     process.env.NEXT_PUBLIC_BASE_URI ||
@@ -31,32 +33,64 @@ async function main() {
   );
 
   const [deployer] = await ethers.getSigners();
-  console.log('💼 Deployer:', deployer.address);
-  console.log('🔗 Base URI:', baseURI);
+  console.log('Deploying contracts with account:', deployer.address);
+  console.log(
+    'Account balance:',
+    ethers.formatEther(await ethers.provider.getBalance(deployer.address)),
+    'ETH'
+  );
+  console.log('Deploying contract...');
 
-  const PokemonCard1155 = await ethers.getContractFactory('PokemonCard1155');
-  console.log('⏳ Deploying…');
+  // Deploy PokemonCard1155
+  const PokemonCard1155 = await hre.ethers.getContractFactory(
+    'PokemonCard1155'
+  );
+
   const contract = await PokemonCard1155.deploy(baseURI, maxPokemonId);
+
+  await contract.waitForDeployment();
+
+  console.log(`🃏 PokemonCard1155 deployed to: ${contract.target}`);
+
+  // Deploy TradeContract
+  const TradeContract = await hre.ethers.getContractFactory('TradeContract');
+
+  const tradeContract = await TradeContract.deploy(
+    contract.target,
+    deployer.address
+  );
+
+  await tradeContract.waitForDeployment();
+
+  console.log(`🔄 TradeContract deployed to: ${tradeContract.target}`);
+
+  // 💾 Save deployment info
+  if (!fs.existsSync('./deployments')) fs.mkdirSync('./deployments');
+  const deploymentPath = `./deployments/${network.name}-deployment.json`;
+  fs.writeFileSync(
+    deploymentPath,
+    JSON.stringify(
+      {
+        network: network.name,
+        chainId: network.chainId.toString(),
+        deployer: deployer.address,
+        contracts: {
+          PokemonCard1155: { address: contract.target, args: [baseURI] },
+          TradeContract: {
+            address: tradeContract.target,
+            args: [contract.target, deployer.address],
+          },
+        },
+        deployedAt: new Date().toISOString(),
+      },
+      null,
+      2
+    )
+  );
+  console.log(`\n✅ Deployment info saved to: ${deploymentPath}`);
   await contract.waitForDeployment();
   const contractAddress = await contract.getAddress();
   console.log('🎉 Deployed at:', contractAddress);
-
-  // Save deployment info
-  const deploymentInfo = {
-    contractAddress,
-    contractName: 'PokemonCard1155',
-    network: (hre.network && hre.network.name) || 'localhost',
-    baseURI,
-    maxPokemonId,
-    totalPokemonCount: maxPokemonId,
-    deployedAt: new Date().toISOString(),
-    deployer: deployer.address,
-  };
-  fs.writeFileSync(
-    path.join(__dirname, '../contract-deployment.json'),
-    JSON.stringify(deploymentInfo, null, 2)
-  );
-  console.log('💾 Saved contract-deployment.json');
 
   // Upsert .env with address & base URI
   const envPath = path.join(__dirname, '../.env');

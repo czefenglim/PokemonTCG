@@ -6,13 +6,13 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2023-10-16', // known-good; avoid custom tags here
 });
 
 export async function POST(req: Request) {
   // 1) Verify signature with raw body
   const rawBody = await req.text();
-  const hdrs = await nextHeaders();
+  const hdrs = await nextHeaders();                // App Router: must await
   const sig = hdrs.get('stripe-signature');
 
   console.log('🔔 Webhook hit /api/gems/webhook');
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     return new Response(`Webhook Error: ${err?.message}`, { status: 400 });
   }
 
-  // 2) We only credit on checkout.session.completed
+  // 2) Only credit on checkout.session.completed (ignore payment_intent.*, charge.*)
   if (event.type !== 'checkout.session.completed') {
     console.log('ℹ️ Ignoring event type:', event.type);
     return new Response('ok (ignored)', { status: 200 });
@@ -42,15 +42,17 @@ export async function POST(req: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
   console.log('🧾 Session ID:', session.id);
-
-  // 3) Try to get userId/priceId from metadata first
-  let userId = session.metadata?.userId ?? null;
-  let priceId = session.metadata?.priceId ?? null;
-
   console.log('🔎 Metadata:', session.metadata);
 
-  // 4) Fallback: fetch session with expanded line_items to derive priceId
-  if (!priceId) {
+  // 3) Determine purchase type (default to "gems" if not set)
+  const purchaseType = session.metadata?.purchaseType ?? 'gems';
+
+  // ---- GEM PURCHASE PREP ---------------------------------------------------
+  let userId: string | null = session.metadata?.userId ?? null;
+  let priceId: string | null = session.metadata?.priceId ?? null;
+
+  // Fallback: fetch expanded line_items to get priceId, if missing
+  if (purchaseType === 'gems' && !priceId) {
     try {
       const full = await stripe.checkout.sessions.retrieve(session.id, {
         expand: ['line_items.data.price'],
@@ -64,57 +66,101 @@ export async function POST(req: Request) {
     }
   }
 
+  // Basic validations per type
   if (!userId) {
-    console.error('❌ Missing userId (metadata.userId). Cannot credit.');
+    console.error('❌ Missing userId in metadata; cannot process.');
     return new Response('Missing userId', { status: 400 });
   }
-  if (!priceId) {
-    console.error(
-      '❌ Missing priceId (metadata.priceId or line_items). Cannot map package.'
-    );
+  if (purchaseType === 'gems' && !priceId) {
+    console.error('❌ Missing priceId (metadata or line_items); cannot map package.');
     return new Response('Missing priceId', { status: 400 });
   }
 
-  // 5) Idempotent credit in a transaction
+  // 4) Idempotent DB work in a single transaction
   try {
     const result = await prisma.$transaction(async (tx) => {
-      // Idempotency: record event.id once; throws if already processed
+      // Idempotency guard: throws on duplicate event.id (requires StripeEvent model)
       await tx.stripeEvent.create({ data: { id: event.id } });
 
-      const pkg = await tx.gemPackage.findUnique({
-        where: { stripeId: priceId! },
-      });
-      if (!pkg) {
-        throw new Error(`Gem package not found for priceId=${priceId}`);
+      if (purchaseType === 'gems') {
+        // Find gem package by Stripe priceId
+        const pkg = await tx.gemPackage.findUnique({
+          where: { stripeId: priceId! },
+        });
+        if (!pkg) {
+          throw new Error(`Gem package not found for priceId=${priceId}`);
+        }
+
+        // Record the purchase
+        await tx.gemPurchase.create({
+          data: {
+            userId,
+            packageId: pkg.id,
+            amount: pkg.amount,
+            priceCents: pkg.priceCents,
+            currency: pkg.currency,
+            stripeId: String(session.payment_intent ?? ''), // useful for audits
+            status: 'COMPLETED',
+            completedAt: new Date(),
+          },
+        });
+
+        // Credit gems
+        const updatedUser = await tx.user.update({
+          where: { id: userId },
+          data: { gems: { increment: pkg.amount } },
+          select: { id: true, gems: true },
+        });
+
+        return { type: 'gems' as const, credited: pkg.amount, newBalance: updatedUser.gems };
       }
 
-      await tx.gemPurchase.create({
-        data: {
-          userId,
-          packageId: pkg.id,
-          amount: pkg.amount,
-          priceCents: pkg.priceCents,
-          currency: pkg.currency,
-          stripeId: String(session.payment_intent ?? ''),
-          status: 'COMPLETED',
-          completedAt: new Date(),
-        },
-      });
+      if (purchaseType === 'product') {
+        const productId = session.metadata?.productId ?? null;
+        const quantity = parseInt(session.metadata?.quantity || '1', 10);
 
-      const updatedUser = await tx.user.update({
-        where: { id: userId },
-        data: { gems: { increment: pkg.amount } },
-        select: { id: true, gems: true },
-      });
+        if (!productId) throw new Error('Missing productId for product purchase');
 
-      return { credited: pkg.amount, newBalance: updatedUser.gems };
+        // Reduce inventory
+        await tx.merchandise.update({
+          where: { id: productId },
+          data: { quantity: { decrement: quantity } },
+        });
+
+        // Save transaction
+        await tx.transaction.create({
+          data: {
+            merchandiseId: productId,
+            quantity,
+            totalAmount: (session.amount_total ?? 0) / 100, // cents -> major
+            currency: session.currency?.toUpperCase() || 'USD',
+            location: session.metadata?.location || '',
+            phoneNumber: session.metadata?.phoneNumber || '',
+            email: session.customer_email || null,
+            status: 'COMPLETED',
+            paymentRef: String(session.payment_intent ?? ''),
+            userId,
+          },
+        });
+
+        return { type: 'product' as const, credited: 0, newBalance: null };
+      }
+
+      // Unknown purchaseType: do nothing but keep idempotency row
+      return { type: 'unknown' as const, credited: 0, newBalance: null };
     });
 
-    console.log(
-      `✅ Credited ${result.credited} gems to user ${userId}. New balance: ${result.newBalance}`
-    );
+    if (result.type === 'gems') {
+      console.log(`✅ Credited ${result.credited} gems to user ${userId}. New balance: ${result.newBalance}`);
+    } else if (result.type === 'product') {
+      console.log(`✅ Inventory updated and transaction recorded for user ${userId}`);
+    } else {
+      console.log('⚠️ Unknown purchaseType; event recorded but no state changes.');
+    }
+
     return new Response('ok', { status: 200 });
   } catch (err: any) {
+    // Duplicate event => already processed
     if (err.code === 'P2002') {
       console.warn('⚠️ Duplicate event (already processed):', event.id);
       return new Response('ok (duplicate)', { status: 200 });

@@ -1,0 +1,15 @@
+{
+  "name": "Flareon ★",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex16/100_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo Star"
+    }
+  ]
+}
