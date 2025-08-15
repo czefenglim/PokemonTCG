@@ -432,3 +432,8 @@ model BattleAction {
 
   @@map("battle_action")
 }
+
+model StripeEvent {
+  id        String   @id        // Stripe event.id (unique)
+  createdAt DateTime @default(now())
+}
