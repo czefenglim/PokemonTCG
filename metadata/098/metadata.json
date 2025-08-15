@@ -1,0 +1,15 @@
+{
+  "name": "Krabby",
+  "description": "Its pincers are not only powerful weapons, they are used for balance when walking sideways.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/98.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

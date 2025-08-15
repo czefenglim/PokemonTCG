@@ -1,0 +1,15 @@
+{
+  "name": "Gyarados",
+  "description": "Once it begins to rampage, a GYARADOS will burn everything down, even in a harsh storm.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

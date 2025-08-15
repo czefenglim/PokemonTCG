@@ -1,0 +1,15 @@
+{
+  "name": "Sandshrew",
+  "description": "Burrows deep underground in arid locations far from water. It only emerges to hunt for food.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "ground"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

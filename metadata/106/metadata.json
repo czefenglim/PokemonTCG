@@ -1,0 +1,15 @@
+{
+  "name": "Hitmonlee",
+  "description": "When in a hurry, its legs lengthen progressively. It runs smoothly with extra long, loping strides.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/106.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "fighting"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

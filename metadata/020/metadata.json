@@ -1,0 +1,15 @@
+{
+  "name": "Raticate",
+  "description": "It uses its whis­ kers to maintain its balance. It apparently slows down if they are cut off.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

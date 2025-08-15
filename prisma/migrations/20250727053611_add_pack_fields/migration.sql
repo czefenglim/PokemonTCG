@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `user` MODIFY `gems` INTEGER NOT NULL DEFAULT 100;

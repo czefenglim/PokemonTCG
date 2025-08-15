@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `gems` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `lastPackOpened` DATETIME(3) NULL,
+    MODIFY `username` VARCHAR(191) NULL;

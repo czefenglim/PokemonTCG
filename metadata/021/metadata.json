@@ -1,0 +1,15 @@
+{
+  "name": "Spearow",
+  "description": "It flaps its small wings busily to fly. Using its beak, it searches in grass for prey.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/21.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "normal"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Vaporeon",
+  "description": "Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's.",
+  "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "water"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}
