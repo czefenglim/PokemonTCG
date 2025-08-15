@@ -1,0 +1,15 @@
+{
+  "name": "Dragonite ex δ",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex15/91_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Grass"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo EX"
+    }
+  ]
+}

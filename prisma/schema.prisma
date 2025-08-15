@@ -7,6 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/* ========= Enums (merged) ========= */
+
 enum Role {
   USER
   ADMIN
@@ -20,81 +22,128 @@ enum PurchaseStatus {
   REFUNDED
 }
 
+enum PveDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+/**
+ * Supports both naming styles so either works:
+ * - ELECTRIC or LIGHTNING
+ * - DARK or DARKNESS
+ */
+enum ElementType {
+  FIRE
+  WATER
+  GRASS
+  LIGHTNING
+  PSYCHIC
+  FIGHTING
+  DARKNESS
+  METAL
+  DRAGON
+  FAIRY
+  COLORLESS
+}
+
+/**
+ * Adds PENDING, WON, LOST to your original enum,
+ * while keeping ACTIVE, COMPLETED, ABANDONED for compatibility.
+ */
+enum BattleStatus {
+  PENDING
+  ACTIVE
+  WON
+  LOST
+  ABANDONED
+}
+
+/* ========= Core User & Commerce ========= */
+
 model User {
-  id              String   @id @default(uuid())
-  email           String   @unique
+  id              String        @id @default(uuid())
+  email           String        @unique
   password        String
   username        String?
-  createdAt       DateTime @default(now())
-  gems            Int      @default(100)
-  nextPackAt      DateTime @default(now())
-  role            Role     @default(USER)
-  
-  // Original Relations
+  createdAt       DateTime      @default(now())
+  gems            Int           @default(100)
+  nextPackAt      DateTime      @default(now())
+  role            Role          @default(USER)
+
+  // Purchases
   gemPurchases    GemPurchase[]
-  
-  // Game/Battle Relations for Leaderboard
-  createdRooms    Room[]   @relation("RoomCreator")
-  player1Rooms    Room[]   @relation("Player1") 
-  player2Rooms    Room[]   @relation("Player2")
-  wonRooms        Room[]   @relation("RoomWinner")
+
+  // Game/Battle (PvP)
+  createdRooms    Room[]        @relation("RoomCreator")
+  player1Rooms    Room[]        @relation("Player1")
+  player2Rooms    Room[]        @relation("Player2")
+  wonRooms        Room[]        @relation("RoomWinner")
+
+  // Decks
+  decks           Deck[]
+
+  // PvE
+  pveProgress     PveProgress[]
+  battles         Battle[]
 }
 
 model GemPackage {
-  id                  String   @id @default(uuid())
-  amount              Int      
-  priceCents          Int      
-  currency            String   @default("USD")
-  stripeId            String   @unique 
-  badge               String?  
-  popular             Boolean  @default(false)
-  active              Boolean  @default(true)
-  discountPercentage  Int      @default(0) 
-  
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  
+  id                  String        @id @default(uuid())
+  amount              Int
+  priceCents          Int
+  currency            String        @default("USD")
+  stripeId            String        @unique
+  badge               String?
+  popular             Boolean       @default(false)
+  active              Boolean       @default(true)
+  discountPercentage  Int           @default(0)
+
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
   purchases           GemPurchase[]
-  
+
   @@map("gem_packages")
 }
 
 model GemPurchase {
-  id            String      @id @default(uuid())
+  id            String          @id @default(uuid())
   userId        String
   packageId     String
-  amount        Int         
-  priceCents    Int         
-  currency      String      @default("USD")
-  stripeId      String?     
-  status        PurchaseStatus @default(PENDING)
-  
-  createdAt     DateTime    @default(now())
+  amount        Int
+  priceCents    Int
+  currency      String          @default("USD")
+  stripeId      String?
+  status        PurchaseStatus  @default(PENDING)
+
+  createdAt     DateTime        @default(now())
   completedAt   DateTime?
-  
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  package       GemPackage  @relation(fields: [packageId], references: [id])
-  
+
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package       GemPackage      @relation(fields: [packageId], references: [id])
+
   @@map("gem_purchases")
 }
 
-// Main model for tracking Pokemon TCG battles - REQUIRED FOR LEADERBOARD
+/* ========= PvP Rooms ========= */
+
 model Room {
   id            String   @id @default(uuid())
   name          String
   isPrivate     Boolean  @default(false)
   password      String?
   players       Int      @default(1)
-  isFinished    Boolean  @default(false)  // KEY: Used to find completed games
+  isFinished    Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  
-  // Player and winner tracking - REQUIRED FOR LEADERBOARD
+
+  // Player and winner tracking
   creatorId     String
-  winnerId      String?  // KEY: Who won the game (for win streaks)
-  player1Id     String   // KEY: First player
-  player2Id     String?  // KEY: Second player
-  
+  winnerId      String?
+  player1Id     String
+  player2Id     String?
+
   // Game extras (optional)
   player1DeckId String?
   player2DeckId String?
@@ -102,26 +151,28 @@ model Room {
   player2Avatar String?  @db.Text
   player1Ready  Boolean  @default(false)
   player2Ready  Boolean  @default(false)
-  
-  // Wager system 
-  wagerGems     Int?     
+
+  // Wager system
+  wagerGems     Int?
   wagerRarity   String?  @db.VarChar(50)
   wagerCardId1  String?
   wagerCardId2  String?
-  
-  // Relations to User model - THESE MUST MATCH User model relations above
+
+  // Relations to User
   creator       User     @relation("RoomCreator", fields: [creatorId], references: [id])
-  player1       User     @relation("Player1", fields: [player1Id], references: [id]) 
+  player1       User     @relation("Player1", fields: [player1Id], references: [id])
   player2       User?    @relation("Player2", fields: [player2Id], references: [id])
   winner        User?    @relation("RoomWinner", fields: [winnerId], references: [id])
-  
-  // Indexes for fast leaderboard queries
+
+  // Indexes
   @@index([isFinished])
-  @@index([createdAt]) 
+  @@index([createdAt])
   @@index([winnerId])
   @@index([player1Id])
   @@index([player2Id])
 }
+
+/* ========= Store ========= */
 
 model Merchandise {
   id          String   @id @default(uuid())
@@ -134,4 +185,131 @@ model Merchandise {
   imageUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+/* ========= Decks & Cards ========= */
+
+model Deck {
+  id          String     @id @default(uuid())
+  name        String
+  userId      String
+  userAddress String
+  createdAt   DateTime   @default(now())
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Deck_userId_fkey")
+  cards       DeckCard[]
+  battles     Battle[]   // back-relations from PvE Battle.playerDeck
+
+  @@index([userId], map: "userId_idx")
+  @@map("deck")
+}
+
+model DeckCard {
+  id       String  @id @default(uuid())
+  deckId   String
+  tokenId  String
+  name     String
+  imageUrl String  @db.Text
+  rarity   String
+  type     String
+
+  deck     Deck    @relation(fields: [deckId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "deck_card_deckId_fkey")
+
+  @@index([deckId], map: "deck_card_deckId_idx")
+  @@map("deck_card")
+}
+
+/* ========= PvE ========= */
+
+// AI Deck templates for each difficulty/element combination
+model AIDeck {
+  id         String        @id @default(cuid())
+  name       String
+  difficulty PveDifficulty
+  element    ElementType
+  cards      Json          // array of tokenIds from pokemon-list.json
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  // Relationships
+  opponents  Opponent[]
+
+  @@unique([difficulty, element])
+  @@map("ai_deck")
+}
+
+// AI Opponents that players can battle
+model Opponent {
+  id          String        @id @default(cuid())
+  name        String
+  portraitUrl String
+  intro       String        @default("")
+  rewardCoins Int           @default(50)
+  difficulty  PveDifficulty
+  element     ElementType
+  deckId      String
+  unlocked    Boolean       @default(true)
+
+  deck        AIDeck        @relation(fields: [deckId], references: [id])
+  battles     Battle[]
+
+  @@unique([difficulty, element])
+  @@map("opponent")
+}
+
+// Track user progress through PvE difficulties
+model PveProgress {
+  id            String        @id @default(cuid())
+  userId        String
+  difficulty    PveDifficulty
+  unlockedIds   Json          @default("[]") // array of Opponent.id strings
+  wins          Int           @default(0)
+  losses        Int           @default(0)
+  lastClearedAt DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, difficulty])
+  @@map("pve_progress")
+}
+
+// Individual battle instances
+model Battle {
+  id           String        @id @default(cuid())
+  userId       String
+  opponentId   String
+  playerDeckId String
+  difficulty   PveDifficulty
+  status       BattleStatus  @default(ACTIVE)
+  state        Json          // Complete battle state for save/resume
+  winner       String?       // "PLAYER" | "AI" | null if ongoing
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  endedAt      DateTime?
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  opponent     Opponent      @relation(fields: [opponentId], references: [id])
+  actions      BattleAction[]
+
+  // link to user's Deck
+  playerDeck   Deck          @relation(fields: [playerDeckId], references: [id], onDelete: NoAction, map: "battle_playerDeckId_fkey")
+
+  @@map("battle")
+}
+
+// Battle action history for replay and analysis
+model BattleAction {
+  id        String   @id @default(cuid())
+  battleId  String
+  turn      Int
+  actor     String   // "PLAYER" | "AI"
+  type      String   // "PLAY_CARD", "ATTACK", etc.
+  payload   Json
+  createdAt DateTime @default(now())
+
+  battle    Battle   @relation(fields: [battleId], references: [id], onDelete: Cascade)
+
+  @@map("battle_action")
 }

@@ -1,5 +1,5 @@
 // app/(public)/layout.tsx
-import AboutDialogController from '@/components/AboutDialogController';
+import AboutDialogController from '@/features/public/landingpage/components/AboutDialogController';
 
 export default function PublicLayout({
   children,

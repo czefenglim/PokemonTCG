@@ -13,7 +13,10 @@ async function main() {
   console.log('🚀 Starting Pokemon Card deployment...');
 
   // Load pokemon count
-  const pokemonListPath = path.join(__dirname, '../src/lib/pokemon-list.json');
+  const pokemonListPath = path.join(
+    __dirname,
+    '../src/lib/data/pokemon-list.json'
+  );
   if (!fs.existsSync(pokemonListPath)) {
     throw new Error(`❌ Pokemon list not found at: ${pokemonListPath}`);
   }
@@ -24,7 +27,7 @@ async function main() {
   // Resolve baseURI (prefer .env, fallback to your CID)
   const baseURI = mustEndWithSlash(
     process.env.NEXT_PUBLIC_BASE_URI ||
-      'ipfs://QmUGayY6ZKVhCFS6NhqPQczfhg2BkBSmWQK1H1WJEhN7Xy/'
+      'ipfs://bafybeihfoywwwh7ng4ltgfhsrl4ic6j3awgk4xyt5jykpob7yqwtzmu3ry/'
   );
 
   const [deployer] = await ethers.getSigners();

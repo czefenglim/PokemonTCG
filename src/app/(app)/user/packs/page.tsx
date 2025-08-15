@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ethers } from 'ethers';
 import { useAccount } from 'wagmi';
-import abi from '@/lib/pokemonCardABI.json';
+import abi from '@/lib/data/pokemonCardABI.json';
 import { useSession } from 'next-auth/react';
-import { useGems } from '@/context/GemContext';
+import { useGems } from '@/features/user/buy-gems/contexts/GemContext';
 import Link from 'next/link';
-import { ShareButton } from '@/components/SocialShareModal';
+import { ShareButton } from '@/features/user/open-pack/components/SocialShareModal';
 
 // Card interface for type safety
 interface PokemonCard {

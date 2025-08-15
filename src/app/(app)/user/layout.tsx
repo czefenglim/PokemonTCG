@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import ClientLayout from '@/components/ClientLayout';
-import GlobalClickSound from '@/components/GlobalClickSound';
-import AnimatedBackground from '@/components/AnimatedBackground';
+import ClientLayout from '@/features/user/app-shell/layout/ClientLayout';
+import GlobalClickSound from '@/features/public/shared/ui/GlobalClickSound';
+import AnimatedBackground from '@/features/user/app-shell/components/background/AnimatedBackground';
 
-import { MusicProvider } from '@/context/MusicContext';
-import { GemProvider } from '@/context/GemContext';
-import AuthenticatedMusicStarter from '@/components/AuthenticatedMusicStarter';
+import { MusicProvider } from '@/features/user/music/contexts/MusicContext';
+import { GemProvider } from '@/features/user/buy-gems/contexts/GemContext';
+import AuthenticatedMusicStarter from '@/features/user/app-shell/components/music/AuthenticatedMusicStarter';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

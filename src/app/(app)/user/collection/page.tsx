@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { ethers } from 'ethers';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import abi from '@/lib/pokemonCardABI.json';
+import abi from '@/lib/data/pokemonCardABI.json';
 
 type OwnedCard = {
   tokenId: number;
