@@ -65,7 +65,7 @@ model User {
   gems            Int      @default(100)
   nextPackAt      DateTime @default(now())
   role            Role     @default(USER)
-  walletAddress   String   @unique
+  walletAddress   String?   @unique
 
   // Friend Request Relations
   sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")

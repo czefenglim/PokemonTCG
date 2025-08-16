@@ -24,7 +24,6 @@ interface GemPackage {
 interface FormData {
   amount: number;
   priceCents: number;
-  stripeId: string;
   badge: string;
   popular: boolean;
   active: boolean;
@@ -41,10 +40,9 @@ export default function AdminGemPackagesPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [editingPackage, setEditingPackage] = useState<GemPackage | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     amount: 0,
     priceCents: 0,
-    stripeId: '',
     badge: '',
     discountPercentage: 0,
     popular: false,
@@ -176,7 +174,7 @@ export default function AdminGemPackagesPage() {
     setFormData({
       amount: pkg.amount,
       priceCents: pkg.priceCents,
-      stripeId: pkg.stripeId,
+
       badge: pkg.badge || '',
       popular: pkg.popular,
       active: pkg.active,
@@ -650,23 +648,6 @@ export default function AdminGemPackagesPage() {
                       GBP (Pound Sterling)
                     </option>
                   </select>
-                </div>
-
-                {/* Stripe Price ID */}
-                <div>
-                  <label className="block text-white/80 text-sm font-medium mb-2">
-                    Stripe Price ID *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.stripeId}
-                    onChange={(e) =>
-                      setFormData({ ...formData, stripeId: e.target.value })
-                    }
-                    placeholder="price_1234567890"
-                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                  />
                 </div>
 
                 {/* Badge */}

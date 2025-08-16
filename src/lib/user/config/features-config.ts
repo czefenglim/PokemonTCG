@@ -140,7 +140,7 @@ export const FEATURES_CONFIG: Feature[] = [
     href: '/user/battle',
     image:
       'https://i.pinimg.com/originals/b0/72/8b/b0728b016e209431b2015d623fe93f3c.gif',
-    icon: '⚔️',
+    icon: '⚔',
     lucideIcon: Swords,
     bgGradient: 'from-red-400/20 via-pink-500/20 to-purple-500/20',
     borderGradient: 'from-red-400 to-pink-500',
@@ -189,7 +189,7 @@ export const FEATURES_CONFIG: Feature[] = [
     desc: 'Shop exclusive clothing, physical card packs, and collectibles with digital rewards',
     href: '/user/merchandise',
     image: 'https://64.media.tumblr.com/tumblr_mcl3pf2ZC81rsc51fo1_500.gif',
-    icon: '🛍️',
+    icon: '🛍',
     lucideIcon: ShoppingBag,
     bgGradient: 'from-pink-400/20 via-rose-500/20 to-purple-500/20',
     borderGradient: 'from-pink-400 to-rose-500',

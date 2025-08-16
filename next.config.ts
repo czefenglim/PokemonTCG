@@ -1,20 +1,18 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images.pokemontcg.io",
+        protocol: 'https',
+        hostname: 'images.pokemontcg.io',
       },
     ],
   },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
-    return config;
+  turbopack: {
+    rules: {
+      '*.svg': [{ loader: '@svgr/webpack', options: { icon: true } }],
+    },
   },
 };
 

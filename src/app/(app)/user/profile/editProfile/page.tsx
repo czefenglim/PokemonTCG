@@ -1,10 +1,10 @@
 // app/editProfile/page.js
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type Profile = {
   email?: string;
@@ -22,60 +22,60 @@ export default function EditProfile() {
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [formData, setFormData] = useState({
-    username: "",
-    walletAddress: "",
-    profilePicture: "",
-    country: "", // Add this line
+    username: '',
+    walletAddress: '',
+    profilePicture: '',
+    country: '', // Add this line
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
   const avatars = [
-    "https://i.pinimg.com/564x/59/40/1c/59401cad1047716d7a916cae339dbf6b.jpg", // Ash
-    "https://preview.redd.it/put-my-avatar-in-a-misty-costume-for-halloween-v0-ewqonnongywd1.jpg?width=640&crop=smart&auto=webp&s=4e087c62f463302167a9199e38ea368d9e878485", // Misty
-    "https://imagedelivery.net/LBWXYQ-XnKSYxbZ-NuYGqQ/fee497b1-bf1e-44d0-b99c-ab256e6b8d00/avatarhd", // Brock
-    "https://cdn.costumewall.com/wp-content/uploads/2016/10/serena-pokemon-costume.jpg", // Serena
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsX070csr2Qhcc4sIfOG5M6L8zLiAExUA6vA&s", // Gary
-    "https://i.pinimg.com/736x/64/68/8d/64688d41df504d52071fd84852356ecb.jpg", // Professor Oak
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1BL3FlC2xopRJ43DV2hCy1VtkPqS0eGKtIw&s", // Nurse Joy
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ymgO-66nRZS9gcstj6Dp5ayW61hRTnIu-w&s", // Meow meow
-    "https://image1.gamme.com.tw/news2/2016/05/77/qZqYnaSYk6Kap6Q.jpg", // Musashi
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIwG39-AGz0YIc4wZsP-Y65yiBzXYS-H43dA&s", // James
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRH_keIoiDLL1bfJF2ZGTvFA6BvTvneJIFWAdafOurP_3qxj9qmWnoZIqMT97bnZtlkJU&usqp=CAU", // Wobbuffet
+    'https://i.pinimg.com/564x/59/40/1c/59401cad1047716d7a916cae339dbf6b.jpg', // Ash
+    'https://preview.redd.it/put-my-avatar-in-a-misty-costume-for-halloween-v0-ewqonnongywd1.jpg?width=640&crop=smart&auto=webp&s=4e087c62f463302167a9199e38ea368d9e878485', // Misty
+    'https://imagedelivery.net/LBWXYQ-XnKSYxbZ-NuYGqQ/fee497b1-bf1e-44d0-b99c-ab256e6b8d00/avatarhd', // Brock
+    'https://cdn.costumewall.com/wp-content/uploads/2016/10/serena-pokemon-costume.jpg', // Serena
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsX070csr2Qhcc4sIfOG5M6L8zLiAExUA6vA&s', // Gary
+    'https://i.pinimg.com/736x/64/68/8d/64688d41df504d52071fd84852356ecb.jpg', // Professor Oak
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1BL3FlC2xopRJ43DV2hCy1VtkPqS0eGKtIw&s', // Nurse Joy
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ymgO-66nRZS9gcstj6Dp5ayW61hRTnIu-w&s', // Meow meow
+    'https://image1.gamme.com.tw/news2/2016/05/77/qZqYnaSYk6Kap6Q.jpg', // Musashi
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIwG39-AGz0YIc4wZsP-Y65yiBzXYS-H43dA&s', // James
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRH_keIoiDLL1bfJF2ZGTvFA6BvTvneJIFWAdafOurP_3qxj9qmWnoZIqMT97bnZtlkJU&usqp=CAU', // Wobbuffet
   ];
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
+    if (status === 'unauthenticated') {
+      router.push('/login');
       return;
     }
 
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       fetchProfile();
     }
   }, [status, router]);
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch("/api/profile/viewProfile");
+      const response = await fetch('/api/user/profile/viewProfile');
       const data = await response.json();
 
       if (response.ok) {
         setProfile(data);
         setFormData({
-          username: data.username || "",
-          walletAddress: data.walletAddress || "",
-          profilePicture: data.profilePicture || "",
-          country: data.country || "", // Make sure this matches your API response
+          username: data.username || '',
+          walletAddress: data.walletAddress || '',
+          profilePicture: data.profilePicture || '',
+          country: data.country || '', // Make sure this matches your API response
         });
       } else {
-        setError(data.error || "Failed to fetch profile");
+        setError(data.error || 'Failed to fetch profile');
       }
     } catch (error) {
-      console.error("Error fetching profile:", error);
-      setError("Failed to fetch profile");
+      console.error('Error fetching profile:', error);
+      setError('Failed to fetch profile');
     } finally {
       setLoading(false);
     }
@@ -88,30 +88,30 @@ export default function EditProfile() {
       [name]: value,
     }));
     // Clear error when user starts typing
-    if (error) setError("");
-    if (success) setSuccess("");
+    if (error) setError('');
+    if (success) setSuccess('');
   };
 
   const connectWallet = async () => {
-    if (typeof window.ethereum !== "undefined") {
+    if (typeof window.ethereum !== 'undefined') {
       try {
         const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
+          method: 'eth_requestAccounts',
         });
         if (accounts.length > 0) {
           setFormData((prev) => ({
             ...prev,
             walletAddress: accounts[0],
           }));
-          setSuccess("Wallet connected successfully!");
+          setSuccess('Wallet connected successfully!');
         }
       } catch (error) {
-        console.error("Error connecting wallet:", error);
-        setError("Failed to connect wallet. Please try again.");
+        console.error('Error connecting wallet:', error);
+        setError('Failed to connect wallet. Please try again.');
       }
     } else {
       setError(
-        "MetaMask is not installed. Please install MetaMask to connect your wallet."
+        'MetaMask is not installed. Please install MetaMask to connect your wallet.'
       );
     }
   };
@@ -119,14 +119,14 @@ export default function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
-      const response = await fetch("/api/profile/editProfile", {
-        method: "PUT",
+      const response = await fetch('/api/profile/editProfile', {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username: formData.username,
@@ -139,19 +139,19 @@ export default function EditProfile() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to update profile");
+        throw new Error(data.error || 'Failed to update profile');
       }
 
-      setSuccess("Profile updated successfully!");
+      setSuccess('Profile updated successfully!');
       setProfile(data);
 
       // Redirect after 1.5 seconds to show success message
       setTimeout(() => {
-        router.push("/user/profile/viewProfile");
+        router.push('/user/profile/viewProfile');
       }, 1500);
     } catch (error) {
-      console.error("Error updating profile:", error);
-      setError(error.message || "Failed to update profile. Please try again.");
+      console.error('Error updating profile:', error);
+      setError(error.message || 'Failed to update profile. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -292,7 +292,7 @@ export default function EditProfile() {
                       <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl">
                         {formData.username
                           ? formData.username.charAt(0).toUpperCase()
-                          : "?"}
+                          : '?'}
                       </div>
                     )}
                     <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity duration-300">
@@ -354,8 +354,8 @@ export default function EditProfile() {
                           key={index}
                           className={`relative rounded-full border-4 cursor-pointer transition-all duration-200 ${
                             formData.profilePicture === avatar
-                              ? "border-yellow-400 scale-105"
-                              : "border-transparent hover:border-yellow-300 hover:scale-105"
+                              ? 'border-yellow-400 scale-105'
+                              : 'border-transparent hover:border-yellow-300 hover:scale-105'
                           }`}
                           onClick={() => {
                             setFormData((prev) => ({
@@ -641,14 +641,14 @@ export default function EditProfile() {
                     <p className="text-white font-medium mt-1">
                       {profile?.createdAt
                         ? new Date(profile.createdAt).toLocaleDateString(
-                            "en-US",
+                            'en-US',
                             {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
                             }
                           )
-                        : "N/A"}
+                        : 'N/A'}
                     </p>
                   </div>
                 </div>

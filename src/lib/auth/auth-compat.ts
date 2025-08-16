@@ -143,24 +143,59 @@ export async function ensureDbUserFromAuth(auth: AuthUser): Promise<DbUser> {
     if (byEmail) return byEmail;
   }
 
-  // 3) Wallet-only fallback → synthesize a stable email
+  // 3) Try by wallet address (if present)
   if (auth.walletAddress) {
     const w = auth.walletAddress.toLowerCase();
-    const email = `${w}@local.invalid`; // deterministic unique
-    const username = `${w.slice(0, 6)}…${w.slice(-4)}`;
-    const password = 'dev-auto'; // required by your schema
 
-    const existing = await prisma.user.findUnique({
+    const existingByWallet = await prisma.user.findUnique({
+      where: { walletAddress: w },
+      select: { id: true, email: true, username: true },
+    });
+    if (existingByWallet) return existingByWallet;
+
+    // Create wallet user with deterministic email
+    const email = `${w}@local.invalid`;
+    const username = `${w.slice(0, 6)}…${w.slice(-4)}`;
+    const password = 'dev-auto';
+
+    // Check if email already exists (edge case)
+    const existingByEmail = await prisma.user.findUnique({
       where: { email },
       select: { id: true, email: true, username: true },
     });
-    if (existing) return existing;
+    if (existingByEmail) return existingByEmail;
 
+    // Create new wallet user
     const created = await prisma.user.create({
-      data: { email, username, password },
+      data: {
+        email,
+        username,
+        password,
+        walletAddress: w, // ✅ Include wallet address
+      },
       select: { id: true, email: true, username: true },
     });
     return created;
+  }
+
+  // 4) No wallet, no email - create anonymous user (if allowed)
+  // This is for cases where you might want users without wallet/email
+  if (auth.id && auth.id !== 'unknown') {
+    try {
+      const created = await prisma.user.create({
+        data: {
+          email: `anonymous-${auth.id}@local.invalid`,
+          username: `user-${auth.id.slice(0, 8)}`,
+          password: 'dev-auto',
+          walletAddress: null, // ✅ Explicitly set as null (optional)
+        },
+        select: { id: true, email: true, username: true },
+      });
+      return created;
+    } catch (error) {
+      // Handle duplicate email case
+      console.warn('Failed to create anonymous user:', error);
+    }
   }
 
   const err = new Error('Unauthorized - could not resolve DB user');

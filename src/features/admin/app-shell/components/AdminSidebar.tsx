@@ -181,7 +181,7 @@ export default function AdminSidebar({ className = '' }: AdminSidebarProps) {
             title="Expand sidebar"
           >
             <img
-              src="https://i.pinimg.com/236x/7d/bf/bc/7dbfbcb77d477f570f8f2e87c2b35e18.jpg"
+              src="/images/logo/pokechain.png"
               alt="Pikachu"
               className="w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-200"
             />
@@ -338,7 +338,7 @@ export default function AdminSidebar({ className = '' }: AdminSidebarProps) {
           <div className="relative">
             <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
               <img
-                src="https://i.pinimg.com/236x/7d/bf/bc/7dbfbcb77d477f570f8f2e87c2b35e18.jpg"
+                src="/images/logo/pokechain.png"
                 alt="Pikachu"
                 className="w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-200"
               />
