@@ -6,13 +6,13 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16', // known-good; avoid custom tags here
+  apiVersion: '2025-07-30.basil', // updated to match expected type
 });
 
 export async function POST(req: Request) {
   // 1) Verify signature with raw body
   const rawBody = await req.text();
-  const hdrs = await nextHeaders();                // App Router: must await
+  const hdrs = await nextHeaders(); // App Router: must await
   const sig = hdrs.get('stripe-signature');
 
   console.log('🔔 Webhook hit /api/gems/webhook');
@@ -72,7 +72,9 @@ export async function POST(req: Request) {
     return new Response('Missing userId', { status: 400 });
   }
   if (purchaseType === 'gems' && !priceId) {
-    console.error('❌ Missing priceId (metadata or line_items); cannot map package.');
+    console.error(
+      '❌ Missing priceId (metadata or line_items); cannot map package.'
+    );
     return new Response('Missing priceId', { status: 400 });
   }
 
@@ -112,14 +114,19 @@ export async function POST(req: Request) {
           select: { id: true, gems: true },
         });
 
-        return { type: 'gems' as const, credited: pkg.amount, newBalance: updatedUser.gems };
+        return {
+          type: 'gems' as const,
+          credited: pkg.amount,
+          newBalance: updatedUser.gems,
+        };
       }
 
       if (purchaseType === 'product') {
         const productId = session.metadata?.productId ?? null;
         const quantity = parseInt(session.metadata?.quantity || '1', 10);
 
-        if (!productId) throw new Error('Missing productId for product purchase');
+        if (!productId)
+          throw new Error('Missing productId for product purchase');
 
         // Reduce inventory
         await tx.merchandise.update({
@@ -151,11 +158,17 @@ export async function POST(req: Request) {
     });
 
     if (result.type === 'gems') {
-      console.log(`✅ Credited ${result.credited} gems to user ${userId}. New balance: ${result.newBalance}`);
+      console.log(
+        `✅ Credited ${result.credited} gems to user ${userId}. New balance: ${result.newBalance}`
+      );
     } else if (result.type === 'product') {
-      console.log(`✅ Inventory updated and transaction recorded for user ${userId}`);
+      console.log(
+        `✅ Inventory updated and transaction recorded for user ${userId}`
+      );
     } else {
-      console.log('⚠️ Unknown purchaseType; event recorded but no state changes.');
+      console.log(
+        '⚠️ Unknown purchaseType; event recorded but no state changes.'
+      );
     }
 
     return new Response('ok', { status: 200 });

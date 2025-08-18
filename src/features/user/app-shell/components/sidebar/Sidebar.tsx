@@ -409,7 +409,7 @@ export default function Sidebar() {
                           </div>
 
                           {/* Switch Network (if chain is wrong) */}
-                          {chainId !== 31337 && (
+                          {chainId !== 11155111 && (
                             <button
                               onClick={() => {
                                 openChainModal();

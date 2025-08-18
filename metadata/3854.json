@@ -1,0 +1,15 @@
+{
+  "name": "Nidoran ♀",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/sv3pt5/29_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Darkness"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
 import { motion } from 'framer-motion';
 import abi from '@/lib/data/pokemonCardABI.json';
@@ -32,6 +32,12 @@ export default function CollectionPage() {
   const friendWallet = searchParams.get('friendWallet');
   const router = useRouter();
 
+  // Refs to prevent duplicate calls and track state
+  const loadingRef = useRef(false);
+  const lastAddressRef = useRef<string | null>(null);
+  const mountedRef = useRef(true);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   useEffect(() => {
     if (friendWallet) {
       console.log('Trading with wallet:', friendWallet);
@@ -39,57 +45,320 @@ export default function CollectionPage() {
     }
   }, [friendWallet]);
 
-  const loadCollection = async (userAddress: string) => {
+  // const loadCollection = async (userAddress: string) => {
+  //   setLoading(true);
+  //   setCards([]);
+  //   try {
+  //     const provider = new ethers.BrowserProvider(window.ethereum);
+  //     const signer = await provider.getSigner();
+  //     const contractAddress = process.env
+  //       .NEXT_PUBLIC_CONTRACT_ADDRESS as string;
+  //     if (!contractAddress) {
+  //       throw new Error('Contract address not configured.');
+  //     }
+
+  //     const contract = new ethers.Contract(contractAddress, abi, signer);
+
+  //     const ids = pokemonList.map((p) => BigInt(p.tokenId));
+  //     const addresses = ids.map(() => userAddress);
+
+  //     const balances: bigint[] = await contract.balanceOfBatch(addresses, ids);
+
+  //     const owned: OwnedCard[] = balances.flatMap((b, i) => {
+  //       const info = pokemonList[i];
+
+  //       if (b > 0n && info?.largeImage && info?.name) {
+  //         return [
+  //           {
+  //             tokenId: info.tokenId,
+  //             tcgId: info.tcgId,
+  //             name: info.name,
+  //             imageUrl: info.largeImage,
+  //             amount: b.toString(),
+  //             rarity: info.rarity ?? 'Common',
+  //             type: info.type ?? 'Unknown',
+  //           },
+  //         ];
+  //       }
+
+  //       // Always return empty array for invalid entries
+  //       return [];
+  //     });
+
+  //     // Optional: double check you're only storing valid objects
+  //     const cleaned = owned.filter(
+  //       (c) => !!c.imageUrl && !!c.name && !!c.tokenId
+  //     );
+  //     setCards(cleaned);
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert(`Error loading collection: ${(err as any).message}`);
+  //   }
+  //   setLoading(false);
+  // };
+
+  const loadCollection = useCallback(async (userAddress: string) => {
+    console.log('🚀 loadCollection called for address:', userAddress);
+
+    // Prevent duplicate calls
+    if (loadingRef.current) {
+      console.log('⚠️ Load already in progress, skipping');
+      return;
+    }
+
+    // More lenient mounted check - allow a brief delay for React StrictMode
+    if (!mountedRef.current) {
+      console.log('⚠️ Component unmounted, waiting 100ms and retrying once...');
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      if (!mountedRef.current) {
+        console.log('❌ Component still unmounted after retry, skipping load');
+        return;
+      }
+    }
+
+    // Abort any previous requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new abort controller
+    abortControllerRef.current = new AbortController();
+    const { signal } = abortControllerRef.current;
+
+    loadingRef.current = true;
     setLoading(true);
     setCards([]);
+
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contractAddress = process.env
-        .NEXT_PUBLIC_CONTRACT_ADDRESS as string;
-      if (!contractAddress) {
-        throw new Error('Contract address not configured.');
+      if (!window.ethereum) {
+        throw new Error('No ethereum wallet found');
       }
 
-      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
+        abi,
+        signer
+      );
 
-      const ids = pokemonList.map((p) => BigInt(p.tokenId));
-      const addresses = ids.map(() => userAddress);
+      // Check if request was aborted
+      if (signal.aborted || !mountedRef.current) {
+        console.log('⚠️ Request aborted or component unmounted');
+        return;
+      }
 
-      const balances: bigint[] = await contract.balanceOfBatch(addresses, ids);
+      console.log('📊 Getting user balances...');
 
-      const owned: OwnedCard[] = balances.flatMap((b, i) => {
-        const info = pokemonList[i];
+      // ✅ Step 1: For ERC1155 contracts, we need to check which tokens exist
+      // Your contract generates random IDs from 1-1000, so we check that range
+      // But first, let's try to be smarter about it
 
-        if (b > 0n && info?.largeImage && info?.name) {
-          return [
-            {
-              tokenId: info.tokenId,
-              tcgId: info.tcgId,
-              name: info.name,
-              imageUrl: info.largeImage,
-              amount: b.toString(),
-              rarity: info.rarity ?? 'Common',
-              type: info.type ?? 'Unknown',
-            },
-          ];
+      console.log('🔍 Checking which tokens have been minted...');
+
+      // ✅ NEW - Dynamic Pokemon count detection
+      let maxTokenId;
+      try {
+        const contractMaxId = await contract.maxPokemonId();
+        maxTokenId = Number(contractMaxId); // Convert BigInt to number
+        console.log('✅ Got maxPokemonId from contract:', Number(maxTokenId));
+      } catch (error) {
+        // Fallback to API
+        const pokemonListResponse = await fetch('/api/pokemon-list');
+        if (pokemonListResponse.ok) {
+          const pokemonList = await pokemonListResponse.json();
+          maxTokenId = pokemonList.length;
+          console.log('✅ Got maxPokemonId from Pokemon list API:', maxTokenId);
+        }
+      }
+
+      let existingTokenIds: number[] = [];
+
+      try {
+        // Method 1: Try to get all existing tokens by checking totalSupply mapping
+        // We'll check in batches to avoid overwhelming the RPC
+        const batchSize = 100;
+        const batches = Math.ceil(maxTokenId / batchSize);
+
+        for (let batch = 0; batch < batches; batch++) {
+          const startId = batch * batchSize + 1;
+          const endId = Math.min((batch + 1) * batchSize, maxTokenId);
+          const batchTokenIds = Array.from(
+            { length: endId - startId + 1 },
+            (_, i) => startId + i
+          );
+
+          console.log(
+            `📦 Checking batch ${
+              batch + 1
+            }/${batches}: tokens ${startId}-${endId}`
+          );
+
+          // Check if tokens exist (have been minted)
+          const existencePromises = batchTokenIds.map(async (tokenId) => {
+            try {
+              const exists = await contract.exists(tokenId);
+              return exists ? tokenId : null;
+            } catch {
+              // If exists() fails, check totalSupply directly
+              try {
+                const supply = await contract.totalSupply(tokenId);
+                return Number(supply) > 0 ? tokenId : null;
+              } catch {
+                return null;
+              }
+            }
+          });
+
+          const batchResults = await Promise.all(existencePromises);
+          const batchExisting = batchResults.filter(
+            (id): id is number => id !== null
+          );
+          existingTokenIds.push(...batchExisting);
+
+          // Small delay between batches to be nice to RPC
+          if (batch < batches - 1) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
         }
 
-        // Always return empty array for invalid entries
-        return [];
-      });
+        console.log(
+          `📊 Found ${existingTokenIds.length} existing tokens:`,
+          existingTokenIds.slice(0, 10),
+          existingTokenIds.length > 10 ? '...' : ''
+        );
+      } catch (err) {
+        console.warn(
+          '⚠️ Could not check token existence efficiently, using full range:',
+          err
+        );
+        // Fallback: check all possible IDs (less efficient)
+        existingTokenIds = Array.from({ length: maxTokenId }, (_, i) => i + 1);
+      }
 
-      // Optional: double check you're only storing valid objects
-      const cleaned = owned.filter(
-        (c) => !!c.imageUrl && !!c.name && !!c.tokenId
+      if (existingTokenIds.length === 0) {
+        console.log('📭 No tokens have been minted yet');
+        setLoading(false);
+        loadingRef.current = false;
+        return;
+      }
+
+      // ✅ Step 2: Check user balances only for existing tokens
+      const tokenIds = existingTokenIds;
+
+      // ✅ Step 3: Get balances in one batch for existing tokens only
+      let balances: bigint[] = [];
+      try {
+        console.log(
+          `⚖️ Checking balances for ${tokenIds.length} existing tokens...`
+        );
+        balances = await contract.getUserBalances(userAddress, tokenIds);
+        console.log('✅ Batch balance fetch successful');
+      } catch (err) {
+        console.warn(
+          '⚠️ getUserBalances failed, falling back to individual calls',
+          err
+        );
+
+        // Fallback with abort signal check
+        const balancePromises = tokenIds.map(async (id) => {
+          if (signal.aborted) return 0n;
+          try {
+            return await contract.balanceOf(userAddress, id);
+          } catch {
+            return 0n;
+          }
+        });
+
+        balances = await Promise.all(balancePromises);
+      }
+
+      // Check if request was aborted
+      if (signal.aborted || !mountedRef.current) {
+        console.log('⚠️ Request aborted after balance fetch');
+        return;
+      }
+
+      // ✅ Step 4: Filter unique owned token IDs from existing tokens
+      const ownedTokenIds = [
+        ...new Set(tokenIds.filter((_, idx) => Number(balances[idx]) > 0)),
+      ];
+
+      console.log('🎯 Unique owned token IDs:', ownedTokenIds);
+
+      if (!ownedTokenIds.length) {
+        console.log('📭 No owned cards found');
+        if (mountedRef.current) {
+          setLoading(false);
+        }
+        loadingRef.current = false;
+        return;
+      }
+
+      // ✅ Step 5: Fetch all metadata in parallel with abort signal
+      console.log('📡 Fetching metadata for', ownedTokenIds.length, 'cards...');
+
+      const ownedResults = await Promise.all(
+        ownedTokenIds.map(async (tokenId) => {
+          if (signal.aborted) return null;
+
+          try {
+            const balance = balances[tokenIds.indexOf(tokenId)];
+
+            // Add abort signal to fetch
+            const res = await fetch(`/api/pokemon/${tokenId}`, { signal });
+
+            if (!res.ok) {
+              throw new Error(`Metadata fetch failed for ${tokenId}`);
+            }
+
+            const metadata = await res.json();
+
+            return {
+              tokenId,
+              tcgId: metadata.gameData?.tcgId || `token-${tokenId}`,
+              name: metadata.name,
+              imageUrl: metadata.image,
+              amount: balance.toString(),
+              rarity: metadata.gameData?.rarity || 'Common',
+              type: metadata.gameData?.type || 'Unknown',
+              strikePower: metadata.gameData?.strikePower,
+              battleRating: metadata.gameData?.battleRating,
+              description: metadata.description,
+              weakness: metadata.gameData?.weakness,
+              resistance: metadata.gameData?.resistance,
+            } as OwnedCard;
+          } catch (e) {
+            if (signal.aborted) return null;
+            console.warn(`❌ Failed to get metadata for token ${tokenId}`, e);
+            return null;
+          }
+        })
       );
-      setCards(cleaned);
+
+      // Final abort check before setting state
+      if (signal.aborted || !mountedRef.current) {
+        console.log('⚠️ Request aborted before setting results');
+        return;
+      }
+
+      // ✅ Step 6: Save to state (filter out failed fetches)
+      const validCards = ownedResults.filter((c): c is OwnedCard => c !== null);
+      console.log('✅ Successfully loaded', validCards.length, 'cards');
+
+      setCards(validCards);
     } catch (err) {
-      console.error(err);
-      alert(`Error loading collection: ${(err as any).message}`);
+      if (!signal.aborted && mountedRef.current) {
+        console.error('[Collection] Error loading collection:', err);
+        setCards([]);
+      }
+    } finally {
+      if (mountedRef.current) {
+        setLoading(false);
+      }
+      loadingRef.current = false;
     }
-    setLoading(false);
-  };
+  }, []);
 
   const checkConnection = async () => {
     if (!window.ethereum) {

@@ -5,12 +5,12 @@ import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { localhost } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { sepolia } from 'wagmi/chains'; // if using wagmi
 
 // 🎯 HARDHAT-ONLY CONFIGURATION
-const hardhatChain = {
-  ...localhost,
-  id: 31337,
-  name: 'Hardhat Local',
+const sepoliaChain = {
+  id: 11155111,
+  name: 'Sepolia',
   nativeCurrency: {
     decimals: 18,
     name: 'Ether',
@@ -18,25 +18,24 @@ const hardhatChain = {
   },
   rpcUrls: {
     default: {
-      http: ['http://127.0.0.1:8545'],
+      http: [process.env.RPC_URL],
     },
     public: {
-      http: ['http://127.0.0.1:8545'],
+      http: [process.env.RPC_URL],
     },
   },
   blockExplorers: {
-    default: { name: 'Local', url: 'http://127.0.0.1:8545' },
+    default: { name: 'Etherscan', url: 'https://sepolia.etherscan.io' },
   },
 };
 
-const chains = [hardhatChain]; // 👈 Only Hardhat network now!
+const chains = [sepoliaChain]; // 👈 Only Sepolia network now!
 
 const wagmiConfig = getDefaultConfig({
   appName: 'Pokemon TCG',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'demo', // 👈 Added fallback
-  chains,
+  chains: [sepolia],
   ssr: true,
-  autoConnect: false, // 👈 enables automatic reconnect after reload
 });
 
 const queryClient = new QueryClient();

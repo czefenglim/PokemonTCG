@@ -1,0 +1,15 @@
+{
+  "name": "Galarian Rapidash V",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/swsh6/168_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Psychic"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Ultra"
+    }
+  ]
+}
