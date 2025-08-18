@@ -1,0 +1,15 @@
+{
+  "name": "Mewtwo δ",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/ex11/12_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Fire"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo"
+    }
+  ]
+}

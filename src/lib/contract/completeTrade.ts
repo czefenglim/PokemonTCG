@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import tradeAbi from '../../lib/tradeCardABI.json';
+import tradeAbi from '@/lib/data/tradeCardABI.json';
 
 // === CONFIGURATION ===
 const RPC_URL = process.env.RPC_URL as string; // Local Hardhat node

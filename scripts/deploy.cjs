@@ -29,7 +29,7 @@ async function main() {
   // Resolve baseURI (prefer .env, fallback to your CID)
   const baseURI = mustEndWithSlash(
     process.env.NEXT_PUBLIC_BASE_URI ||
-      'ipfs://bafybeihfoywwwh7ng4ltgfhsrl4ic6j3awgk4xyt5jykpob7yqwtzmu3ry/'
+      'ipfs://QmatpJ24W3YDwcLeZ4Zok8aic3HAKJHTqFxjdLaEMoZLhJ/'
   );
 
   const [deployer] = await ethers.getSigners();

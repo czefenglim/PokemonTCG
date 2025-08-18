@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart } from 'lucide-react';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface Product {
   id: string;
   name: string;
-  type: "clothing" | "physical-pack" | "bundle" | "exclusive";
+  type: 'clothing' | 'physical-pack' | 'bundle' | 'exclusive';
   price: number;
   originalPrice?: number;
   image: string;
@@ -20,7 +20,7 @@ interface Product {
     packs: number;
     exclusive?: string;
   };
-  rarity: "common" | "rare" | "legendary";
+  rarity: 'common' | 'rare' | 'legendary';
   inStock: boolean;
   limitedEdition?: boolean;
   rating: number;
@@ -44,12 +44,12 @@ interface CartProps {
 
 const getRarityColor = (rarity: string) => {
   switch (rarity) {
-    case "legendary":
-      return "from-purple-400 to-pink-500";
-    case "rare":
-      return "from-blue-400 to-cyan-500";
+    case 'legendary':
+      return 'from-purple-400 to-pink-500';
+    case 'rare':
+      return 'from-blue-400 to-cyan-500';
     default:
-      return "from-gray-400 to-gray-600";
+      return 'from-gray-400 to-gray-600';
   }
 };
 
@@ -72,9 +72,9 @@ export default function PokemonCart({
   const { data: session } = useSession();
 
   // Inside your component function (PokemonCart) — add state for inputs
-  const [location, setLocation] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [location, setLocation] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<{
     location?: string;
     phone?: string;
@@ -97,7 +97,7 @@ export default function PokemonCart({
     setLocation(value);
     setErrors((prev) => ({
       ...prev,
-      location: value.trim() ? undefined : "Location is required",
+      location: value.trim() ? undefined : 'Location is required',
     }));
   };
 
@@ -105,7 +105,7 @@ export default function PokemonCart({
     setPhone(value);
     setErrors((prev) => ({
       ...prev,
-      phone: validatePhone(value) ? undefined : "Invalid phone number",
+      phone: validatePhone(value) ? undefined : 'Invalid phone number',
     }));
   };
 
@@ -114,7 +114,7 @@ export default function PokemonCart({
     setErrors((prev) => ({
       ...prev,
       email:
-        !value || validateEmail(value) ? undefined : "Invalid email format",
+        !value || validateEmail(value) ? undefined : 'Invalid email format',
     }));
   };
 
@@ -128,12 +128,12 @@ export default function PokemonCart({
 
   const handleCheckout = async () => {
     if (!isFormValid) {
-      console.error("Form is not valid");
+      console.error('Form is not valid');
       return;
     }
 
     if (cart.length === 0) {
-      console.error("Cart is empty");
+      console.error('Cart is empty');
       return;
     }
 
@@ -144,9 +144,9 @@ export default function PokemonCart({
     const total = getCartTotal();
 
     try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: session?.user?.id, // pass from props or session
           productId,
@@ -162,7 +162,7 @@ export default function PokemonCart({
         window.location.href = data.url; // redirect to Stripe Checkout
       }
     } catch (err) {
-      console.error("Checkout error:", err);
+      console.error('Checkout error:', err);
     }
   };
 
@@ -177,10 +177,10 @@ export default function PokemonCart({
           onClick={onClose}
         >
           <motion.div
-            initial={{ x: "100%" }}
+            initial={{ x: '100%' }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
             className="absolute right-0 top-0 h-full w-[440px] bg-white shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
@@ -195,8 +195,8 @@ export default function PokemonCart({
                     <span>Shopping Cart</span>
                   </h2>
                   <div className="text-sm text-gray-500 mt-1">
-                    {getCartItemsCount()}{" "}
-                    {getCartItemsCount() === 1 ? "item" : "items"}
+                    {getCartItemsCount()}{' '}
+                    {getCartItemsCount() === 1 ? 'item' : 'items'}
                   </div>
                 </div>
                 <button
@@ -284,13 +284,13 @@ export default function PokemonCart({
                                   {product.name}
                                 </h3>
                                 <div className="text-xs text-gray-500 font-medium mt-1">
-                                  {product.type === "physical-pack"
-                                    ? "Card Pack"
-                                    : product.type === "clothing"
-                                    ? "Apparel"
-                                    : product.type === "bundle"
-                                    ? "Bundle"
-                                    : "Premium Item"}
+                                  {product.type === 'physical-pack'
+                                    ? 'Card Pack'
+                                    : product.type === 'clothing'
+                                    ? 'Apparel'
+                                    : product.type === 'bundle'
+                                    ? 'Bundle'
+                                    : 'Premium Item'}
                                 </div>
                               </div>
                               <button
@@ -402,8 +402,8 @@ export default function PokemonCart({
                       </div>
                       <div className="text-right text-gray-500 text-sm space-y-1">
                         <div>
-                          {getCartItemsCount()}{" "}
-                          {getCartItemsCount() === 1 ? "item" : "items"}
+                          {getCartItemsCount()}{' '}
+                          {getCartItemsCount() === 1 ? 'item' : 'items'}
                         </div>
                         <div className="flex items-center gap-1 justify-end text-green-600 font-medium">
                           <svg
@@ -512,8 +512,8 @@ export default function PokemonCart({
                       className={`w-full font-semibold py-4 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl text-lg
                       ${
                         isFormValid
-                          ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
-                          : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       }`}
                     >
                       Proceed to Checkout
@@ -535,4 +535,3 @@ export default function PokemonCart({
     </AnimatePresence>
   );
 }
-

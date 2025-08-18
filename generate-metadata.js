@@ -1,0 +1,44 @@
+import fs from 'fs';
+import path from 'path';
+import 'dotenv/config';
+
+const jsonPath = path.resolve('./src/lib/data/pokemon-list.json');
+const raw = fs.readFileSync(jsonPath, 'utf-8');
+const pokemonList = JSON.parse(raw);
+
+const outputDir = path.resolve('./metadata');
+
+if (fs.existsSync(outputDir)) {
+  fs.rmSync(outputDir, { recursive: true });
+}
+fs.mkdirSync(outputDir);
+
+function padNumber(n) {
+  return String(n).padStart(3, '0');
+}
+
+function buildMetadata(pokemon) {
+  return {
+    name: pokemon.name,
+    description: pokemon.description || 'A Pokémon trading card NFT',
+    image: pokemon.largeImage, // ✅ Use the large image from pokemon-list.json
+    attributes: [
+      { trait_type: 'Type', value: pokemon.type },
+      { trait_type: 'Rarity', value: pokemon.rarity },
+    ],
+  };
+}
+
+function main() {
+  pokemonList.forEach((p) => {
+    const fileName = `${p.tokenId}.json`; // tokenId already 1,2,3...
+    const metadata = buildMetadata(p);
+
+    const metadataPath = path.join(outputDir, fileName);
+    fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8');
+
+    console.log(`✅ Generated metadata for ${p.name} -> ${fileName}`);
+  });
+}
+
+main();

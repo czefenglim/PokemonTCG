@@ -59,7 +59,7 @@ export default function EditProfile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('/api/user/profile/viewProfile');
+      const response = await fetch('/api/profile/viewProfile');
       const data = await response.json();
 
       if (response.ok) {

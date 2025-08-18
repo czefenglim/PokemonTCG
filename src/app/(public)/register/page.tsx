@@ -716,7 +716,7 @@ export default function RegisterPage() {
                     <option value="BR">Brazil</option>
                     <option value="IN">India</option>
                     <option value="SG">Singapore</option>
-                    <option value="SG">Malaysia</option>
+                    <option value="MY">Malaysia</option>
                     {/* Add more countries as needed */}
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none">

@@ -58,7 +58,7 @@ export default function AdminTransactionsPage() {
       if (filters.endDate) params.append('endDate', filters.endDate);
 
       const response = await fetch(
-        `/api/admin/view-transaction?${params.toString()}`
+        `/api/view-transaction?${params.toString()}`
       );
       const data = await response.json();
       setTransactions(data);
@@ -79,7 +79,7 @@ export default function AdminTransactionsPage() {
   const markAsShipped = async (transactionId: string) => {
     try {
       setProcessing(transactionId);
-      const response = await fetch(`/api/admin/update-transaction`, {
+      const response = await fetch(`/api/update-transaction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

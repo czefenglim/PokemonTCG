@@ -4,18 +4,18 @@
   "deployer": "0xa40bcF2e179DfbB03Eb7c9f79012412044346F0B",
   "contracts": {
     "PokemonCard1155": {
-      "address": "0x27aBBF9643E49a123C6b89FAc14cf6E3E55AaED5",
+      "address": "0x45ba0D3407287c2135732b479EEaaAA70210Cb6e",
       "args": [
-        "ipfs://bafybeihfoywwwh7ng4ltgfhsrl4ic6j3awgk4xyt5jykpob7yqwtzmu3ry/"
+        "https://ipfs.io/ipfs/QmatpJ24W3YDwcLeZ4Zok8aic3HAKJHTqFxjdLaEMoZLhJ/"
       ]
     },
     "TradeContract": {
-      "address": "0x4E2Fa79Db467A18822Aeaf5907398823252e299d",
+      "address": "0xe97FF5Cf6410f8fE542e0EeaD70Fdb9D0C9D0914",
       "args": [
-        "0x27aBBF9643E49a123C6b89FAc14cf6E3E55AaED5",
+        "0x45ba0D3407287c2135732b479EEaaAA70210Cb6e",
         "0xa40bcF2e179DfbB03Eb7c9f79012412044346F0B"
       ]
     }
   },
-  "deployedAt": "2025-08-15T16:01:00.168Z"
+  "deployedAt": "2025-08-18T15:11:00.773Z"
 }

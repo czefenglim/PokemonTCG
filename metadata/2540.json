@@ -1,0 +1,15 @@
+{
+  "name": "Dragonite-EX",
+  "description": "A Pokémon trading card NFT",
+  "image": "https://images.pokemontcg.io/xy3/74_hires.png",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Dragon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare Holo EX"
+    }
+  ]
+}

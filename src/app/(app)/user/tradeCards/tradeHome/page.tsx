@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import nftAbi from '@/lib/data/pokemonCardABI.json';
-import tradeAbi from '@/lib/tradeCardABI.json';
+import tradeAbi from '@/lib/data/tradeCardABI.json';
 import { use } from 'chai';
 
 export default function TradeCardsPage() {
