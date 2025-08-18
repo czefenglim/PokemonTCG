@@ -1,3 +1,5 @@
+// FILE: \features\public\landingpage\components\AboutDialog.tsx
+// DESCRIPTION: AboutDialog creates a popup modal window that appears on top of your page.
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -11,6 +13,9 @@ type Props = {
   children: React.ReactNode;
 };
 
+// ===========================
+// MAIN COMPONENT
+// ===========================
 export default function AboutDialog({ open, onClose, title, children }: Props) {
   const firstFocusRef = useRef<HTMLButtonElement | null>(null);
   const lastActive = useRef<HTMLElement | null>(null);

@@ -1,10 +1,19 @@
+// File: src/app/(public)/login/
+// Description: Login Page for User & Admin
+
 'use client';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { getSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react'; // Used to authenticate user login
+import { getSession } from 'next-auth/react'; // Get current user session info
+import { useRouter } from 'next/navigation'; // Used for navigation/redirection
+import { useState, useEffect } from 'react'; // React hooks for state and side effects
+// - useState -> to store and update values (like email, password, loading)
+// - useEffect -> to run code after the page renders
 
 export default function LoginPage() {
+  // -- useState Syntac --
+  // const [state, setState] = useState(initialValue);
+  // state -> holds the current value
+  //setState -> is a function to update the current value
   const [mounted, setMounted] = useState(false);
   const [orbs, setOrbs] = useState<React.CSSProperties[]>([]);
   const [particles, setParticles] = useState<React.CSSProperties[]>([]);
@@ -18,6 +27,8 @@ export default function LoginPage() {
   const [pokemonSprite2, setPokemonSprite2] = useState('');
   const router = useRouter();
 
+  // React Hook that let you run side effect
+  // Side effect -> Any action that happens outside the normal rendering of the UI
   useEffect(() => {
     // Set mounted to true after component mounts
     setMounted(true);
@@ -26,7 +37,8 @@ export default function LoginPage() {
     const id1 = Math.floor(Math.random() * 151) + 1;
     const id2 = Math.floor(Math.random() * 151) + 1;
 
-    // Fetch Pokemon sprites
+    // Fetch Pokemon
+    // Promise - An object that represents something that will finish in the future
     Promise.all([
       fetch(`https://pokeapi.co/api/v2/pokemon/${id1}`).then((res) =>
         res.json()
@@ -62,7 +74,7 @@ export default function LoginPage() {
     }));
     setOrbs(orbStyles);
 
-    // Particles
+    // Particles - Small animated dots
     const generated = Array.from({ length: 20 }).map((_, i) => ({
       width: `${Math.random() * 15 + 5}px`,
       height: `${Math.random() * 15 + 5}px`,
@@ -89,11 +101,12 @@ export default function LoginPage() {
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+    e.preventDefault(); // Stop the browser from reloading the page on form submit
     setError('');
     setLoading(true);
 
     try {
+      // Try signing in suing NextAuth
       const result = await signIn('credentials', {
         redirect: false,
         email,
@@ -102,11 +115,13 @@ export default function LoginPage() {
 
       setLoading(false);
 
+      // If failed
       if (result?.error) {
         setError('Invalid email or password.');
         return;
       }
 
+      // If success
       if (result?.ok) {
         const session = await getSession();
         const role = session?.user?.role;

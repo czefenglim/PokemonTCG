@@ -1,4 +1,6 @@
-// app/(public)/layout.tsx
+// FILE: \app\(public)\layout.tsx - Public Routes Layout
+// Description: Layout wrapper for all public-facing pages (landing, about, etc.)
+
 import AboutDialogController from '@/features/public/landingpage/components/AboutDialogController';
 
 export default function PublicLayout({

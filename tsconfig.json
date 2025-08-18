@@ -26,8 +26,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.d.ts",
     ".next/types/**/*.ts",
-    "src/app/api/(user)/gems/webhook/route.js"
+    "src"
   ],
   "exclude": ["node_modules"]
 }

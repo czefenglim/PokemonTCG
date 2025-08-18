@@ -1,5 +1,11 @@
+// File: \app\(public)\page.tsx - Main Landing Page
+// Description: Main landing page for Pokemon TCG blockchain application
+
 'use client';
 
+// ===========================
+// IMPORTS & DEPENDENCIES
+// ==========================
 import {
   motion,
   useMotionValue,
@@ -8,20 +14,38 @@ import {
   useScroll,
   useSpring,
 } from 'framer-motion';
-
 import { useEffect, useState, useRef } from 'react';
 import FloatingParticles from '@/features/public/landingpage/components/FloatingParticles';
 import Link from 'next/link';
+
+// ===========================
+// MAIN COMPONENT
+// ===========================
 export default function CyberPokemonLanding() {
+  // ===========================
+  // STATE MANAGEMENT
+  // ===========================
+
+  // Card display and interaction states
   const [currentCard, setCurrentCard] = useState(0);
   const [glitchEffect, setGlitchEffect] = useState(false);
+
+  // Data and loading states
   const [pokemonData, setPokemonData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // UI interaction states
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState(null);
+
+  // Refs and scroll tracking
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
 
+  // ===========================
+  // ANIMATED COUNTERS SETUP
+  // ===========================
+  // Motion values for animated statistics counters
   const count = useMotionValue(0);
   const rounded = useTransform(count, Math.round);
   const trades = useMotionValue(24000);
@@ -30,7 +54,11 @@ export default function CyberPokemonLanding() {
     (v) => `${Math.round(v / 1000)}K+`
   );
 
-  // Enhanced cyber cards data
+  // ===========================
+  // STATIC DATA - CYBER CARDS
+  // ===========================
+  // Enhanced cyber-themed Pokemon cards data
+  // This defines the base data for each card before API enhancement
   const cyberCards = [
     {
       id: 6,
@@ -66,7 +94,10 @@ export default function CyberPokemonLanding() {
     },
   ];
 
-  // Mouse tracking
+  // ===========================
+  // MOUSE TRACKING EFFECT
+  // ===========================
+  // Tracks mouse position for dynamic lighting effects
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -75,7 +106,10 @@ export default function CyberPokemonLanding() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Fetch Pokémon data
+  // ===========================
+  // POKEMON API INTEGRATION
+  // ===========================
+  // Fetches Pokemon data from PokeAPI and enhances cyber cards
   useEffect(() => {
     const fetchPokemonData = async () => {
       setIsLoading(true);
@@ -116,7 +150,10 @@ export default function CyberPokemonLanding() {
     fetchPokemonData();
   }, []);
 
-  //Animated counters
+  // ===========================
+  // ANIMATED COUNTERS LIFECYCLE
+  // ===========================
+  // Animates the statistics counters on component mount
   useEffect(() => {
     const controls = animate(count, 12450, { duration: 3 });
     const tradesControl = animate(trades, 28500, { duration: 3.5 });
@@ -126,7 +163,10 @@ export default function CyberPokemonLanding() {
     };
   }, [count, trades]);
 
-  // Auto-rotation with pause on hover
+  // ===========================
+  // AUTO-ROTATION SYSTEM
+  // ===========================
+  // Automatically rotates through cards with glitch effect transition
   useEffect(() => {
     if (hoveredCard !== null) return;
 
@@ -142,7 +182,10 @@ export default function CyberPokemonLanding() {
     return () => clearInterval(interval);
   }, [pokemonData, hoveredCard]);
 
-  // Helper functions
+  // ===========================
+  // UTILITY FUNCTIONS
+  // ===========================
+  // Returns appropriate CSS classes for rarity badges
   function getRarityClass(rarity) {
     switch (rarity) {
       case 'LEGENDARY':
@@ -158,6 +201,7 @@ export default function CyberPokemonLanding() {
     }
   }
 
+  // Returns color code for Pokemon types
   function getTypeColor(type) {
     switch (type) {
       case 'FIRE':
@@ -173,6 +217,7 @@ export default function CyberPokemonLanding() {
     }
   }
 
+  // Returns gradient colors for type-based backgrounds
   function getTypeGradient(type) {
     switch (type) {
       case 'FIRE':
@@ -188,6 +233,9 @@ export default function CyberPokemonLanding() {
     }
   }
 
+  // ===========================
+  // MAIN RENDER
+  // ===========================
   return (
     <div
       className="min-h-screen bg-black text-white overflow-hidden relative"

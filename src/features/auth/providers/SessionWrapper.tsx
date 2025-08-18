@@ -1,3 +1,6 @@
+// File: src/features/auth/providers/SessionWrapper.tsx
+// Description:
+
 'use client';
 
 import { SessionProvider } from 'next-auth/react';

@@ -1,3 +1,6 @@
+// File: src/lib/auth/auth.ts
+// Description: Main NextAuth configuration file - defines authentication providers, session handling, and user authentication logics
+
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/db/prisma';

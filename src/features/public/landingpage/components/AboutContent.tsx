@@ -1,3 +1,6 @@
+// FILE: \features\public\landingpage\components\AboutContent.tsx
+// DESCRIPTION: The actual content that goes inside the About modal - shows team member information, photos, and project details.
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -14,6 +17,7 @@ type Member = {
   }[];
 };
 
+// All Members Info
 const members: Member[] = [
   {
     name: 'GAN MING HUI',
@@ -44,6 +48,7 @@ const members: Member[] = [
   },
 ];
 
+// Contents
 export default function AboutContent() {
   return (
     <div className="space-y-6">
