@@ -95,30 +95,30 @@
 // }
 
 // app/marketplace/page.js
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function MarketplacePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState('');
 
   // Rarible Testnet Marketplace URL
-  const RARIBLE_TESTNET_URL = "https://testnet.rarible.com/items/owned";
+  const RARIBLE_TESTNET_URL = 'https://testnet.rarible.com/items/owned';
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
+    if (status === 'unauthenticated') {
+      router.push('/login');
       return;
     }
 
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       checkWalletConnection();
       setLoading(false);
     }
@@ -128,7 +128,7 @@ export default function MarketplacePage() {
     try {
       if (window.ethereum) {
         const accounts = await window.ethereum.request({
-          method: "eth_accounts",
+          method: 'eth_accounts',
         });
         if (accounts.length > 0) {
           setWalletConnected(true);
@@ -136,39 +136,39 @@ export default function MarketplacePage() {
         }
       }
     } catch (error) {
-      console.error("Error checking wallet connection:", error);
+      console.error('Error checking wallet connection:', error);
     }
   };
 
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        alert("Please install MetaMask!");
+        alert('Please install MetaMask!');
         return;
       }
 
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+        method: 'eth_requestAccounts',
       });
       setWalletConnected(true);
       setWalletAddress(accounts[0]);
     } catch (error) {
-      console.error("Error connecting wallet:", error);
+      console.error('Error connecting wallet:', error);
     }
   };
 
   const formatWalletAddress = (address) => {
-    if (!address) return "";
+    if (!address) return '';
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
   const redirectToRarible = () => {
     if (walletConnected) {
       // Redirect to Rarible with wallet address as query parameter
-      window.open(`${RARIBLE_TESTNET_URL}`, "_blank");
+      window.open(`${RARIBLE_TESTNET_URL}`, '_blank');
     } else {
       // Redirect to generic Rarible marketplace
-      window.open(RARIBLE_TESTNET_URL, "_blank");
+      window.open(RARIBLE_TESTNET_URL, '_blank');
     }
   };
 
@@ -195,7 +195,7 @@ export default function MarketplacePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -226,7 +226,7 @@ export default function MarketplacePage() {
               <div className="flex items-center gap-4">
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    walletConnected ? "bg-green-500/20" : "bg-amber-500/20"
+                    walletConnected ? 'bg-green-500/20' : 'bg-amber-500/20'
                   }`}
                 >
                   {walletConnected ? (
@@ -238,8 +238,8 @@ export default function MarketplacePage() {
                 <div>
                   <h3 className="text-lg font-semibold text-white">
                     {walletConnected
-                      ? "Wallet Connected"
-                      : "Wallet Not Connected"}
+                      ? 'Wallet Connected'
+                      : 'Wallet Not Connected'}
                   </h3>
                   {walletConnected ? (
                     <p className="text-slate-300 font-mono">

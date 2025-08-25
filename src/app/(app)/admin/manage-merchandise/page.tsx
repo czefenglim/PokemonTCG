@@ -49,7 +49,7 @@ export default function MerchandisePage() {
 
   // Original API fetch - PRESERVED EXACTLY
   useEffect(() => {
-    fetch('/api/admin/merchandise')
+    fetch('/api/manage-merchandise')
       .then((res) => res.json())
       .then((data) => {
         setItems(data);
@@ -76,8 +76,8 @@ export default function MerchandisePage() {
 
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId
-      ? `/api/admin/merchandise/${editingId}`
-      : '/api/admin/merchandise';
+      ? `/api/manage-merchandise/${editingId}`
+      : '/api/manage-merchandise';
 
     const res = await fetch(url, {
       method,
@@ -108,7 +108,7 @@ export default function MerchandisePage() {
   // Original delete logic - PRESERVED EXACTLY
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this item?')) return;
-    await fetch(`/api/admin/merchandise/${id}`, { method: 'DELETE' });
+    await fetch(`/api/manage-merchandise/${id}`, { method: 'DELETE' });
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
 

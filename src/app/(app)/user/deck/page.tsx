@@ -157,7 +157,7 @@ export default function DeckList() {
                 Organize your favorite cards and showcase your strategy.
               </p>
               <Link
-                href="/deck/new-deck"
+                href="/user/deck/new-deck"
                 className="inline-flex items-center justify-center px-6 py-3 text-white font-semibold bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl hover:from-yellow-400 hover:to-orange-400 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-yellow-500/25"
               >
                 <span className="mr-2">🚀</span>

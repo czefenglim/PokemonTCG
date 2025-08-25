@@ -12,7 +12,6 @@ function mustEndWithSlash(uri) {
 async function main() {
   console.log('🚀 Starting Pokemon Card deployment...');
 
-  // Load pokemon count
   const pokemonListPath = path.join(
     __dirname,
     '../src/lib/data/pokemon-list.json'
@@ -20,16 +19,17 @@ async function main() {
   if (!fs.existsSync(pokemonListPath)) {
     throw new Error(`❌ Pokemon list not found at: ${pokemonListPath}`);
   }
-  const pokemonList = JSON.parse(fs.readFileSync(pokemonListPath, 'utf8'));
+  let pokemonList = JSON.parse(fs.readFileSync(pokemonListPath, 'utf8'));
+  // keep only the first 50 for dev
+  pokemonList = pokemonList.slice(0, 50);
   const maxPokemonId = pokemonList.length;
   console.log(`🎯 Found ${maxPokemonId} Pokemon in the list`);
 
   const network = await ethers.provider.getNetwork();
 
-  // Resolve baseURI (prefer .env, fallback to your CID)
   const baseURI = mustEndWithSlash(
     process.env.NEXT_PUBLIC_BASE_URI ||
-      'ipfs://QmatpJ24W3YDwcLeZ4Zok8aic3HAKJHTqFxjdLaEMoZLhJ/'
+      'ipfs://bafybeihfoywwwh7ng4ltgfhsrl4ic6j3awgk4xyt5jykpob7yqwtzmu3ry/'
   );
 
   const [deployer] = await ethers.getSigners();
@@ -39,32 +39,22 @@ async function main() {
     ethers.formatEther(await ethers.provider.getBalance(deployer.address)),
     'ETH'
   );
-  console.log('Deploying contract...');
 
-  // Deploy PokemonCard1155
-  const PokemonCard1155 = await hre.ethers.getContractFactory(
-    'PokemonCard1155'
-  );
+  // --- Deploy PokemonCard1155 ---
+  const PokemonCard1155 = await ethers.getContractFactory('PokemonCard1155'); // <- use ethers, not hre
+  const nft = await PokemonCard1155.deploy(baseURI, maxPokemonId);
+  await nft.waitForDeployment();
+  const nftAddress = await nft.getAddress(); // or nft.target in ethers v6
+  console.log(`🃏 PokemonCard1155 deployed to: ${nftAddress}`);
 
-  const contract = await PokemonCard1155.deploy(baseURI, maxPokemonId);
+  // --- Deploy TradeContract ---
+  const TradeContract = await ethers.getContractFactory('TradeContract');
+  const trade = await TradeContract.deploy(nftAddress, deployer.address);
+  await trade.waitForDeployment();
+  const tradeContractAddress = await trade.getAddress(); // <-- DEFINE THIS
+  console.log(`🔄 TradeContract deployed to: ${tradeContractAddress}`);
 
-  await contract.waitForDeployment();
-
-  console.log(`🃏 PokemonCard1155 deployed to: ${contract.target}`);
-
-  // Deploy TradeContract
-  const TradeContract = await hre.ethers.getContractFactory('TradeContract');
-
-  const tradeContract = await TradeContract.deploy(
-    contract.target,
-    deployer.address
-  );
-
-  await tradeContract.waitForDeployment();
-
-  console.log(`🔄 TradeContract deployed to: ${tradeContract.target}`);
-
-  // 💾 Save deployment info
+  // --- Save deployments JSON ---
   if (!fs.existsSync('./deployments')) fs.mkdirSync('./deployments');
   const deploymentPath = `./deployments/${network.name}-deployment.json`;
   fs.writeFileSync(
@@ -75,10 +65,13 @@ async function main() {
         chainId: network.chainId.toString(),
         deployer: deployer.address,
         contracts: {
-          PokemonCard1155: { address: contract.target, args: [baseURI] },
+          PokemonCard1155: {
+            address: nftAddress,
+            args: [baseURI, maxPokemonId],
+          },
           TradeContract: {
-            address: tradeContract.target,
-            args: [contract.target, deployer.address],
+            address: tradeContractAddress,
+            args: [nftAddress, deployer.address],
           },
         },
         deployedAt: new Date().toISOString(),
@@ -88,12 +81,9 @@ async function main() {
     )
   );
   console.log(`\n✅ Deployment info saved to: ${deploymentPath}`);
-  await contract.waitForDeployment();
-  const contractAddress = await contract.getAddress();
-  console.log('🎉 Deployed at:', contractAddress);
 
-  // Upsert .env with address & base URI
-  const envPath = path.join(__dirname, '../.env');
+  // --- Upsert .env(.local) ---
+  const envPath = path.join(__dirname, '../.env'); // or '../.env.local' (recommended for Next.js)
   let env = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
 
   function upsert(key, value) {
@@ -102,12 +92,13 @@ async function main() {
     else env += (env.endsWith('\n') ? '' : '\n') + `${key}=${value}\n`;
   }
 
-  upsert('NEXT_PUBLIC_CONTRACT_ADDRESS', contractAddress);
+  upsert('NEXT_PUBLIC_CONTRACT_ADDRESS', nftAddress);
+  upsert('NEXT_PUBLIC_TRADE_CONTRACT', tradeContractAddress);
   upsert('NEXT_PUBLIC_BASE_URI', baseURI);
 
   fs.writeFileSync(envPath, env);
   console.log(
-    '✅ .env updated (NEXT_PUBLIC_CONTRACT_ADDRESS, NEXT_PUBLIC_BASE_URI)'
+    '✅ .env updated (NEXT_PUBLIC_CONTRACT_ADDRESS, NEXT_PUBLIC_TRADE_CONTRACT, NEXT_PUBLIC_BASE_URI)'
   );
 
   console.log('\n✅ Deployment complete. Ready for pack opening!');

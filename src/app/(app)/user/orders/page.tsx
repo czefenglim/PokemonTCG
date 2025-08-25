@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { startOfDay, endOfDay } from "date-fns";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { startOfDay, endOfDay } from 'date-fns';
 
 type Transaction = {
   id: string;
@@ -27,20 +28,20 @@ type Transaction = {
 const StatusBadge = ({ status }: { status: string }) => {
   const getStatusStyles = (status: string) => {
     switch (status.toUpperCase()) {
-      case "PENDING":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-      case "PAID":
-        return "bg-blue-500/20 text-blue-400 border-blue-500/30";
-      case "SHIPPED":
-        return "bg-purple-500/20 text-purple-400 border-purple-500/30";
-      case "COMPLETED":
-        return "bg-green-500/20 text-green-400 border-green-500/30";
-      case "CANCELLED":
-        return "bg-red-500/20 text-red-400 border-red-500/30";
-      case "REFUNDED":
-        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
+      case 'PENDING':
+        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'PAID':
+        return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'SHIPPED':
+        return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+      case 'COMPLETED':
+        return 'bg-green-500/20 text-green-400 border-green-500/30';
+      case 'CANCELLED':
+        return 'bg-red-500/20 text-red-400 border-red-500/30';
+      case 'REFUNDED':
+        return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
       default:
-        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
+        return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
     }
   };
 
@@ -70,25 +71,26 @@ const LoadingCard = () => (
 );
 
 export default function OrdersPage() {
+  const router = useRouter();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[]
   >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
 
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const res = await fetch("/api/orders");
-        if (!res.ok) throw new Error("Failed to fetch orders");
+        const res = await fetch('/api/orders');
+        if (!res.ok) throw new Error('Failed to fetch orders');
         const data = await res.json();
         setTransactions(data);
         setFilteredTransactions(data);
       } catch (err: any) {
-        setError(err.message || "Unknown error");
+        setError(err.message || 'Unknown error');
       } finally {
         setLoading(false);
       }
@@ -129,7 +131,7 @@ export default function OrdersPage() {
             duration: 10 + i * 2,
             repeat: Infinity,
             delay: i * 1.5,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           className="absolute text-xl"
           style={{
@@ -137,7 +139,7 @@ export default function OrdersPage() {
             top: `${Math.random() * 100}%`,
           }}
         >
-          {["🛍️", "👕", "📦", "💎", "⭐"][Math.floor(Math.random() * 5)]}
+          {['🛍️', '👕', '📦', '💎', '⭐'][Math.floor(Math.random() * 5)]}
         </motion.div>
       ))}
     </div>
@@ -202,6 +204,7 @@ export default function OrdersPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
+            onClick={() => router.push('/user/merchandise')}
           >
             Start Shopping
           </motion.button>
@@ -271,8 +274,8 @@ export default function OrdersPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
-                    setStartDate("");
-                    setEndDate("");
+                    setStartDate('');
+                    setEndDate('');
                   }}
                   className="text-sm bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1 rounded-lg transition-all"
                 >

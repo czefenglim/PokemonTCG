@@ -523,7 +523,7 @@ export default function CollectionPage() {
                     journey today!
                   </p>
                   <button
-                    onClick={() => router.push('/packs')}
+                    onClick={() => router.push('/user/packs')}
                     className="bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold px-8 py-3 rounded-xl hover:shadow-lg hover:shadow-yellow-500/30 transition-all"
                   >
                     Open Packs

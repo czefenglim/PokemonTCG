@@ -1,21 +1,22 @@
 {
   "network": "sepolia",
   "chainId": "11155111",
-  "deployer": "0xa40bcF2e179DfbB03Eb7c9f79012412044346F0B",
+  "deployer": "0x363711820c2caef29D8469de538695935d73fa7B",
   "contracts": {
     "PokemonCard1155": {
-      "address": "0x45ba0D3407287c2135732b479EEaaAA70210Cb6e",
+      "address": "0xEB02Ed9A7A0D81b443a04375483F33a879d9a626",
       "args": [
-        "https://ipfs.io/ipfs/QmatpJ24W3YDwcLeZ4Zok8aic3HAKJHTqFxjdLaEMoZLhJ/"
+        "ipfs://bafybeihfoywwwh7ng4ltgfhsrl4ic6j3awgk4xyt5jykpob7yqwtzmu3ry/",
+        50
       ]
     },
     "TradeContract": {
-      "address": "0xe97FF5Cf6410f8fE542e0EeaD70Fdb9D0C9D0914",
+      "address": "0xC3F615BD9B22b600A8C4Aebc8fBD7f0B732Dc4f8",
       "args": [
-        "0x45ba0D3407287c2135732b479EEaaAA70210Cb6e",
-        "0xa40bcF2e179DfbB03Eb7c9f79012412044346F0B"
+        "0xEB02Ed9A7A0D81b443a04375483F33a879d9a626",
+        "0x363711820c2caef29D8469de538695935d73fa7B"
       ]
     }
   },
-  "deployedAt": "2025-08-18T15:11:00.773Z"
+  "deployedAt": "2025-08-19T03:56:13.062Z"
 }

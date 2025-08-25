@@ -152,7 +152,7 @@ const DeckSelectorModal: React.FC<DeckSelectorModalProps> = ({
 
   const handleCreateNewDeck = () => {
     onClose();
-    router.push('/deck/new-deck');
+    router.push('/user/deck/new-deck');
   };
 
   // Original beautiful UI - completely preserved

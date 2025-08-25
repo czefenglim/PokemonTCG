@@ -3,8 +3,12 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract PokemonCard1155 is ERC1155, Ownable {
+    using Strings for uint256;
+
+    // e.g. "ipfs://bafy.../"
     string private _baseURI;
 
     // Dynamic maximum Pokemon ID based on your Pokemon list
@@ -23,205 +27,166 @@ contract PokemonCard1155 is ERC1155, Ownable {
     event MaxPokemonIdUpdated(uint256 newMaxId);
 
     constructor(
-        string memory baseURI,
+        string memory baseURI_,
         uint256 _maxPokemonId
-    ) ERC1155("") Ownable(msg.sender) {
-        _baseURI = baseURI;
+    )
+        ERC1155("") // we override uri() below
+        Ownable(msg.sender)
+    {
+        _setBaseURI(baseURI_);
+        require(_maxPokemonId > 0, "Max Pokemon ID must be > 0");
         maxPokemonId = _maxPokemonId;
     }
 
-    /**
-     * Update the maximum Pokemon ID - call this when you add new Pokemon to your list
-     */
-    function setMaxPokemonId(uint256 _maxPokemonId) external onlyOwner {
-        require(_maxPokemonId > 0, "Max Pokemon ID must be greater than 0");
-        maxPokemonId = _maxPokemonId;
-        emit MaxPokemonIdUpdated(_maxPokemonId);
+    // --------------------
+    // METADATA
+    // --------------------
+
+    /// @notice ERC-1155 metadata URI. Returns folder-style: ipfs://<cid>/<id>.json
+    function uri(uint256 tokenId) public view override returns (string memory) {
+        return string.concat(_baseURI, tokenId.toString(), ".json");
     }
 
-    /**
-     * Public pack opening function - users can mint their own cards
-     * Removed token ID validation for simplicity
-     */
-    function mintCardsForPack(
-        uint256[] memory tokenIds,
-        uint256[] memory amounts
-    ) external {
-        require(tokenIds.length == amounts.length, "Arrays length mismatch");
-        require(tokenIds.length > 0, "No tokens to mint");
-        require(tokenIds.length <= 10, "Too many cards at once");
-
-        // Basic validation only
-        for (uint256 i = 0; i < tokenIds.length; i++) {
-            require(amounts[i] > 0, "Amount must be greater than 0");
-            require(tokenIds[i] > 0, "Token ID must be greater than 0");
-            require(
-                tokenIds[i] <= maxPokemonId,
-                "Token ID exceeds maximum Pokemon ID"
-            );
-        }
-
-        // Mint the NFTs to the caller
-        _mintBatch(msg.sender, tokenIds, amounts, "");
-
-        // Update supplies and emit events
-        for (uint256 i = 0; i < tokenIds.length; i++) {
-            totalSupply[tokenIds[i]] += amounts[i];
-            emit CardMinted(msg.sender, tokenIds[i], amounts[i]);
-        }
+    /// @notice Owner can update base folder (must end with "/")
+    function setBaseURI(string memory newBaseURI) external onlyOwner {
+        _setBaseURI(newBaseURI);
+        emit BaseURIUpdated(newBaseURI);
     }
 
-    /**
-     * Admin mint function - only owner can mint to any address
-     */
+    function getBaseURI() external view returns (string memory) {
+        return _baseURI;
+    }
+
+    function _setBaseURI(string memory newBaseURI) internal {
+        bytes memory b = bytes(newBaseURI);
+        require(b.length > 0, "baseURI empty");
+        require(b[b.length - 1] == "/", "baseURI must end with '/'");
+        // (Optional) enforce IPFS scheme off-chain; many marketplaces accept ipfs://
+        _baseURI = newBaseURI;
+    }
+
+    // --------------------
+    // ADMIN / SUPPLY
+    // --------------------
+
+    /// @notice Increase the max Pokemon ID (can't decrease for safety)
+    function setMaxPokemonId(uint256 _newMax) external onlyOwner {
+        require(_newMax >= maxPokemonId, "cannot decrease");
+        maxPokemonId = _newMax;
+        emit MaxPokemonIdUpdated(_newMax);
+    }
+
+    /// @notice Admin mint to any address
     function mintCard(
         address to,
         uint256 tokenId,
         uint256 amount
     ) external onlyOwner {
-        require(to != address(0), "Cannot mint to zero address");
-        require(tokenId > 0, "Token ID must be greater than 0");
-        require(tokenId <= maxPokemonId, "Token ID exceeds maximum Pokemon ID");
-        require(amount > 0, "Amount must be greater than 0");
+        require(to != address(0), "zero address");
+        require(tokenId > 0 && tokenId <= maxPokemonId, "invalid tokenId");
+        require(amount > 0, "amount > 0");
 
         _mint(to, tokenId, amount, "");
         totalSupply[tokenId] += amount;
         emit CardMinted(to, tokenId, amount);
     }
 
-    /**
-     * Get random Pokemon IDs for pack opening - now uses dynamic maxPokemonId
-     */
+    /// @notice Public pack opening: mint multiple ids to caller
+    function mintCardsForPack(
+        uint256[] memory tokenIds,
+        uint256[] memory amounts
+    ) external {
+        require(tokenIds.length == amounts.length, "length mismatch");
+        require(tokenIds.length > 0 && tokenIds.length <= 10, "count 1..10");
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            uint256 id = tokenIds[i];
+            uint256 amt = amounts[i];
+            require(amt > 0, "amount > 0");
+            require(id > 0 && id <= maxPokemonId, "invalid tokenId");
+        }
+
+        _mintBatch(msg.sender, tokenIds, amounts, "");
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            totalSupply[tokenIds[i]] += amounts[i];
+            emit CardMinted(msg.sender, tokenIds[i], amounts[i]);
+        }
+    }
+
+    // --------------------
+    // VIEWS / HELPERS
+    // --------------------
+
+    /// @notice Pseudo-random IDs for packs (not for security-critical randomness)
     function getRandomPokemonIds(
         uint256 count,
         uint256 seed
     ) external view returns (uint256[] memory) {
-        require(count > 0 && count <= 10, "Count must be between 1 and 10");
-        require(maxPokemonId > 0, "No Pokemon available");
+        require(count > 0 && count <= 10, "count 1..10");
+        require(maxPokemonId > 0, "no Pokemon");
 
         uint256[] memory randomIds = new uint256[](count);
-
         for (uint256 i = 0; i < count; i++) {
-            // Generate random Pokemon IDs from 1 to maxPokemonId (dynamic!)
             uint256 randomId = (uint256(
                 keccak256(
                     abi.encodePacked(seed, i, block.timestamp, block.prevrandao)
                 )
             ) % maxPokemonId) + 1;
-
             randomIds[i] = randomId;
         }
-
         return randomIds;
     }
 
-    /**
-     * Alternative: Get random Pokemon IDs with custom max (for flexibility)
-     */
     function getRandomPokemonIdsWithMax(
         uint256 count,
         uint256 seed,
         uint256 customMaxId
     ) external view returns (uint256[] memory) {
-        require(count > 0 && count <= 10, "Count must be between 1 and 10");
-        require(customMaxId > 0, "Custom max ID must be greater than 0");
-        require(customMaxId <= maxPokemonId, "Custom max exceeds contract max");
+        require(count > 0 && count <= 10, "count 1..10");
+        require(
+            customMaxId > 0 && customMaxId <= maxPokemonId,
+            "bad customMax"
+        );
 
         uint256[] memory randomIds = new uint256[](count);
-
         for (uint256 i = 0; i < count; i++) {
             uint256 randomId = (uint256(
                 keccak256(
                     abi.encodePacked(seed, i, block.timestamp, block.prevrandao)
                 )
             ) % customMaxId) + 1;
-
             randomIds[i] = randomId;
         }
-
         return randomIds;
     }
 
-    /**
-     * Get Pokemon metadata URL
-     */
-    function uri(uint256 tokenId) public view override returns (string memory) {
-        return string(abi.encodePacked(_baseURI, _toString(tokenId), ".json"));
-    }
-
-
-    /**
-     * Update base URI for metadata - only owner
-     */
-    function setBaseURI(string memory newBaseURI) external onlyOwner {
-        _baseURI = newBaseURI;
-        emit BaseURIUpdated(newBaseURI);
-    }
-
-    /**
-     * Get current base URI
-     */
-    function getBaseURI() external view returns (string memory) {
-        return _baseURI;
-    }
-
-
-    /**
-     * Check if token has been minted (exists)
-     */
     function exists(uint256 tokenId) public view returns (bool) {
         return totalSupply[tokenId] > 0;
     }
 
-    /**
-     * Get user's balances for multiple tokens
-     */
     function getUserBalances(
         address account,
         uint256[] memory tokenIds
     ) external view returns (uint256[] memory) {
-        require(account != address(0), "Invalid account address");
-        require(tokenIds.length > 0, "No token IDs provided");
+        require(account != address(0), "invalid account");
+        require(tokenIds.length > 0, "no token IDs");
 
         uint256[] memory balances = new uint256[](tokenIds.length);
-
         for (uint256 i = 0; i < tokenIds.length; i++) {
             balances[i] = balanceOf(account, tokenIds[i]);
         }
-
         return balances;
     }
 
-    /**
-     * Withdraw contract balance - only owner
-     */
+    // --------------------
+    // WITHDRAW
+    // --------------------
+
     function withdraw() external onlyOwner {
         uint256 balance = address(this).balance;
-        require(balance > 0, "No funds to withdraw");
-
-        (bool success, ) = payable(owner()).call{value: balance}("");
-        require(success, "Withdrawal failed");
-    }
-
-    /**
-     * Convert uint256 to string
-     */
-    function _toString(uint256 value) internal pure returns (string memory) {
-        if (value == 0) {
-            return "0";
-        }
-        uint256 temp = value;
-        uint256 digits;
-        while (temp != 0) {
-            digits++;
-            temp /= 10;
-        }
-        bytes memory buffer = new bytes(digits);
-        while (value != 0) {
-            digits -= 1;
-            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
-            value /= 10;
-        }
-        return string(buffer);
+        require(balance > 0, "no funds");
+        (bool ok, ) = payable(owner()).call{value: balance}("");
+        require(ok, "withdraw failed");
     }
 }

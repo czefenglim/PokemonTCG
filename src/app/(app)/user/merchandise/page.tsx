@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PokemonCart from '@/features/user/merchandise/components/PokemonCart'; // Adjust path as needed
 import { ShoppingCart, Heart, Filter, Search } from 'lucide-react';
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+// const stripePromise = loadStripe(
+//   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+// );
 
 // Define the type for Merchandise items (based on your Prisma schema + UI usage)
 type Merchandise = {
