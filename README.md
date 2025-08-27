@@ -1,13 +1,11 @@
-<img width="1895" height="851" alt="image" src="https://github.com/user-attachments/assets/f2c51554-5fb2-4cc1-b850-4598ee9f38c1" /># 🎮 PokeChain – A Pokémon TCG Blockchain Game
+# 🎮 PokeChain – A Pokémon TCG Blockchain Game
 
+PokeChain is a decentralized application (DApp) that brings the Pokémon Trading Card Game (TCG) to the blockchain. Developed for the CT124-3-3-BCD Group Assignment, this project demonstrates a secure and transparent card ownership and battle system using smart contracts on a local blockchain network.
+
+<img width="1895" height="851" alt="image" src="https://github.com/user-attachments/assets/f2c51554-5fb2-4cc1-b850-4598ee9f38c1" />
 <img width="1580" height="888" alt="image" src="https://github.com/user-attachments/assets/4b9e8d8b-cf30-4975-acc4-9377e90545d2" />
 <img width="1756" height="798" alt="image" src="https://github.com/user-attachments/assets/10adf4d7-802d-4ffb-847a-c11a5535c518" />
 <img width="1895" height="851" alt="image" src="https://github.com/user-attachments/assets/6d3400c7-e653-4266-95ae-61dc7494c6f1" />
-
-
-
-
-PokeChain is a decentralized application (DApp) that brings the Pokémon Trading Card Game (TCG) to the blockchain. Developed for the CT124-3-3-BCD Group Assignment, this project demonstrates a secure and transparent card ownership and battle system using smart contracts on a local blockchain network.
 
 ---
 
