@@ -2,18 +2,18 @@
 
 PokeChain is a decentralized application (DApp) that brings the Pokémon Trading Card Game (TCG) to the blockchain. Developed for the CT124-3-3-BCD Group Assignment, this project demonstrates a secure and transparent card ownership and battle system using smart contracts on a local blockchain network.
 
-<img width="1901" height="1079" alt="image" src="https://github.com/user-attachments/assets/a29abdcd-fcb0-4fff-ac54-84d8c8b9d0a4" />
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/3e53ab0e-5e2c-4304-a8eb-a53c79a8acc0" />
-<img width="1904" height="1079" alt="image" src="https://github.com/user-attachments/assets/b754f9ab-67d2-4cc2-b7a3-7873fa15e9fa" />
-<img width="1598" height="875" alt="image" src="https://github.com/user-attachments/assets/ad4e66e4-af00-4d8f-8fc9-60133af98f2d" />
-<img width="1890" height="897" alt="image" src="https://github.com/user-attachments/assets/5316709b-2834-4e6b-870c-43b36cf1ca32" />
-<img width="1579" height="830" alt="image" src="https://github.com/user-attachments/assets/dcf531ac-b82e-4f87-9b3e-1907362dfb62" />
-<img width="1535" height="775" alt="image" src="https://github.com/user-attachments/assets/c889dd1a-7260-4df8-81cb-857e4cae568e" />
-<img width="1917" height="1079" alt="image" src="https://github.com/user-attachments/assets/a1327ad5-d76f-4e30-a6aa-6bd97ec29c5c" />
-<img width="1612" height="1010" alt="image" src="https://github.com/user-attachments/assets/158a153e-f5cf-4945-8058-9545667c3c43" />
-<img width="1568" height="1005" alt="image" src="https://github.com/user-attachments/assets/cc953aa2-2345-4e06-8dc2-2bcbc6e5371f" />
-<img width="1661" height="1054" alt="image" src="https://github.com/user-attachments/assets/e0fb53b3-8682-421a-a23b-a0afb0684b2a" />
-<img width="1917" height="1079" alt="image" src="https://github.com/user-attachments/assets/dc9ac770-3f1c-42be-960f-4f7672a5639c" />
+<img width="1901" height="1079" alt="landing-page" src="https://github.com/user-attachments/assets/a29abdcd-fcb0-4fff-ac54-84d8c8b9d0a4" />
+<img width="1919" height="1079" alt="login" src="https://github.com/user-attachments/assets/3e53ab0e-5e2c-4304-a8eb-a53c79a8acc0" />
+<img width="1898" height="1079" alt="home-page" src="https://github.com/user-attachments/assets/23f7791a-6a22-43af-b40f-72e6b4a4f69c" />
+<img width="1598" height="875" alt="collection" src="https://github.com/user-attachments/assets/ad4e66e4-af00-4d8f-8fc9-60133af98f2d" />
+<img width="1890" height="897" alt="marketplace" src="https://github.com/user-attachments/assets/5316709b-2834-4e6b-870c-43b36cf1ca32" />
+<img width="1579" height="830" alt="trade-card" src="https://github.com/user-attachments/assets/dcf531ac-b82e-4f87-9b3e-1907362dfb62" />
+<img width="1535" height="775" alt="battle" src="https://github.com/user-attachments/assets/c889dd1a-7260-4df8-81cb-857e4cae568e" />
+<img width="1917" height="1079" alt="battle-arena" src="https://github.com/user-attachments/assets/a1327ad5-d76f-4e30-a6aa-6bd97ec29c5c" />
+<img width="1612" height="1010" alt="leaderboard" src="https://github.com/user-attachments/assets/158a153e-f5cf-4945-8058-9545667c3c43" />
+<img width="1568" height="1005" alt="gems" src="https://github.com/user-attachments/assets/cc953aa2-2345-4e06-8dc2-2bcbc6e5371f" />
+<img width="1661" height="1054" alt="merchandise" src="https://github.com/user-attachments/assets/e0fb53b3-8682-421a-a23b-a0afb0684b2a" />
+<img width="1917" height="1079" alt="admin" src="https://github.com/user-attachments/assets/dc9ac770-3f1c-42be-960f-4f7672a5639c" />
 
 
 ---
@@ -186,6 +186,7 @@ npm run dev
 - Run `npm install` before starting the project.
 
 ---
+
 
 
 
