@@ -2,9 +2,9 @@
 
 PokeChain is a decentralized application (DApp) that brings the Pokémon Trading Card Game (TCG) to the blockchain. Developed for the CT124-3-3-BCD Group Assignment, this project demonstrates a secure and transparent card ownership and battle system using smart contracts on a local blockchain network.
 
-<img width="1580" height="888" alt="image" src="https://github.com/user-attachments/assets/4b9e8d8b-cf30-4975-acc4-9377e90545d2" />
-<img width="1756" height="798" alt="image" src="https://github.com/user-attachments/assets/10adf4d7-802d-4ffb-847a-c11a5535c518" />
-<img width="1899" height="865" alt="image" src="https://github.com/user-attachments/assets/1abd5c79-78fc-4b87-8960-f02cf1a491a9" />
+<img width="1901" height="1079" alt="image" src="https://github.com/user-attachments/assets/a29abdcd-fcb0-4fff-ac54-84d8c8b9d0a4" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/3e53ab0e-5e2c-4304-a8eb-a53c79a8acc0" />
+![Uploading image.png…]()
 <img width="1598" height="875" alt="image" src="https://github.com/user-attachments/assets/ad4e66e4-af00-4d8f-8fc9-60133af98f2d" />
 <img width="1890" height="897" alt="image" src="https://github.com/user-attachments/assets/5316709b-2834-4e6b-870c-43b36cf1ca32" />
 <img width="1579" height="830" alt="image" src="https://github.com/user-attachments/assets/dcf531ac-b82e-4f87-9b3e-1907362dfb62" />
@@ -186,6 +186,7 @@ npm run dev
 - Run `npm install` before starting the project.
 
 ---
+
 
 
 
