@@ -5,6 +5,7 @@ PokeChain is a decentralized application (DApp) that brings the Pokémon Trading
 <img width="1901" height="1079" alt="landing-page" src="https://github.com/user-attachments/assets/a29abdcd-fcb0-4fff-ac54-84d8c8b9d0a4" />
 <img width="1919" height="1079" alt="login" src="https://github.com/user-attachments/assets/3e53ab0e-5e2c-4304-a8eb-a53c79a8acc0" />
 <img width="1898" height="1079" alt="home-page" src="https://github.com/user-attachments/assets/23f7791a-6a22-43af-b40f-72e6b4a4f69c" />
+<img width="1584" height="843" alt="open-pack" src="https://github.com/user-attachments/assets/2b87b21c-45dc-4ca3-8dd2-ff6c2de65e46" />
 <img width="1598" height="875" alt="collection" src="https://github.com/user-attachments/assets/ad4e66e4-af00-4d8f-8fc9-60133af98f2d" />
 <img width="1890" height="897" alt="marketplace" src="https://github.com/user-attachments/assets/5316709b-2834-4e6b-870c-43b36cf1ca32" />
 <img width="1579" height="830" alt="trade-card" src="https://github.com/user-attachments/assets/dcf531ac-b82e-4f87-9b3e-1907362dfb62" />
@@ -188,6 +189,7 @@ npm run dev
 - Run `npm install` before starting the project.
 
 ---
+
 
 
 
